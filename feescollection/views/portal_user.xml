@@ -1,0 +1,171 @@
+<odoo>
+    <!-- <template id="assets_frontend" inherit_id="web.assets_frontend" name="OAuth Providers Assets">
+            <xpath expr="//script[last()]" position="after">
+                <script type='text/javascript' src='/feescollection/static/src/js/product.js'></script>
+            </xpath>
+    </template> -->
+    <!-- <template id="assets_frontend" inherit_id="web.assets_frontend" name="My Custom">
+        <xpath expr="." position="inside">
+             <script type="text/javascript" src="/feescollection/static/src/js/radio_button.js"></script>
+            <script type='text/javascript' src='/feescollection/static/src/js/product.js'></script>
+        </xpath>
+    </template> -->
+    <template id="cource">
+        <t t-call="portal.frontend_layout">
+            <style type="text/css">
+            .container {
+                margin: 30px auto 0;
+                position: relative;
+                text-align: left;
+                width: 1000px;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            /* main section */
+            #main {
+                background-color: #fff;
+                padding: 20px 0;
+            }
+
+            #content {
+                overflow: hidden;
+            }
+
+            #content ul {
+                list-style: none outside none;
+                margin: 0;
+                padding: 0;
+            }
+
+            #content #left ul li {
+                float: left;
+                padding-bottom: 21px;
+                width: 33%;
+            }
+
+            #content #left ul li .img {
+                text-align: center;
+            }
+
+            #content #left ul li .img img {
+                height: 128px;
+                width: 128px;
+            }
+
+            #content #left ul li .info {
+                padding: 17px 20px 0 19px;
+            }
+
+            #content ul li .info .title {
+                color: #4B4B4B;
+                display: inline-block;
+                font-size: 11px;
+                font-weight: bold;
+                line-height: 16px;
+                text-decoration: none;
+                text-transform: uppercase;
+                width: 150px;
+            }
+
+            #content #left ul li .info p {
+                color: #7F7F7F;
+                font-size: 11px;
+                line-height: 16px;
+                padding-top: 3px;
+            }
+
+            #content #left ul li .info .price1 {
+                background: none repeat scroll 0 0 #F7F7F7;
+                color: #383838;
+                font-size: 12px;
+                font-weight: bold;
+                line-height: 16px;
+                margin: 17px 0 10px;
+                padding: 6px 0 6px 8px;
+            }
+
+            #content #left ul li .info .price1 .st {
+                color: #7F7F7F;
+                font-size: 11px;
+                line-height: 16px;
+                margin-right: 3px;
+            }
+
+            #content #left ul li .info .actions a {
+                border: 1px solid #E0E0E0;
+                color: #fd7a01;
+                display: block;
+                float: right;
+                font-size: 11px;
+                font-weight: bold;
+                line-height: 16px;
+                padding: 5px;
+                text-decoration: none;
+            }
+
+            #content #left ul li .info .actions a:first-child {
+                color: #009832;
+                float: left;
+            }
+            </style>
+            <div class="container">
+                <div id="main">
+                    <section id="content">
+                        <div id="left">
+                            <ul>
+                                <t t-log='product_templates'/>
+                                <t t-as="product" t-foreach="product_templates">
+                                    <li>
+                                        <div class="img">
+                                            <a href="#">
+                                                <img t-attf-src="data:image/png;base64, {{product.image_1920}}" />
+                                            </a>
+                                        </div>
+                                        <div class="info">
+                                            <a class="title" href="#">
+                                                <t t-esc="product.name" /></a>
+                                            <p><b>Type : </b>
+                                                <t t-if="product.type == 'consu'">Consumable</t>
+                                                <t t-else="">
+                                                    <t t-esc="product.type" />
+                                                </t>
+                                            </p>
+                                            <div class="price1">
+                                                <span class="st">price:</span>
+                                                <strong>
+                                                    <t t-esc="product.list_price" /></strong>
+                                            </div>
+                                            <div class="actions">
+                                                <a href="#">Add to cart</a>
+                                                <a href="#">Inqury</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </t>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <center>
+                <footer>
+                    <!-- <div id="listingTable"></div>
+                    <a href="javascript:prevPage()" id="btn_prev">Prev</a>
+                    <a href="javascript:nextPage()" id="btn_next">Next</a>
+                    page: <span id="page"></span> -->
+                    <t t-foreach="offsets" t-as="offset">
+                     <a t-attf-href="/cource/{{offset + 1}}"><t t-esc="offset + 1"/></a>
+                    </t>
+                </footer>
+            
+            </center>
+        </t>
+    </template>
+    <!--  // function nextPage() {
+            //     if (current_page < numPages()) {
+            //         current_page++;
+            //         changePage(current_page);
+            //     }
+            // } -->
+</odoo>

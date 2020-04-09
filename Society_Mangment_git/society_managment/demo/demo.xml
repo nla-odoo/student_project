@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='partner_nrushipark' model='res.partner'>
+        <field name='name'>Nrushipark</field>
+        <field name='email'>nrushipark@gmail.com</field>
+    </record>
+    
+    <record id='company_nrushipark' model='res.company'>
+        <field name='name'>Nrushipark</field>
+        <field name='partner_id' ref='society_managment.partner_nrushipark'></field>
+    </record>
+
+    <record id='user_nrushipark' model='res.users'>
+        <field name='partner_id' ref='society_managment.partner_nrushipark'></field>
+        <field name='login'>Nrushipark</field>
+        <field name='password'>Nrushipark</field>
+        <field name='company_id' ref='society_managment.company_nrushipark'></field>
+        <field name='company_ids' eval="[(4, ref('society_managment.company_nrushipark'))]"/>
+        <field name='groups_id' eval="[(6, 0, [ref('base.group_portal')])]"></field>
+    </record>
+
+    <record id='partner_bhaumik' model='res.partner'>
+        <field name='name'>Bhaumik</field>
+        <field name='email'>bhaumik@gmail.com</field>
+        <field name='parent_id' ref='society_managment.partner_nrushipark'/>
+    </record>
+
+    <record id='user_bhaumik' model='res.users'>
+        <field name='login'>Bhaumik</field>
+        <field name='password'>Bhaumik</field>
+        <field name='partner_id' ref='society_managment.partner_bhaumik'></field>
+        <field name='groups_id' eval="[(6, 0, [ref('base.group_portal')])]"></field>
+    </record>
+
+    <record id='product_monthly_maintanance_subscription' model="sale.subscription.template">
+        <field name="name">Society Maintanance Months</field>
+        <field name="recurring_rule_boundary">unlimited</field>
+        <field name="payment_mode">success_payment</field>
+        <field name="recurring_interval">1</field>
+        <field name="recurring_rule_type">monthly</field>
+    </record>
+
+    <record id='product_yearly_festival_subscription' model="sale.subscription.template">
+        <field name="name">Society Festival Yearly</field>
+        <field name="recurring_rule_boundary">unlimited</field>
+        <field name="recurring_interval">1</field>
+        <field name="recurring_rule_type">yearly</field>
+        <field name="payment_mode">success_payment</field>
+    </record>
+
+    <record id='product_maintanance' model='product.product'>
+        <field name="name">Maintanace</field>
+        <field name="default_code">Maintance_001</field>
+        <field name="purchase_ok" eval="False"/>
+        <field name="sale_ok" eval="False"/>
+        <field name="rent_ok" eval="True"/>
+        <field name="type">consu</field>
+        <field name="list_price">500.0</field>
+        <field name="recurring_invoice">True</field>
+        <field name="subscription_template_id" ref="product_monthly_maintanance_subscription"/>
+    </record>
+
+    <record id='product_navratri' model='product.product'>
+        <field name="name">Navratri</field>
+        <field name="default_code">Navratri_001</field>
+        <field name="purchase_ok" eval="False"/>
+        <field name="sale_ok" eval="False"/>
+        <field name="rent_ok" eval="True"/>
+        <field name="type">consu</field>
+        <field name="list_price">200.0</field>
+        <field name="recurring_invoice">True</field>
+        <field name="subscription_template_id" ref="product_yearly_festival_subscription"/>
+    </record>
+    
+    <record id='product_holi' model='product.product'>
+        <field name="name">Holi</field>
+        <field name="default_code">holi_001</field>
+        <field name="purchase_ok" eval="False"/>
+        <field name="sale_ok" eval="False"/>
+        <field name="rent_ok" eval="True"/>
+        <field name="type">consu</field>
+        <field name="list_price">200.0</field>
+        <field name="recurring_invoice">True</field>
+        <field name="subscription_template_id" ref="product_yearly_festival_subscription"/>
+    </record>
+
+    <record id='maintanance_subscription_member' model='sale.subscription'>
+        <field name="name">Bhaumik</field>
+        <field name="template_id" ref='product_monthly_maintanance_subscription'/>
+        <field name='company_id' ref='society_managment.company_nrushipark'></field>
+        <field name="partner_id" ref='partner_bhaumik'/>
+        <field name="user_id" ref='user_nrushipark'/>
+    </record>
+
+    <record id='festival_subscription_member' model='sale.subscription'>
+        <field name="name">Bhaumik</field>
+        <field name="template_id" ref='product_yearly_festival_subscription'/>
+        <field name='company_id' ref='society_managment.company_nrushipark'></field>
+        <field name="partner_id" ref='partner_bhaumik'/>
+        <field name="user_id" ref='user_nrushipark'/>
+    </record>
+
+    <record id="rec_inv_line_maintanance" model="sale.subscription.line">
+        <field name="name">Maintanance</field>
+        <field name="product_id" ref="society_managment.product_maintanance"/>
+        <field name="analytic_account_id" ref="maintanance_subscription_member"/>
+        <field name="quantity">1</field>
+        <field name="price_unit">500.0</field>
+        <field name="uom_id" ref="sale_subscription.subscription_uom_month"/>
+    </record>
+
+    <record id="rec_inv_line_holi_festival" model="sale.subscription.line">
+        <field name="name">Holi</field>
+        <field name="product_id" ref="society_managment.product_holi"/>
+        <field name="analytic_account_id" ref="festival_subscription_member"/>
+        <field name="quantity">1</field>
+        <field name="price_unit">200.0</field>
+        <field name="uom_id" ref="sale_subscription.subscription_uom_month"/>
+    </record>
+
+    <record id="rec_inv_line_navratri_festival" model="sale.subscription.line">
+        <field name="name">Navratri</field>
+        <field name="analytic_account_id" ref="festival_subscription_member"/>
+        <field name="product_id" ref="society_managment.product_navratri"/>
+        <field name="quantity">1</field>
+        <field name="price_unit">200.0</field>
+        <field name="uom_id" ref="sale_subscription.subscription_uom_month"/>
+    </record>
+
+</odoo>

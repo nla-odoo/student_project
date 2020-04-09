@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id='society_form'>
+        <t t-call="portal.portal_layout">
+            <div >
+                <div>
+                    <div >
+                        <form method="post" t-attf-action="/society/form/">
+                           <div>
+                               <div >
+                                    <label>Society name</label>
+                                    <input type="text" name='name'/>
+                                </div>
+                                <div >
+                                    <label>Registration Numbe</label>
+                                    <input type="text" name='registration_number'/>
+                                </div>
+                                <div >
+                                    <label>Address</label>
+                                    <textarea name='address' rows="3"></textarea>
+                                </div>
+                                <div>
+                                    <input id="society_type" type="radio" name="society_type" value="cooperative">Co-operative</input>
+                                </div>
+                                <div >
+                                    <label>E-mail</label>
+                                    <input type="text" name='email'/>
+                                </div>
+                                <div >
+                                    <label>Society</label>
+                                    <input type="text" name='companyname'/>
+                                </div>
+                                <div >
+                                    <label>Currency</label>
+                                    <select id="currency" name="currency">
+                                        <t t-foreach='currency' t-as='cur'>
+                                            <option t-attf-value="{{cur.name}}"><t t-esc='cur.name'/></option>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div >
+                                    <label>Password</label>
+                                    <input type="password" name='password'/>
+                                </div>
+                                <button type="submit">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id='services_form'>
+        <t t-call="portal.portal_layout">
+            <div >
+                <div>
+                    <div >
+                        <form method="post" t-attf-action="/services/form/">
+                           <div>
+                               <div >
+                                    <label>Product name</label>
+                                    <input type="text" name='name'/>
+                                </div>
+                                <div >
+                                    <label>purchase</label>
+                                    <input type="checkbox" name='purchase_ok'/>
+                                </div>
+                                <div >
+                                    <label>Rent</label>
+                                    <input type="checkbox" name='rent_ok'/>
+                                </div>
+                                <div >
+                                    <label>sale</label>
+                                    <input type="checkbox" name='sale_ok'/>
+                                </div>
+                                <div >
+                                    <h5>Type</h5>
+                                    <select id="complaint_details" name="type">
+                                        <option value="consu">Consumable</option>
+                                        <option value="service">Service</option>
+                                    </select>
+                                </div>
+                                <div >
+                                    <label>Cost</label>
+                                    <input type="text" name='standard_price'/>
+                                </div>
+                                <div >
+                                    <label>Sale price</label>
+                                    <input type="text" name='list_price'/>
+                                </div>
+                                <div>
+                                    <label>Subscription Product</label>
+                                    <input type="checkbox" name='recurring_invoice'/>
+                                </div>
+                                <div>
+                                    <label>Subscription Template</label>
+                                    <select name="subscription_template_id">
+                                        <t t-foreach='subscriptions' t-as='subscription'>
+                                            <option t-attf-value="{{subscription.id}}"><t t-esc='subscription.name'/></option>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>Attribute</label>
+                                    <select name="attribute_id"  id='attribute_value' onchange='attributeValue(this);'>
+                                        <t t-foreach='attributes' t-as='attribute'>
+                                            <option t-if="att == attribute.id" t-attf-value="{{attribute.id}}" selected="selected"><t t-esc='attribute.name'/></option>
+                                            <option t-else="" t-attf-value="{{attribute.id}}"><t t-esc='attribute.name'/></option>
+                                        </t>
+                                    </select>
+                                    <script type="text/javascript" src="/society_managment/static/src/js/attribut_vlues.js"/>
+                                </div>
+                                <div>
+                                    <label>Attribute Value</label>
+                                    <select name="attribute_value_id">
+                                        <t t-foreach='values' t-as='value'>
+                                            <option t-attf-value="{{value.id}}"><t t-esc='value.name'/></option>
+                                        </t>
+                                    </select>
+                                </div>  
+                            </div>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+        <template id='subscription_form'>
+        <t t-call="portal.portal_layout">
+            <div >
+                <div>
+                    <div >
+                        <form method="post" t-attf-action="/subscription/form/">
+                           <div>
+                               <div >
+                                    <label>name</label>
+                                    <input type="text" name='name'/>
+                                </div>
+                                <div >
+                                    <label>Invoicing Period</label>
+                                    <input type="text" name='recurring_interval'/>
+                                </div>
+                                <div >
+                                    <h5>period</h5>
+                                    <select name="recurring_rule_type">
+                                        <option value="daily">Days</option>
+                                        <option value="weekly">Weeks</option>
+                                        <option value="monthly">Months</option>
+                                        <option value="yearly">Years</option>
+                                    </select>
+                                </div>
+                                <div >
+                                    <h5>Duration</h5>
+                                    <select name="recurring_rule_boundary">
+                                        <option value="unlimited">Forever</option>
+                                        <option value="limited">Fixed</option>
+                                    </select>
+                                </div>
+                                <div >
+                                    <label>Period</label>
+                                    <input type="text" name='recurring_rule_count'/>
+                                </div>
+                                <div >
+                                    <h5>Create Invoice</h5>
+                                    <select id="complaint_details" name="payment_mode">
+                                        <option value="manual">Manually</option>
+                                        <option value="draft_invoice">Draft</option>
+                                        <option value="validate_send">Send</option>
+                                        <option value="validate_send_payment">Send and try to charge</option>
+                                        <option value="success_payment">Send after successful payment</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>Invoice Email</label>
+                                    <select name="invoice_mail_template_id">
+                                        <t t-foreach='emails_temp' t-as='email_temp'>
+                                            <option t-attf-value="{{email_temp.id}}"><t t-esc='email_temp.name'/></option>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>Closable by Customer</label>
+                                    <input type="checkbox" name='user_closable'/>
+                                </div>  
+                            </div>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id='attribute_form'>
+        <t t-call="portal.portal_layout">
+            <div >
+                <div>
+                    <div>
+                        <form method="post" id="Attribute" t-attf-action="/attribute/form/">
+                           <div>
+                               <div>
+                                    <label>name</label>
+                                    <input type="text" name='name'/>
+                                </div>
+                                <div>
+                                    <label id="value">Value</label>
+                                    <input type="text" name='value_name1'/>
+                                </div>
+                                <button type="submit">Submit</button>
+                                <input type="text" id='dem' name='dem' value='1'/>
+                            </div>
+                        </form>
+                        <button  id="add_btn" onclick="myFunction()">Add Line</button>
+                        <button  id="add_btn" onclick="myFunction1()">Remove Line</button>
+                        <script type="text/javascript" src="/society_managment/static/src/js/attribut_vlues.js"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_menu" name="Menu" inherit_id="portal.portal_breadcrumbs" priority="1">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <div  class='navbar' width='10%'><span><a href="homepage">Add Services</a></span></div>
+            <div  class='navbar' width='10%'><span><a href="subscription">Add Subscription</a></span></div>
+            <div  class='navbar' width='10%'><span><a href="attribute">Attribute</a></span></div>
+        </xpath>
+    </template>
+</odoo>

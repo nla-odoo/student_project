@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+<!-- <template id="index">
+    <t t-call="website.layout">
+        <h1 align="center"> <a role="button" t-attf-href="/create/">Create</a> </h1>
+            <table class="table-sm" border="2px solid #abc" align="center">
+                <tr t-foreach="stock" t-as="doc">
+                <tr>
+                    <td><span t-esc="doc.name" t-att-value="doc.name"/></td>
+                    <td><span t-esc="doc.comp"  t-att-value="doc.comp"/></td>
+                    <td><a t-attf-href="/update/{{slug(doc)}}" ><i class="fa fa-edit"/></a></td>
+                    <td><a t-attf-href="/delete/{{slug(doc)}}/"><i class="fa fa-trash"/></a></td>
+                </tr>
+            </tr>
+        </table>
+    </t>
+</template>    
+
+<template id="index1">
+    <t t-call="website.layout">
+        <form method="post" action="/save/">
+            <table>
+                <tr>
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                    <input type="hidden" name="id" t-attf-value="#{d.id if d else ''}" />
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td> <input type="text" name="name" t-attf-value="#{d.name if d else ''}"/></td>
+                </tr>
+                <tr>
+                    <td>Company</td>
+                    <td>  <input type="text" name="comp" t-attf-value="#{d.comp if d else ''}"/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td> <button type="submit" >Submit</button> </td>
+                </tr>
+            </table>
+        </form>
+    </t>
+</template>
+ -->
+</odoo> 

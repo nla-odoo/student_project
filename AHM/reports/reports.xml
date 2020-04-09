@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <report
+        id="report_patient_detail"
+        model="ahm.patient.detail"
+        string="Patient Report"
+        name="AHM.report_report_view"
+        file="AHM.report_patient_detail"
+        report_type="qweb-pdf" />
+
+        <template id="report_report_view">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout"> 
+                        <h1>Patient Report Detail</h1><br/>
+                        <div class="page" string="Patient Report">
+                            <p> 
+                               <img t-attf-src="data:image/*;base64,{{doc.image}}"/>
+                            </p>
+                            <p> 
+                                <h1>Name</h1> 
+                                <span t-field="doc.app_id"/>
+                            </p>
+                            <p> 
+                                <h1>Breed Name</h1> 
+                                <span t-field="doc.name"/>
+                            </p>
+                            <p> 
+                                <h1>Mobile No.</h1> 
+                                <span t-field="doc.contact"/>
+                            </p>
+                            <p> 
+                                <h1>Medicine</h1> 
+                                <span t-field="doc.medicine"/>
+                            </p>
+                            <p> 
+                                <h1>Prescription</h1> 
+                                <span t-field="doc.prescription"/>
+                            </p>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    <report
+        id="report_total_charges"
+        model="ahm.total.charges"
+        string="Patient Total Bill"
+        name="AHM.report_total_charges"
+        file="AHM.report_total_charges"
+        report_type="qweb-pdf" />
+
+        <template id="report_total_charges">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout"> 
+                        <h1>Patient Total Bill</h1><br/>
+                        <div class="page" string="Patient Total Bill">
+                            <p> 
+                                <h1>Name</h1> 
+                                <span t-field="doc.app_id"/>
+                            </p>
+                            <p> 
+                                <h1>Medicine Charges</h1> 
+                                <span t-field="doc.medicine_charges"/>
+                            </p>
+                            <p> 
+                                <h1>Visiting Charges</h1> 
+                                <span t-field="doc.visiting_charges"/>
+                            </p>
+                            <p> 
+                                <h1>Total Bill</h1> 
+                                <span t-field="doc.total_bill"/>
+                            </p>
+                            <p>
+                                <h1> (: Thank You!  :)</h1>
+                            </p>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+
+<report
+        id="report_medicine_bill"
+        model="ahm.bill"
+        string="Medicine Bill"
+        name="AHM.report_bill"
+        file="AHM.report_medicine_bill"
+        report_type="qweb-pdf" />
+
+        <template id="report_bill">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout"> 
+                        <h1>Medicine Total Bill</h1><br/>
+                        <div class="page" string="Patient Total Bill">
+                            <p> 
+                                <h1>Medicine Name</h1> 
+                                <span t-field="doc.name"/>
+                            </p>
+                            <p> 
+                                <h1>Medicine Company</h1> 
+                                <span t-field="doc.comp"/>
+                            </p>
+                            <p> 
+                                <h1>Price </h1> 
+                                <span t-field="doc.price"/>
+                            </p>
+                            <p> 
+                                <h1>Quantity</h1> 
+                                <span t-field="doc.quantity"/>
+                            </p>
+                            <p>
+                                <h1> (: Thank You :)</h1>
+                            </p>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+</odoo>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>  
+
+<template id="customer_index1">
+    <t t-call="portal.frontend_layout">
+        
+        <div class = "page-header" align="center">
+            <h1>
+                Animal Health Monitoring
+            </h1>
+        </div>
+
+        <header align="center" color="green;">
+        </header>
+
+        <ul class="nav nav-pills" style="justify-content:center; margin:30px;}">
+            <li class="nav-item">
+                <a class="nav-link active" href="#user" data-toggle="tab">Patient</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#hospital" data-toggle="tab">Hospital</a>
+            </li>
+        </ul>
+        <div class="tab-content" align="center">
+            <div id="user" class="tab-pane active">
+                <form method="post" action="/registration/user">
+                    <table>
+                        <tr>
+                            <td>User Name</td>
+                            <td><input class="form-control" type="text" name="username"/></td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td><input class="form-control" type="text" name="email"/></td>
+                        </tr>
+                        <tr>
+                            <td>Password</td>
+                            <td><input class="form-control" type="password" name="password"/></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td> 
+                                <button class="btn btn-secondary" type="submit" style="margin:20px;">Submit</button> 
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div id="hospital" class="tab-pane">
+                <form method="post" action="/registration/hospital">
+                    <table>
+                        <tr>
+                            <td>Hospital Name</td>
+                            <td><input class="form-control" type="text" name="username"/></td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td><input class="form-control" type="email" name="email"/></td>
+                        </tr>
+                        <tr>
+                            <td>Password</td>
+                            <td><input class="form-control" type="password" name="password"/></td>
+                        </tr>
+                        <tr>
+                            <td>Currency</td>
+                            <td>
+                                <select class="btn btn-secondary dropdown-toggle"  name="currency">
+                                    <t t-foreach="currency" t-as="cur">
+                                        <option t-attf-value="{{cur.name}}"><t t-esc="cur.name"/></option>
+                                    </t>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td> <button class="btn btn-secondary" type="submit" style="margin:20px;">Submit</button> </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </t>
+</template>
+
+</odoo> 

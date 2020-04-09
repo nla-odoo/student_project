@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="sunday" model="ahm.working.days">
+		<field name="name">Sunday</field>
+	</record>
+
+	<record id="monday" model="ahm.working.days">
+		<field name="name">Monday</field>
+	</record>
+
+	<record id="tuesday" model="ahm.working.days">
+		<field name="name">Tuesday</field>
+	</record>
+
+	<record id="wednesday" model="ahm.working.days">
+		<field name="name">Wednesday</field>
+	</record>
+
+	<record id="thursday" model="ahm.working.days">
+		<field name="name">Thursday</field>
+	</record>
+
+	<record id="friday" model="ahm.working.days">
+		<field name="name">Friday</field>
+	</record>
+
+	<record id="saturday" model="ahm.working.days">
+		<field name="name">Saturday</field>
+	</record>
+
+	<record id="time1" model="ahm.time">
+		<field name="name">1.0</field>
+	</record>
+
+	<record id="time2" model="ahm.time">
+		<field name="name">2.0</field>
+	</record>
+	<record id="time3" model="ahm.time">
+		<field name="name">3.0</field>
+	</record>
+	<record id="time4" model="ahm.time">
+		<field name="name">4.0</field>
+	</record>
+	<record id="time5" model="ahm.time">
+		<field name="name">5.0</field>
+	</record>
+	<record id="time6" model="ahm.time">
+		<field name="name">6.0</field>
+	</record>
+	<record id="time7" model="ahm.time">
+		<field name="name">7.0</field>
+	</record>
+	<record id="time8" model="ahm.time">
+		<field name="name">8.0</field>
+	</record>
+	<record id="time9" model="ahm.time">
+		<field name="name">9.0</field>
+	</record>
+	<record id="time10" model="ahm.time">
+		<field name="name">10.0</field>
+	</record>
+
+	<record id="time11" model="ahm.time">
+		<field name="name">11.0</field>
+	</record>
+
+	<record id="time12" model="ahm.time">
+		<field name="name">12.0</field>
+	</record>
+	<record id="time13" model="ahm.time">
+		<field name="name">13.0</field>
+	</record>
+	<record id="time14" model="ahm.time">
+		<field name="name">14.0</field>
+	</record>
+	<record id="time15" model="ahm.time">
+		<field name="name">15.0</field>
+	</record>
+	<record id="time16" model="ahm.time">
+		<field name="name">16.0</field>
+	</record>
+	<record id="time17" model="ahm.time">
+		<field name="name">17.0</field>
+	</record>
+	<record id="time18" model="ahm.time">
+		<field name="name">18.0</field>
+	</record>
+	<record id="time19" model="ahm.time">
+		<field name="name">19.0</field>
+	</record>
+	<record id="time20" model="ahm.time">
+		<field name="name">20.0</field>
+	</record>
+	<record id="time21" model="ahm.time">
+		<field name="name">21.0</field>
+	</record>
+	<record id="time22" model="ahm.time">
+		<field name="name">22.0</field>
+	</record>
+	<record id="time23" model="ahm.time">
+		<field name="name">23.0</field>
+	</record>
+	<record id="time24" model="ahm.time">
+		<field name="name">24.0</field>
+	</record>
+
+	<record id="dog" model="ahm.animal.type">
+		<field name="name">Dog</field>
+	</record>
+
+	<record id="cat" model="ahm.animal.type">
+		<field name="name">Cat</field>
+	</record>
+
+	<record id="cow" model="ahm.animal.type">
+		<field name="name">Cow</field>
+	</record>
+
+	<record id="horse" model="ahm.animal.type">
+		<field name="name">Horse</field>
+	</record>
+
+	<record id="buffalo" model="ahm.animal.type">
+		<field name="name">Buffalo</field>
+	</record>
+
+	<record id="rabbit" model="ahm.animal.type">
+		<field name="name">Rabbit</field>
+	</record>
+
+	<record id="goat" model="ahm.animal.type">
+		<field name="name">Goat</field>
+	</record>
+
+</odoo>

@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="mytemp" name="my Menu" inherit_id="portal.portal_breadcrumbs"  priority="1">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li><a href='/transporters/' class="btn btn-link">Transporters</a></li>
+            <li><a href='/yourinquirey/' class="btn btn-link">Your Inquires</a></li>
+        </xpath>
+    </template>
+
+    <template id="lts_index">
+        <t t-call="portal.portal_layout">
+            <div class='container'> 
+                <br/><br/>
+                <center><h1 style="color:#00A09D"><u>Welcome To The Transporter Loading Services</u></h1></center>
+
+                <center><img src="/lts/static/description/images/fulltruck2.jpeg" style="width: 600px; height: 400px;"/></center>
+
+            </div>
+        </t>
+    </template>
+
+    <template id='transporteregister'>
+        <t t-call="portal.portal_layout">
+            <form  action="/transporterregister/form" method="post"> 
+                <div class='container'>
+                    <div class='form-group'>
+                        <label>Name</label>
+                        <input type='text' name='name' class='form-control'/>
+                    </div>
+                    <div class='form-group'>
+                        <label>Company</label>
+                        <input type='text' name='companyname' class='form-control'/>
+                    </div>
+                    <div class='form-group'>
+                        <label>Password</label>
+                        <input type='password' name='password' class='form-control'/>
+                    </div>
+                    <div class='form-group'>
+                        <label>Email</label>
+                        <input type='text' name='email' class='form-control'/>
+                    </div>
+                    <div class="form-group">
+                        <label>Currency</label>
+                        <select name="currency">
+                            <t t-foreach="currency" t-as="c">
+                            <option><t t-esc="c.name"/></option>
+                            </t>
+                        </select>  
+                    </div>
+                    <center><button type='submit' class='btn btn-success' name="save">save</button></center>
+                </div>
+            </form>
+        </t>
+  </template>
+
+  <template id='customerregister'>
+        <t t-call="portal.portal_layout">
+            <form  action="/customerregister/form" method="post"> 
+                <div class='container'>
+                    <div class='form-group'>
+                        <label>Name</label>
+                        <input type='text' name='name' class='form-control'/>
+                    </div>
+                    <div class='form-group'>
+                        <label>Password</label>
+                        <input type='password' name='password' class='form-control'/>
+                    </div>
+                    <div class='form-group'>
+                        <label>Email</label>
+                        <input type='text' name='email' class='form-control'/>
+                    </div>
+                    <div class="form-group">
+                        <label>Currency</label>
+                        <select name="currency" class="form-control">
+                            <t t-foreach="currency" t-as="c">
+                            <option><t t-esc="c.name"/></option>
+                            </t>
+                        </select>  
+                    </div>
+                    <center><button name='save' type='submit' class='btn btn-success'>save </button></center>
+                </div>
+            </form>
+        </t>
+    </template>
+    
+    <template id="lts_transporters">
+        <t t-call="portal.portal_layout">
+            <div class="container-fluid mt16">
+                <div class="row">
+                    <t t-foreach="transporters" t-as="a">
+                        <div class="col-md-6 mt16">
+                            <div class="card card-inverse" style="background-color: white;  border-color: white;">
+                                <div class="card-block">
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-6">
+                                            <h4 class="card-title">Name:<t t-esc="a.name"/></h4>
+                                            <p class="card-text">
+                                                <strong>Email: </strong>
+                                                <t t-esc="a.email"/>
+                                            </p>
+                                            <p class="card-text">
+                                                <strong>Contact Number:</strong>
+                                                <t t-esc="a.contactnumber"/>
+                                            </p>
+                                            <p class="card-text">
+                                                <strong>Address:</strong>
+                                                <t t-esc="a.address"/>
+                                            </p>
+                                            <p class="card-text">
+                                                <strong>City:</strong>
+                                                <t t-esc="a.city"/>
+                                            </p>
+                                            <p class="card-text">
+                                                <strong>Pincode:</strong>
+                                                <t t-esc="a.pincode"/>
+                                            </p>
+                                            <p class="card-text">
+                                                <strong>State:</strong>
+                                                <t t-esc="a.state_id.name"/>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 text-center">
+                                            <img class="w-100 p-3 h-100 d-inline-block" t-attf-src="data:image/*;base64,{{a.photo}}" style="width: 300px;"/>
+                                        </div> 
+                                        <div class="col-md-4 col-sm-4 text-center">
+                                            <a t-attf-href="/drivers/{{a.company_id.id}}" class="btn btn-info btn-block btn-md">
+                                            <span class="fa fa-user"></span> Drivers
+                                            </a>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 text-center">
+                                            <a t-attf-href="/vehicles/{{a.company_id.id}}" class="btn btn-success btn-block btn-md"><span class="fa fa-truck"></span> Vehicles </a>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 text-center">
+                                            <a t-attf-href="/inquirey/{{a.id}}" class="btn btn-danger btn-block btn-md"><span class="fa fa-search"></span> Inquirey </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                     </t>
+                </div>
+            </div>
+        </t>
+  </template>
+
+    <template id="lts_vehicles">
+        <t t-call="portal.portal_layout">
+            <div class="container-fluid">
+                <center><h1>Vehicles</h1></center>
+                <a href="/transporters/" class="btn btn-success">Back</a>
+                <table class="table table-borderless">
+                    <tr>
+                        <th>Vehicle Type(Wheeler)</th>
+                        <th>Vehicle Capacity(KG)</th>
+                        <th>Vehicle Speed(kmph)</th>
+                        <th>Vehicle Weight(KG)</th>
+                        <th>Vehicle Length(mtr)</th>
+                        <th>Vehicle Engine</th>
+                        <th>Vehicle Image</th>
+                    </tr>
+                    <t t-foreach="vehicles" t-as="a">
+                    <tr>
+                        <td><t t-esc="a.vehicle_type"/></td>
+                        <td><t t-esc="a.vehicle_capacity"/></td>
+                        <td><t t-esc="a.vehicle_speed"/></td>
+                        <td><t t-esc="a.vehicle_weight"/></td>
+                        <td><t t-esc="a.vehicle_length"/></td>
+                        <td><t t-esc="a.vehicle_Engine"/></td>
+                        <td><img t-attf-src="data:image/*;base64,{{a.vehicle_image}}" style="max-height: 45px;"/></td>
+                    </tr>
+                    </t>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <template id="lts_drivers">
+        <t t-call="portal.portal_layout">
+            <div class="container-fluid">
+                <center><h1>Drivers</h1></center>
+                <a href="/transporters/" class="btn btn-success">Back</a>
+                <table class="table table-borderless">
+                    <tr>
+                        <th>Driver Name</th>
+                        <th>Contact Nuber</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Date Of Birth</th>
+                        <th>Licence Availability</th>
+                        <th>Licence Number</th>
+                        <th>Valid Date</th>
+                        <th>City</th>
+                        <th>Pincode</th>
+                        <th>State</th>
+                        <th>Photo</th>
+                    </tr>
+                    <t t-foreach="drivers" t-as="a">
+                        <tr>
+                            <td><t t-esc="a.name"/></td>
+                            <td><t t-esc="a.contactnumber"/></td>
+                            <td><t t-esc="a.email"/></td>
+                            <td><t t-esc="a.address"/></td>
+                            <td><t t-esc="a.date_of_birth"/></td>
+                            <td><t t-esc="a.licence"/></td>
+                            <td><t t-esc="a.licence_number"/></td>
+                            <td><t t-esc="a.valid_date"/></td>
+                            <td><t t-esc="a.city"/></td>
+                            <td><t t-esc="a.pincode"/></td>
+                            <td><t t-esc="a.state_id.name"/></td>
+                            <td><img t-attf-src="data:image/*;base64,{{a.photo}}" style="max-height: 45px;"/></td>
+                        </tr>
+                    </t>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <template id='lts_createinquirey'>
+        <t t-call="portal.portal_layout">
+            <div class='container col-md-6'>
+                <form t-attf-action='/createinquirey/{{ tid }}' method='post'>
+                <center><h1>Inquirey</h1></center>
+                    <div class='form-group'>
+                        <label>Source Address</label>
+                        <input type='text' name='source_add'   class='form-control'/>
+                    </div>
+                    <div class='form-group'>
+                        <label>Destination Address</label>
+                        <input type='text' name='desti_add'  class='form-control'/>
+                    </div>
+                    <div class='form-group'>
+                        <label>Distance(KM)</label>
+                        <input type='number' name='distance'  class='form-control'/>
+                    </div>
+                    <div class='form-group'>
+                        <label>Duration(hr)</label>
+                        <input type='number' name='duration'  class='form-control'/>
+                    </div>
+                    <div class='form-group'>
+                        <label>Weight(KG)</label>
+                        <input type='text' name='weight'  class='form-control'/>
+                    </div>
+                    <div class='form-group'>
+                        <label>Driver Name</label>
+                        <select class="form-control" name="dname">
+                        <t t-foreach='drivers' t-as='driver'>
+                            <option t-attf-value="{{driver.id}}"><t t-esc="driver.name"/></option>
+                        </t>
+                        </select>
+                    </div>
+                    <div class='form-group'>
+                        <label>Vehicle Type(wheeler)</label>
+                        <select id="vehicle_type" class="form-control" name="vehicle_type">
+                            <option value="select_value">Select Vehicles</option>
+                            <t t-foreach='vehicles' t-as='vehicle'>
+                            <option t-attf-value="{{vehicle.id}}"><t t-esc="vehicle.vehicle_type"/></option>
+                            </t>
+                        </select>
+                    </div>
+                    <div class='form-group'>
+                        <label>Vehicle Capacity(KG)</label>
+                        <input type="text" readonly="1" name="vehicle_capacity" class="form-control"/>
+                    </div>
+                    <div class='form-group'>
+                        <label>Vehicle Speed(kmph)</label>
+                        <input type="text" readonly="1" name="vehicle_speed" class="form-control"/>
+                    </div>
+                    <div class='form-group'>
+                        <label>Vehicle Weight(KG)</label>
+                        <input type="text" readonly="1" name="vehicle_weight" class="form-control"/>
+                    </div>
+                    <div class='form-group'>
+                        <label>Date</label>
+                        <input type='date' name='date'  class='form-control'/>
+                    </div>
+                    <button name='save' type='submit' class='btn btn-success'>save</button>
+                    <script src="/lts/static/description/js/inquiry.js">
+                    </script>
+                    <a href="/transporters/" class="btn btn-primary">Cancel</a>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <template id="lts_displayinquires">
+        <t t-call="portal.portal_layout">
+            <div class="container-fluid">
+                <center><h1 style="color:#00A09D;">Inquiries</h1></center>
+                <div class="row">
+                    <t t-foreach="inquiries" t-as="a">
+                        <div class="card mr16" style="width: 18rem;">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <strong>Source Address: </strong>
+                                    <t t-esc="a.source_add"/>
+                                </p>
+                                <p class="card-text">
+                                    <strong>Destination Address: </strong>
+                                    <t t-esc="a.desti_add"/>
+                                </p>
+                                <p class="card-text">
+                                    <strong>Distance: </strong>
+                                    <t t-esc="a.distance"/>
+                                </p>
+                                <p class="card-text">
+                                    <strong>Duration: </strong>
+                                    <t t-esc="a.duration"/>
+                                </p>
+                                <p class="card-text">
+                                    <strong>Weight: </strong>
+                                    <t t-esc="a.weight"/>
+                                </p>
+                                <p class="card-text">
+                                    <strong>Driver: </strong>
+                                    <t t-esc="a.driver_id.name"/>
+                                </p>
+                                <p class="card-text">
+                                    <strong>Vehicle Type(Wheeler): </strong>
+                                    <t t-esc="a.vehicle_type.vehicle_type"/>
+                                </p>
+                                <p class="card-text">
+                                    <strong>Vehicle Capacity(KG): </strong>
+                                    <t t-esc="a.vehicle_capacity"/>
+                                </p>
+                                <p class="card-text">
+                                    <strong>Vehicle Speed(kmph): </strong>
+                                    <t t-esc="a.vehicle_speed"/>
+                                </p>
+                                <p class="card-text">
+                                    <strong>Vehicle Weight: </strong>
+                                    <t t-esc="a.vehicle_weight"/>
+                                </p>
+                                <p class="card-text">
+                                    <strong>Date of Transportation: </strong>
+                                    <t t-esc="a.date"/>
+                                </p>
+                                <strong>Order Status:</strong>
+                                <t t-if="a.order_status == 'pending'">
+                                    <strong class="text-warning"><u><t t-esc="a.order_status"/></u></strong>
+                                </t>
+                                <t t-if="a.order_status == 'confirm'">
+                                    <strong class="text-success"><u><t t-esc="a.order_status"/></u></strong>
+                                </t>
+                                <t t-if="a.order_status == 'cancel'">
+                                    <strong class="text-danger"><u><t t-esc="a.order_status"/></u></strong>
+                                </t><br/>       
+                                <t t-foreach="order" t-as="o">          
+                                    <t t-if="o.inquiryid.id == a.id">
+                                        <strong>Payment Status</strong>
+                                        <t t-if="o.payment_state == 'fail'">
+                                            <strong class="text-danger"><u><t t-esc="o.payment_state"/></u></strong><br/><br/>
+                                           <center> <a t-attf-href="/paycharge/{{o.id}}" class="btn btn-primary">Try Again</a></center>
+                                        </t>
+
+                                        <t t-if="o.payment_state == 'done'">
+                                            <strong class="text-success"><u><t t-esc="o.payment_state"/></u></strong><br/><br/>
+                                        </t>
+
+                                        <t t-if="o.payment_state == 'pending'">
+                                            <strong class="text-warning"><u><t t-esc="o.payment_state"/></u></strong><br/><br/>
+                                            <center><a t-attf-href="/paycharge/{{o.id}}" class="btn btn-primary">Payment</a></center>
+                                        </t>
+                                    </t> 
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="lts_paycharge">
+        <t t-call="portal.portal_layout">
+            <div class="container col-md-3 mt16">
+            
+                    <div class="form-group">
+                        <strong>Order ID</strong>
+                        <input type="text" name="order_id" class="form-control" t-attf-value="{{order.id}}" readonly="1"/>
+                    </div>
+
+                    <div class="form-group">
+                        <strong>Price</strong>
+                        <input type="text" name="Price" class="form-control" t-attf-value="{{order.amount}}" readonly="1"/>
+                    </div>
+                    
+
+                    <div class="form-group">
+                        <center><button class="btn btn-primary" name="pay" id="pay" type="submit">Pay Now </button></center>
+                        <script src="/lts/static/description/js/payment.js">
+                        </script>
+                    </div>
+                
+            </div>
+        </t>
+    </template>
+    
+    <template id="payment_done">
+        <t t-call="portal.portal_layout">
+            <div class="col-md-4">
+                <div class="bs-example"> 
+                    <div class="alert alert-success alert-dismissible fade show">
+                        <strong>Congratulations!</strong> Payment Done
+                        <button type="button" class="close" data-dismiss="alert"></button>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="payment_fail">
+        <t t-call="portal.portal_layout">
+            <div class="col-md-4">
+                <div class="bs-example"> 
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        <strong>Oops!</strong> Payment Fail
+                        <button type="button" class="close" data-dismiss="alert"></button>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+  
+</odoo>

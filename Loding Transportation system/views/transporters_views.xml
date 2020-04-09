@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	
+	<record model="ir.ui.view" id="view_transporter_register"> 
+		<field name="name">TR list</field>
+		<field name="model">transporter.transporter</field>
+		<field name="arch" type="xml">
+		  <tree>
+		    <field name="company_id"/>
+		    <field name="name"/>
+		    <field name="email"/>
+		    <field name="contactnumber"/>
+		    <field name="gender"/>
+		    <field name="address"/>
+		    <field name="city"/>
+		    <field name= "pincode"/>
+		    <field name="state_id"/>
+		  </tree>
+		</field>
+	</record>
+	<record model="ir.ui.view" id="view_transporter_register_form"> 
+		<field name="name">TR list</field>
+		<field name="model">transporter.transporter</field>
+		<field name="arch" type="xml">
+		   <form>
+		     <sheet>
+		      <group>
+		        	<field name="company_id"/>
+		        	<field name="name"/>
+					<field name="email" widget="email"/>
+					<field name="contactnumber" widget="phone"/>
+					<field name="gender" widget='radio'/>
+					<field name="address"/>
+					<field name="city"/>
+					<field name= "pincode"/>
+					<field name="state_id"/>
+					<field name="photo" widget="image"/>
+			 </group>
+		    </sheet>
+		   </form>
+		</field>
+	</record>
+	
+	<record model="ir.actions.act_window" id="action_transporter_register">
+	      <field name="name">Transporter</field>
+	      <field name="res_model">transporter.transporter</field>
+	      <field name="view_mode">tree,form</field>
+	 </record>
+
+	<menuitem name="Loading Transportation System" id="lts_menu_root" web_icon="lts,static/description/icon.png"/>
+
+	<menuitem name="Transporter" id="lts_menu_1_tranporter_regi" parent = "lts_menu_root" action="action_transporter_register"/>
+
+	<menuitem name="Configration"  id="lts_configration" parent="lts_menu_root" />
+	        
+	
+</odoo>

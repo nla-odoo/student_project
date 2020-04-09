@@ -1,0 +1,44 @@
+<odoo>
+        <record id="project_stage_0" model="project.task.type">
+            <field name="name">To Do</field>
+        </record>
+        <record id="project_stage_1" model="project.task.type">
+            <field name="name">In Progress</field>
+        </record>
+        <record id="project_stage_2" model="project.task.type">
+            <field name="name">Done</field>
+        </record>
+        <record id="project_stage_3" model="project.task.type">
+            <field name="name">Cancelled</field>
+        </record>
+
+
+        <record id="project_project_1" model="project.project">
+            <field name="name">Roller-Road-dest</field>
+            <field name="type_ids" eval="[(4, ref('project_stage_0')), (4, ref('project_stage_1')), (4, ref('project_stage_2')), (4, ref('project_stage_3'))]"/>
+        </record>
+
+
+        <record id="project_task_1" model="project.task">
+            <field name="planned_hours" eval="40.0"/>
+            <field name="user_id" ref="base.user_demo"/>
+            <field name="priority">0</field>
+            <field name="project_id" ref="lts.project_project_1"/>
+            <field name="name">My_Roller_Road_trip1</field>
+            <field name="stage_id" ref="project_stage_0"/>
+            <field name="color">3</field>
+        </record>
+
+        <record id="project_task_2" model="project.task">
+            <field name="planned_hours" eval="60.0"/>
+            <field name="user_id" ref="base.user_demo"/>
+            <field name="priority">0</field>
+            <field name="project_id" ref="lts.project_project_1"/>
+            <field name="name">My_Roller_Road_trip2</field>
+            <field name="stage_id" ref="project_stage_2"/>
+            <field name="color">3</field>
+        </record>
+
+
+</odoo>
+

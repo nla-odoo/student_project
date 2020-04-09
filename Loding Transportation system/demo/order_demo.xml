@@ -1,0 +1,8 @@
+<odoo>
+	    <record id="sale_order_1" model="sale.order">
+            <field name="partner_id" ref="base.res_partner_2"/>
+            <field name="client_order_ref">Trip</field>
+            <field name="user_id" ref="base.user_admin"/>
+            <field name="validity_date">2020-03-10</field>
+        </record>
+</odoo>

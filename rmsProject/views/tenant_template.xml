@@ -1,0 +1,248 @@
+<odoo>
+	 <template id="tenantregi" >
+        <t t-call="portal.portal_layout">
+            <div class="container p-5 w-100">
+                 <center><h3>Tenant Registration</h3></center>
+                <form t-attf-action='/home/tenantregi/submit/{{data.id}}' method="post">  
+                <div class="row">              
+                    <div class="col-md-6" style="margin-top:10px;">
+
+                        <div class="form-group">
+                            <label>Tenant Name</label>
+                            <input type="text" class="form-control" name="name"   t-attf-value='#{data.name if data else ""}' />
+                        </div>
+                        <div class="form-group">
+                            <label>Dob</label>
+                            <input type="date" class="form-control" name="dob" />
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="text" class="form-control" name="phone" t-attf-value='#{data.phone if data else ""}' />
+                        </div>
+                        <div class="form-group">
+                            <label>Gender</label>
+                            <select class="form-control" name="gender">
+                               <option t-attf-value="male">Male</option>
+                               <option t-attf-value="female">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="text" class="form-control" name="email" t-attf-value='#{data.email if data else ""}'/>
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="margin-top:10px;">
+                        <div class="form-group">
+                            <label>Occupation</label>
+                            <select class="form-control" name="Occupation">
+                               <option t-attf-value="study">Study</option>
+                               <option t-attf-value="job">Job</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Permanant Address</label>
+                            <input type="text" class="form-control" name="Home_address"  />
+                        </div>
+                        <div class="form-group">
+                            <label>Father's Name</label>
+                            <input type="text" class="form-control" name="Father_name" />
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile Number</label>
+                            <input type="text" class="form-control" name="Fphone"  />
+                        </div>
+                        <div class="form-group">
+                            <label>Rent Type</label>
+                            <select class="form-control" name="renttype">
+                               <option t-attf-value="monthly">Monthly</option>
+                               <option t-attf-value="annually">Annually</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <template id="tenant_webview">
+        <t t-call="portal.portal_layout">
+            <div class="container-fluid">
+            <center>Tenant Details</center>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Tenant Name</th>
+                                <th>Dob</th>
+                                <th>Gender</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Permanant Address</th>
+                                <th>Occupation</th>
+                                <th>Father's Name</th>
+                                <th>Mobile Number</th>
+                                <th>action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="tenantsDetail" t-as="tent">
+                            <tr>
+                                <td><span t-field="tent.id"/></td>
+                                <td><span t-field="tent.name"/></td>
+                                <td><span t-field="tent.dob"/></td>
+                                <td><span t-field="tent.gender"/></td>
+                                <td><span t-field="tent.phone"/></td>
+                                <td><span t-field="tent.email"/></td>
+                                <td><span t-field="tent.home_address"/></td>
+                                <td><span t-field="tent.occupation"/></td>
+                                <td><span t-field="tent.father_name"/></td>
+                                <td><span t-field="tent.father_phone"/></td>
+                                <td><a t-attf-href="/home/rooms/{{tent.id}}" class=" btn btn-primary">Select Room</a></td>
+                                <td>
+                                	<t t-foreach="allotid" t-as="aid">
+	                                	<t t-if="tent.id == aid.tenant_id">
+	                                		<a t-attf-href="/home/roomdetail/{{tent.id}}" class=" btn btn-primary">Check Room</a>
+	                                	</t>
+                                	</t>
+                                </td>
+                            </tr>
+                            </t>
+                        </tbody>
+                    </table>
+            </div>
+        </t>
+    </template>
+
+    <template id="tenant_allot">
+        <t t-call="portal.portal_layout">
+            <div class="container-fluid">
+            <center>Room Details</center>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Room Number</th>
+                                <th>Tenant Name</th>
+                                <th>Rent</th>
+                                <th>Room Capacity</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="allot" t-as="a">
+                            <tr>
+                                <td><span t-field="a.room_number_id"/></td>
+                                <td><span t-field="a.tenant_name"/></td>
+                                <td><span t-field="a.rent"/></td>
+                                <td><span t-field="a.capacity"/></td>
+                                <td><a t-attf-href="/home/payment/{{a.id}}" class="btn btn-primary">Payment</a></td>
+                            </tr>
+                            </t>
+                        </tbody>
+                    </table>
+            </div>
+        </t>
+    </template>
+
+    <template id="payment">
+        <t t-call="portal.portal_layout">
+    		<div class="container-fluid p-5 w-100">
+                    <div class="row">              
+                    <div class="col-md-6" style="margin-top:10px;">
+                        <input type="text" class="form-control" name="company_id" t-attf-value='#{i.company_id.id}' hidden="True"/>
+                       
+                        <div class="form-group">
+                            <label>Tenant ID</label>
+                             <input type="text" class="form-control" name="tenantid" t-attf-value='#{i.id}' />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Room Number</label>
+                            <input type="text" class="form-control" name="roomnumber"   t-attf-value='#{i.room_number_id.room_number}' />
+                        </div>
+                        <div class="form-group">
+                            <label>Tenant Name</label>
+                            <input type="text" class="form-control" name="tenantname" t-attf-value='#{i.tenant_name}' />
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="margin-top:10px;">
+                        <div class="form-group">
+                            <label>Term</label>
+                            <select class="form-control" name="term" id="selectoption" onchange="changeFunc()">
+                               <option t-attf-value="month">Monthly</option>
+                               <option t-attf-value="annual">Annuly</option>
+                               <option t-attf-value="week">Weekly</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Rent</label>
+                            <input type="number" class="form-control" name="rent" id="rent"  t-attf-value='#{i.rent}' />
+                        </div>
+                    </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="rent_pay">Pay Now</button>
+                    <script type="text/javascript" src="/rms/static/src/js/payment.js"></script>
+    		</div>
+    	</t>
+    </template>
+
+    <template id="paytm_payment_response">
+        <t t-call="portal.portal_layout">
+            <div class="container-fluid">
+            <center>Paytm Payment Response</center>
+            </div>
+        </t>
+    </template>
+
+    <template id="paytm_payment_success">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-header"><i class="fa fa-check-circle"></i> Success</div>
+                    <div class="card-body text-success">Your Payment is Successfully Done!!!</div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="paytm_payment_failure">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <div class="card text-white bg-danger mb-3">
+                    <div class="card-header"><i class="fa fa-thumbs-down"></i> Payment Failed</div>
+                    <div class="card-body text-danger">Your Payment was not Successfully Processed!!!<br/> Please, try again....</div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="room_details">
+        <t t-call="portal.portal_layout">
+            <div class="container-fluid">
+            <center>Room Details</center>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Room Number</th>
+                                <th>Tenant Name</th>
+                                <th>Rent</th>
+                                <th>Room Capacity</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="room_detils" t-as="room">
+                            <tr>
+                                <td><span t-field="room.room_number"/></td>
+                                <td><span t-field="room.room_capacity"/></td>
+                                <td><span t-field="room.room_facility"/></td>
+                                <td><span t-field="room.per_bed_rent"/></td>
+                            </tr>
+                            </t>
+                        </tbody>
+                    </table>
+            </div>
+        </t>
+    </template>
+
+</odoo>

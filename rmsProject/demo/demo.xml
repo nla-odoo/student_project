@@ -1,0 +1,89 @@
+<odoo>
+    
+    <record id='food1' model='training.food'>
+        <field name="name">Breakfast</field>
+    </record> 
+    <record id='food2' model='training.food'>
+        <field name="name">Lunch</field>
+    </record> 
+    <record id='food3' model='training.food'>
+        <field name="name">Dinner</field>
+    </record> 
+
+
+    <record id='features1' model='training.features'>
+        <field name="name">Wi-Fi</field>
+        <field name="ftype">room</field>
+    </record> 
+    <record id='features2' model='training.features'>
+        <field name="name">TV</field>
+        <field name="ftype">common</field>
+    </record> 
+    <record id='features3' model='training.features'>
+        <field name="name">Fridge</field>
+        <field name="ftype">common</field>
+    </record>
+
+       <!--  <record id="propertyDemo" model="training.propertyregi"> 
+            <field name="name">Demo</field>                      
+            <field name="property_type">Apartment</field>
+            <field name="pgfor">Girls</field>
+            <field name="share">Shared</field>
+            <field name="address">Viramgam</field>
+            <field name="city">Viramgam</field>
+            <field name="state">Gujrat</field>
+            <field name="rent">5000</field>
+            <field name="maintance" >100</field>
+            <field name="maintype" >Monthly</field>
+            <field name="deposite" >500</field>
+            <field name="include" eval="[(6,0,[ref('features2')ref('features3')])]" />
+            <field name="weekday" eval="[(6,0,[ref('food1')ref('food2')])]"/>
+            <field name="foodtype">Veg</field>
+            <field name="bedrooms">3</field>
+            <field name="furnish">FullyFurnished</field>
+            <field name="Propertyfloor">2</field>
+            <field name="Totalfloor">1</field>
+            <field name="AvialbleFrom">2020-01-22</field>  
+            <field name="rules">visitors</field>
+            <field name="lentry">12:00 PM</field>  
+            <field name="image" type="base64" file="rms/static/description/pic.jpg" />
+        </record>
+
+        -->
+<!-- 
+        <record id='inquiry1' model='training.inquiry'>
+            <field name="name">dishu</field>
+            <field name="email">dishu@gmail.com</field>
+            <field name="phone" >998566859</field>
+            <field name="CheckIn">2020-01-01</field>
+            <field name="Intrestin">site visit</field>
+        </record>  
+ -->
+
+      <!--   <record id='tenant1' model='training.tenants'>
+                <field name="name">Disha</field>
+                <field name="dob">1997-08-12</field>
+                <field name="phone">8547856985</field>
+                <field name="gender">Female</field>
+                <field name="email">dishu@gmail.com</field>
+                <field name="Occupation">Study</field>
+                <field name="Home_address">NarsinhpuraKadi</field>
+                <field name="Father_name">BharatBhai</field>
+                <field name="Fphone">7452365289</field> 
+                <field name="renttype">Monthly</field>   
+        </record>   -->
+
+        <!-- <record id='bill1' model='training.bill'>
+            <field name="billtype">internet</field>
+            <field name="bdate">2020-01-01</field>
+            <field name="payment" >3000.00</field>
+        </record>  
+ -->
+        <!-- <record id='room1' model='training.rooms'>
+            <field name="roomnumber">D1</field>
+            <field name="capacity">3</field>
+            <field nam="facility" eval="[(6,0,[ref('features1')])]"></field>
+            <field name="rent" >5000</field>
+            <field name="status" >Booked</field>
+        </record>   -->
+</odoo>

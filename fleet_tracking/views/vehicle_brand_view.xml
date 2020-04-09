@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="vehicle_car_model_list_view" model="ir.ui.view">
+        <field name="name">fleet.vehicle.car.model.tree</field>
+        <field name="model">fleet.vehicle.car.model</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="brand_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="vehicle_car_model_form_view" model="ir.ui.view">
+        <field name="name">fleet.vehicle.car.model.form</field>
+        <field name="model">fleet.vehicle.car.model</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="brand_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="vehicle_model_action_window" model="ir.actions.act_window">
+        <field name="name">Model </field>
+        <field name="res_model">fleet.vehicle.car.model</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="vehicle_brand_list_view" model="ir.ui.view">
+        <field name="name">fleet.vehicle.brand.tree</field>
+        <field name="model">fleet.vehicle.brand</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="vehicle_brand_form_view" model="ir.ui.view">
+        <field name="name">fleet.vehicle.brand.form</field>
+        <field name="model">fleet.vehicle.brand</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field class="oe_avatar" name="image_128" widget="image"/>
+                    <div class="oe_title">
+                        <label class="oe_edit_only" for="name"/>
+                        <h2>
+                            <field name="name"/>
+                        </h2>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="vehicle_brand_kanban" model="ir.ui.view">
+        <field name="name">fleet.vehicle.brand.kanban</field>
+        <field name="model">fleet.vehicle.brand</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="id"/>
+                <field name="name"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_vignette oe_semantic_html_override">
+                            <a class="o_kanban_image oe_kanban_action" href="#" type="open">
+                                <img alt="Open" class="img-fluid" style="width:100px;" t-att-src="kanban_image('fleet.vehicle.brand', 'image_128', record.id.raw_value)"/>
+                            </a>
+                            <div class="oe_kanban_details">
+                                <h4 class="oe_partner_heading">
+                                    <a class="o_kanban_record_title" type="open">
+                                        <field name="name"/>
+                                    </a>
+                                </h4>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="vehicle_brand_action_window" model="ir.actions.act_window">
+        <field name="name">Brand Name </field>
+        <field name="res_model">fleet.vehicle.brand</field>
+        <field name="view_mode">tree,form,kanban</field>
+    </record>
+    
+    <menuitem id="vehicle_brand_menu_root" name="Fleet Tracking" web_icon="fleet_tracking,static/description/icon.png"/>
+    <menuitem id="vehicle_menufacturers_menu" name="Configuration" parent="fleet_tracking.vehicle_brand_menu_root" sequence="4"/>
+    <menuitem action="vehicle_brand_action_window" id="vehicle_menufacturers_menu_child" name="Manufacturers" parent="fleet_tracking.vehicle_menufacturers_menu"/>
+</odoo>

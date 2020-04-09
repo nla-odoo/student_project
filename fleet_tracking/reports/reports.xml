@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <report file="fleet_tracking.trip_report" id="trip_report" model="fleet.vehicle.trip.booking" name="fleet_tracking.trip_report_template" report_type="qweb-pdf" string="Trip Report"/>
+  <template id="trip_report_template">
+    <t t-call="web.html_container">
+      <t t-as="o" t-foreach="docs">
+        <t t-call="web.external_layout">
+          <div class="page">
+            <table>
+              <tr>
+                <td>
+                  <b>Name : </b>
+                </td>
+                <td>
+                  <span t-field="o.customer"/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>Start Date : </b>
+                </td>
+                <td>
+                  <span t-field="o.start_date"/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>End Date : </b>
+                </td>
+                <td>
+                  <span t-field="o.end_date"/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>Duration : </b>
+                </td>
+                <td>
+                  <span t-field="o.end_date"/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>No of Traveller : </b>
+                </td>
+                <td>
+                  <span t-field="o.no_of_person_on_trip"/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>Instruction : </b>
+                </td>
+                <td>
+                  <span t-field="o.instruction"/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <b>Vehicle : </b>
+                </td>
+                <td>
+                  <span t-field="o.vehicle_ids"/>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </t>
+      </t>
+    </t>
+  </template>
+</odoo>

@@ -1,0 +1,216 @@
+<odoo>
+    <record id="partner_meet" model="res.partner">
+        <field name="name">meet</field>
+        <field name="email">meet67@gmail.com</field>
+    </record>
+    <record id="user_meet" model="res.users">
+        <field name="partner_id" ref="fleet_tracking.partner_meet"></field>
+        <field name="login">meet</field>
+        <field name="mobile">8952796357</field>
+		<field name="users_type"></field>
+        <field name="password">1234</field>
+        <field name="groups_id" eval="[(6, 0, [ref('fleet_tracking.group_customer')])]" />
+    </record>
+
+    <record id="partner_ketan" model="res.partner">
+        <field name="name">ketan</field>
+        <field name="email">ketan21@gmail.com</field>
+    </record>
+    <record id="user_ketan" model="res.users">
+        <field name="partner_id" ref="fleet_tracking.partner_ketan"></field>
+        <field name="login">ketan</field>
+        <field name="mobile">8353774121</field>
+		<field name="users_type"></field>
+        <field name="password">1234</field>
+        <field name="groups_id" eval="[(6, 0, [ref('fleet_tracking.group_customer')])]" />
+    </record>
+
+    <record id="partner_vrusil" model="res.partner">
+        <field name="name">vrusil</field>
+        <field name="email">vru77@gmail.com</field>
+    </record>
+    <record id="user_vrusil" model="res.users">
+        <field name="partner_id" ref="fleet_tracking.partner_vrusil"></field>
+        <field name="login">vrusil</field>
+        <field name="mobile">8353774121</field>
+		<field name="users_type"></field>
+        <field name="password">1234</field>
+        <field name="groups_id" eval="[(6, 0, [ref('fleet_tracking.group_customer')])]" />
+    </record>
+
+	<record id="model1" model="fleet.vehicle.car.model">
+		<field name="name">Mustang GT</field>
+		<field name="brand_id" ref="brand_ford"/>
+	</record>
+
+	<record id="model2" model="fleet.vehicle.car.model">
+		<field name="name">Grand i10</field>
+		<field name="brand_id" ref="brand_hyundai"/>
+	</record>
+
+	<record id="model3" model="fleet.vehicle.car.model">
+		<field name="name">M5</field>
+		<field name="brand_id" ref="brand_bmw"/>
+	</record>
+
+	<record id="model4" model="fleet.vehicle.car.model">
+		<field name="name">R8</field>
+		<field name="brand_id" ref="brand_audi"/>
+	</record>
+
+	<record id="model5" model="fleet.vehicle.car.model">
+		<field name="name">camaro</field>
+		<field name="brand_id" ref="brand_chevrolet"/>
+	</record>
+
+	<record id="vehicle1" model="fleet.vehicle">
+		<field name="model_id" ref="model1"/>
+		<field name="license_plate">GJ 1 RL 8683</field>
+		<field name="no_of_seats">5</field>
+		<field name="no_of_doors">2</field>
+		<field name="color">Black</field>
+		<field name="model_year">2019</field>
+		<field name="description"/>
+		<field name="fule_type" ref="petrol"/>
+	</record>
+
+	<record id="vehicle2" model="fleet.vehicle">
+		<field name="model_id" ref="model5"/>
+		<field name="license_plate">GJ 1 F 5907</field>
+		<field name="no_of_seats">5</field>
+		<field name="no_of_doors">4</field>
+		<field name="color">White</field>
+		<field name="model_year">2019</field>
+		<field name="description"/>
+		<field name="fule_type" ref="petrol"/>
+	</record>
+
+	<record id="vehicle3" model="fleet.vehicle">
+		<field name="model_id" ref="model3"/>
+		<field name="license_plate">GJ 1 RS 7982</field>
+		<field name="no_of_seats">5</field>
+		<field name="no_of_doors">4</field>
+		<field name="color">Mat-Gray</field>
+		<field name="model_year">2019</field>
+		<field name="description"/>
+		<field name="fule_type" ref="petrol"/>
+	</record>
+
+    <record id="partner_driver_Domnic" model="res.partner">
+        <field name="name">Domnic</field>
+        <field name="email">dom77@gmail.com</field>
+    </record>
+    <record id="user_driver_domnic" model="res.users">
+        <field name="partner_id" ref="fleet_tracking.partner_driver_Domnic"></field>
+        <field name="login">Domnic</field>
+        <field name="mobile">8353774121</field>
+        <field name="driving_licence_nunmber">RJ-13/DLC/12/ 11111</field>
+		<field name="birth_date">1994-1-27</field>
+		<field name="users_type">driver</field>
+        <field name="password">1234</field>
+        <field name="groups_id" eval="[(6, 0, [ref('fleet_tracking.group_driver')])]" />
+    </record>
+
+    <record id="partner_driver_brian" model="res.partner">
+        <field name="name">Brian</field>
+        <field name="email">dom77@gmail.com</field>
+    </record>
+    <record id="user_driver_brian" model="res.users">
+        <field name="partner_id" ref="fleet_tracking.partner_driver_brian"></field>
+        <field name="login">Brian</field>
+        <field name="mobile">8353774121</field>
+        <field name="driving_licence_nunmber">RJ-13/DLC/12/ 222222</field>
+		<field name="birth_date">1994-1-27</field>
+		<field name="users_type">driver</field>
+        <field name="password">1234</field>
+        <field name="groups_id" eval="[(6, 0, [ref('fleet_tracking.group_driver')])]" />
+    </record>
+
+    <record id="partner_driver_han" model="res.partner">
+        <field name="name">Han</field>
+        <field name="email">dom77@gmail.com</field>
+    </record>
+    <record id="user_driver_han" model="res.users">
+        <field name="partner_id" ref="fleet_tracking.partner_driver_han"></field>
+        <field name="login">Han</field>
+        <field name="mobile">8353774121</field>
+        <field name="driving_licence_nunmber">RJ-13/DLC/12/ 333333</field>
+		<field name="birth_date">1994-1-27</field>
+		<field name="users_type">driver</field>
+        <field name="password">1234</field>
+        <field name="groups_id" eval="[(6, 0, [ref('fleet_tracking.group_driver')])]" />
+    </record>
+
+	<!-- <record id="contract_ketan" model="fleet.vehicle.contract.booking">
+		<field name="customer_id" ref="user_ketan"/>
+		<field name="start_date">2020-2-16</field>
+		<field name="end_date">2020-2-16</field>
+		<field eval="[(6,0,[ref('vehicle3'),ref('vehicle2')])]" name="vehicle_ids"/>
+	</record>
+
+	<record id="contract_meet" model="fleet.vehicle.contract.booking">
+		<field name="customer_id" ref="user_meet"/>
+		<field name="start_date">2020-2-16</field>
+		<field name="end_date">2020-2-17</field>
+		<field eval="[(6,0,[ref('vehicle1')])]" name="vehicle_ids"/>
+	</record>
+
+	<record id="contract_vrusil" model="fleet.vehicle.contract.booking">
+		<field name="customer_id" ref="user_vrusil"/>
+		<field name="start_date">2020-4-1</field>
+		<field name="end_date">2020-4-2</field>
+		<field eval="[(6,0,[ref('vehicle3'),ref('vehicle2')])]" name="vehicle_ids"/>
+	</record> -->
+
+    <record id="config_group_uom" model="res.config.settings">
+        <field name="group_uom">True</field>
+    </record>
+
+    <record id="rental_price_mustang" model="rental.pricing">
+        <field name="duration">1</field>
+        <!-- <field name="unit">km</field> -->
+        <field name="price">20.00</field>
+    </record>
+
+    <record id="project_mustang" model="project.project">
+        <field name="name">Mustang</field>
+        <field name="allow_timesheets">True</field>
+    </record>
+
+    <record id="product_attribute_seats" model="product.attribute">
+        <field name="name">Seats</field>
+    </record>
+
+    <record id="attribute_value_5_seater" model="product.attribute.value">
+        <field name="name">5-seater</field>
+        <field name="attribute_id" ref="product_attribute_seats"/>
+    </record>
+
+    <record id="attribute_value_7_seater" model="product.attribute.value">
+        <field name="name">7-seater</field>
+        <field name="attribute_id" ref="product_attribute_seats"/>
+    </record>
+
+	<record id="product_mustang" model="product.template">
+		<field name="name">Mustang</field>
+		<field name="sale_ok">False</field>
+		<field name="type">service</field>
+		<field name="purchase_ok">False</field>
+		<field name="rent_ok">True</field>
+		<field name="default_code">RJ-13/DLC/12/ 222222</field>
+		<field name="standard_price">10</field>
+		<field name="list_price">13</field>
+		<field name="service_tracking">task_global_project</field>
+		<field name="project_id" ref="project_mustang"/>
+		<field name="rental_pricing_ids" eval="[(6,0,[ref('rental_price_mustang')])]"/>
+		<field name="extra_hourly">200.00</field>
+		<field name="extra_daily">5000.00</field>
+	</record>
+
+    <record id="product_template_attribute_line_1" model="product.template.attribute.line">
+        <field name="product_tmpl_id" ref="product_mustang"/>
+        <field name="attribute_id" ref="product_attribute_seats"/>
+        <field name="value_ids" eval="[(6,0,[ref('attribute_value_5_seater'), ref('attribute_value_7_seater')])]"/>
+    </record>
+
+</odoo>

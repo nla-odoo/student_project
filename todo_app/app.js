@@ -4,9 +4,7 @@
     const { whenReady } = owl.utils;
     const { useRef, useDispatch, useState, useStore } = owl.hooks;
 
-    // -------------------------------------------------------------------------
-    // Store
-    // -------------------------------------------------------------------------
+    //Store
     const actions = {
         addTask({ state }, title) {
             title = title.trim();
@@ -34,10 +32,8 @@
         tasks: []
     };
 
-    // -------------------------------------------------------------------------
-    // Task Component
-    // -------------------------------------------------------------------------
-    const TASK_TEMPLATE = xml/* xml */ `
+    //Task Component
+    const TASK_TEMPLATE = xml `
         <div class="task" t-att-class="props.task.isCompleted ? 'done' : ''">
             <input type="checkbox" t-att-checked="props.task.isCompleted"
                 t-att-id="props.task.id"
@@ -52,10 +48,8 @@
         dispatch = useDispatch();
     }
 
-    // -------------------------------------------------------------------------
-    // App Component
-    // -------------------------------------------------------------------------
-    const APP_TEMPLATE = xml/* xml */ `
+    //App Component
+    const APP_TEMPLATE = xml `
         <div class="todo-app">
             <input placeholder="Enter a new task" t-on-keyup="addTask" t-ref="add-input"/>
             <div class="task-list">
@@ -115,9 +109,7 @@
         }
     }
 
-    // -------------------------------------------------------------------------
     // Setup code
-    // -------------------------------------------------------------------------
     function makeStore() {
         const localState = window.localStorage.getItem("todoapp");
         const state = localState ? JSON.parse(localState) : initialState;

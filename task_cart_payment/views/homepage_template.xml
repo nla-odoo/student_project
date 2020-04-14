@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="assets_frontend" inherit_id="web.assets_frontend" name="Demo Assets">
+        <xpath expr="//link[last()]" position="inside">
+            <link href="/task_cart_payment/static/src/scss/cart_css.scss" rel="stylesheet" type="text/scss"/>
+            <link href="/task_cart_payment/static/src/scss/portal.scss" rel="stylesheet" type="text/scss"/>
+        </xpath>
+    </template>
+    <template id="fleet_portal_menu">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarNav" data-toggle="collapse" type="button">
+                <span class="navbar-toggler-icon"/>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/product_list/">Home 
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cart">Cart</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </template>
+
+    <template id="payment_process">
+        <title>Payment Confirm Portal</title>
+        <t t-call="portal.frontend_layout">
+        <t t-call="task_cart_payment.fleet_portal_menu"/>
+            <div class="jumbotron text-center">
+                <h1>Your Payment is Successfully Done!</h1>
+                <p class="lead">
+                    <strong class="strong">Please check your email</strong>
+                </p>
+                <p>Having trouble? 
+                    <a href="#">Contact us</a>
+                </p>
+                <p class="lead">
+                    <a class="btn btn-primary btn-sm" href="/contract/" role="button">Continue to homepage</a>
+                </p>
+            </div>
+        </t>
+    </template>
+    <template id="cart" name="Shopping Cart">
+        <t t-call="portal.frontend_layout">
+        <t t-call="task_cart_payment.fleet_portal_menu"/>
+            <main>
+                <div class="basket">
+                    <div class="basket-labels">
+                        <ul class="ul">
+                            <li class="li item item-heading">Item</li>
+                            <li class="li price">Price</li>
+                            <li class="li quantity">Quantity</li>
+                            <li class="li subtotal">Subtotal</li>
+                        </ul>
+                    </div>
+                    <t t-foreach="sale_order_lines" t-as="sale_order_line">
+                        <!-- <t t-esc="sale_order_line"/> -->
+                    <!-- </t> -->
+                    <div class="basket-product">
+                        <div class="item">
+                            <div class="product-image">
+                                <img alt="Placholder Image 2" class="product-frame" t-attf-src="data:image/png;base64, {{sale_order_line.product_id.image_1920}}"/>
+                            </div>
+                            <div class="product-details">
+                                <h1 class="h1">
+                                    <strong>
+                                        <t t-esc="sale_order_line.name"/></strong></h1>
+                                <p>
+                                    <strong><t t-if="sale_order_line.product_id.type == 'consu'" >consumable</t><t t-else=""> <t t-esc="sale_order_line.product_id.type"/></t></strong>
+                                </p>
+                                <!-- <p>232321939</p> -->
+                            </div>
+                        </div>
+                        <div class="price"><t t-esc="sale_order_line.price_unit"/></div>
+                        <div class="quantity">
+                            <input class="quantity-field input-button" name="quantity" min="1" type="number" value="1"/>
+                        </div>
+                        <div class="subtotal"><t t-esc="sale_order_line.price_unit"/></div>
+                        <div class="remove">
+                            <button class="input-button">Remove</button>
+                        </div>
+                    </div>
+                </t>
+                </div>
+                <aside>
+                    <div class="summary">
+                        <div class="summary-total-items">
+                            <span class="total-items"/>Items in your Bag</div>
+                        <div class="summary-subtotal">
+                            <div class="subtotal-title">Subtotal</div>
+                            <div class="subtotal-value final-value" id="basket-subtotal">
+                                <t t-if="order_id"><t t-esc="order_id.amount_total"/></t><t t-else="">0</t>
+                            </div>
+                        </div>
+                        <div class="summary-total">
+                            <div class="total-title">Total</div>
+                            <div class="total-value final-value" id="basket-total">
+                                <t t-if="order_id">
+                                    <t t-esc="order_id.amount_total"/>
+                                    <input type="hidden" name="contract_id" t-att-value="sale_order_lines.sale_order_id"/>                                        
+                                    <input type="hidden" name="amount" t-att-value="order_id.amount_total"/>                                        
+                                </t>
+                                <t t-else="">0</t>
+                            </div>
+                        </div>
+                        <div class="summary-checkout">
+                            <button class="checkout-cta input-button" id="pay_now">Checkout</button>
+                            <script src="/task_cart_payment/static/src/js/make_payment.js" type="text/javascript"/>
+                        </div>                       
+                    </div>
+                </aside>
+            </main>
+        </t>
+    </template>
+    <template id="product_list">
+        <t t-call="portal.frontend_layout">
+        <t t-call="task_cart_payment.fleet_portal_menu"/>
+            <div class="container">
+                <div id="main">
+                    <section id="content">
+                        <div id="left">
+                            <ul>
+                                <t t-as="product" t-foreach="products">
+
+                                    <li>
+                                        <div class="img">
+                                            <a href="#">
+                                                <img t-attf-src="data:image/png;base64, {{product.image_1920}}"/>
+                                            </a>
+                                        </div>
+                                        <div class="info">
+                                            <a class="title" href="#">
+                                                <t t-esc="product.name"/>
+                                            </a>
+                                            <p>
+                                                <b>Type : </b>
+                                                <t t-if="product.type == 'consu'">Consumable</t>
+                                                <t t-else="">
+                                                    <t t-esc="product.type"/>
+                                                </t>
+                                            </p>
+                                            <div class="price1">
+                                                <span class="st">price:</span>
+                                                <strong>
+                                                    <t t-esc="product.list_price"/>
+                                                </strong>
+                                            </div>
+                                            <div class="actions">
+                                                <form action="/shop/cart/update" method="POST" t-if="product._is_add_to_cart_possible()">
+                                                    <a role="button" href="#" onclick="this.parentNode.submit();">Add to cart</a>
+                                                    <a role="button" href="#">Inqury</a>
+                                                    <input name="csrf_token" t-att-value="request.csrf_token()" type="hidden"/>
+                                                    <input class="product_template_id" name="product_template_id" t-att-value="product.id" type="hidden"/>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </t>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

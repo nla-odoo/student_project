@@ -154,7 +154,7 @@
                                                 <form action="/shop/cart/update" method="POST" t-if="product._is_add_to_cart_possible()">
                                                     <a role="button" href="#" onclick="this.parentNode.submit();">Add to cart</a>
                                                     <a role="button" href="#">Inqury</a>
-                                                    <input name="csrf_token" t-att-value="request.csrf_token()" type="hidden"/>
+                                                    <!-- <input name="csrf_token" t-att-value="request.csrf_token()" type="hidden"/> -->
                                                     <input class="product_template_id" name="product_template_id" t-att-value="product.id" type="hidden"/>
                                                 </form>
                                             </div>

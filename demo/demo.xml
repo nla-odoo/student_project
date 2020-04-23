@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="partner_aqua_lab" model="res.partner">
+        <field name="name">aqualab</field>
+        <field name="email">aqualab@gmail.com</field>
+        <field name="mobile">9156838345</field>
+        <field name="street">Light Street</field>
+        <field name="street2">S.G Highway</field>
+        <field name="city">Ahmedabad</field>
+        <field name="state_id">589</field>
+        <field name="country_id">104</field>
+        <field name="zip">380009</field>
+    </record>
+
+    <record id="company_aqua_lab" model="res.company">
+        <field name="name">Aqua Lab</field>
+        <field name="partner_id" ref="cmt.partner_aqua_lab"></field>
+    </record>
+
+    <record id="user_aqua_lab" model="res.users">
+        <field name="partner_id" ref="cmt.partner_aqua_lab"></field>
+        <field name="login">aqualab</field>
+        <field name="password">123</field>
+        <field name="company_id" ref="cmt.company_aqua_lab"></field>
+        <field name="company_ids" eval="[(4, ref('cmt.company_aqua_lab'))]"/>
+        <field name="groups_id" eval="[(6,0 , [ref('base.group_user')])]"/>
+    </record>
+
+    <record id="partner_galaxy_lab" model="res.partner">
+        <field name="name">galaxylab</field>
+        <field name="email">galaxylab@gmail.com</field>
+        <field name="mobile">9999989898</field>
+        <field name="street">Golden Street</field>
+        <field name="street2">Sarkhej</field>
+        <field name="city">Ahmedabad</field>
+        <field name="state_id">588</field>
+        <field name="country_id">104</field>
+        <field name="zip">382210</field>
+    </record>
+
+    <record id="company_galaxy_lab" model="res.company">
+        <field name="name">Galaxy Lab</field>
+        <field name="partner_id" ref="cmt.partner_galaxy_lab"></field>
+    </record>
+
+    <record id="user_galaxy_lab" model="res.users">
+        <field name="partner_id" ref="cmt.partner_galaxy_lab"></field>
+        <field name="login">galaxylab</field>
+        <field name="password">123</field>
+        <field name="company_id" ref="cmt.company_galaxy_lab"></field>
+        <field name="company_ids" eval="[(4, ref('cmt.company_galaxy_lab'))]"/>
+        <field name="groups_id" eval="[(6,0 , [ref('base.group_user')])]"/>
+    </record>
+
+    <record id="partner_jupiter_lab" model="res.partner">
+        <field name="name">jupiterlab</field>
+        <field name="email">jupiterlab@gmail.com</field>
+        <field name="mobile">8153363606</field>
+        <field name="street">Mota Bazar</field>
+        <field name="street2">Vallabh Vidyanagar</field>
+        <field name="city">Anand</field>
+        <field name="state_id">588</field>
+        <field name="country_id">104</field>
+        <field name="zip">388120</field>
+    </record>
+
+    <record id="company_jupiter_lab" model="res.company">
+        <field name="name">Jupiter Lab</field>
+        <field name="partner_id" ref="cmt.partner_jupiter_lab"></field>
+    </record>
+
+    <record id="user_jupiter_lab" model="res.users">
+        <field name="partner_id" ref="cmt.partner_jupiter_lab"></field>
+        <field name="login">jupiterlab</field>
+        <field name="password">123</field>
+        <field name="company_id" ref="cmt.company_jupiter_lab"></field>
+        <field name="company_ids" eval="[(4, ref('cmt.company_jupiter_lab'))]"/>
+        <field name="groups_id" eval="[(6,0 , [ref('base.group_user')])]"/>
+    </record>
+
+    <record id="partner_john" model="res.partner">
+        <field name="name">john</field>
+        <field name="email">john@gmail.com</field>
+    </record>
+
+    <record id="user_john" model="res.users">
+        <field name="partner_id" ref="cmt.partner_john"></field>
+        <field name="login">john</field>
+        <field name="password">123</field>
+        <field name="groups_id" eval="[(6,0 ,[ref('base.group_portal')])]"/>
+    </record>
+
+    <record id="partner_alex" model="res.partner">
+        <field name="name">alex</field>
+        <field name="email">alex@gmail.com</field>
+    </record>
+
+    <record id="user_alex" model="res.users">
+        <field name="partner_id" ref="cmt.partner_alex"></field>
+        <field name="login">alex</field>
+        <field name="password">123</field>
+        <field name="groups_id" eval="[(6,0 ,[ref('base.group_portal')])]"/>
+    </record>
+
+    <record id="partner_mike" model="res.partner">
+        <field name="name">mike</field>
+        <field name="email">mike@gmail.com</field>
+    </record>
+
+    <record id="user_mike" model="res.users">
+        <field name="partner_id" ref="cmt.partner_mike"></field>
+        <field name="login">mike</field>
+        <field name="password">123</field>
+        <field name="groups_id" eval="[(6,0 ,[ref('base.group_portal')])]"/>
+    </record>
+
+    <record id="project_project_cmt_soil_test" model="project.project">
+        <field name="name">Soil Test</field>
+    </record>
+
+    <record id="project_project_cmt_concrete_test" model="project.project">
+        <field name="name">Concrete Test</field>
+    </record>
+
+    <record id="project_project_cmt_field_test" model="project.project">
+        <field name="name">Field Test</field>
+    </record>
+
+    <record id="project_project_cmt_steel_test" model="project.project">
+        <field name="name">Steel Test</field>
+    </record>
+
+    <record id="project_project_cmt_cement_lime_mortar_test" model="project.project">
+        <field name="name">Cement, Lime And Mortar Test</field>
+    </record>
+
+    <record id="project_project_cmt_sand_aggregate_fillers_test" model="project.project">
+        <field name="name">Sand, Aggregate And Fillers Test</field>
+    </record>
+
+    <record id="project_project_cmt_rock_test" model="project.project">
+        <field name="name">Rock Test</field>
+    </record>
+
+    <record id="project_project_cmt_water_test" model="project.project">
+        <field name="name">Water Test</field>
+    </record>
+
+    <record id="project_project_cmt_brick_block_test" model="project.project">
+        <field name="name">Brick And Block Test</field>
+    </record>
+
+    <record id="project_project_cmt_bitumen_asphalt_test" model="project.project">
+        <field name="name">Bitumen And Asphalt Test</field>
+    </record>
+
+    <record id="project_project_cmt_geotextile_test" model="project.project">
+        <field name="name">Geotextile Test</field>
+    </record>
+
+    <record id="product_product_cmt_soil_test" model="product.template">
+        <field name="name">Soil Test</field>
+        <field name="default_code">Facility_001</field>
+        <field name="type">service</field>
+        <field name="list_price">6000.0</field>
+        <field name="service_type">timesheet</field>
+        <field name="service_policy">delivered_timesheet</field>
+        <field name="service_tracking">task_global_project</field>
+        <field name="project_id" ref="cmt.project_project_cmt_soil_test"/>
+    </record>
+
+    <record id="product_product_cmt_concrete_test" model="product.template">
+        <field name="name">Concrete Test</field>
+        <field name="default_code">Facility_002</field>
+        <field name="type">service</field>
+        <field name="sale_ok" eval="True"/>
+        <field name="purchase_ok" eval="True"/>
+        <field name="list_price">5000.0</field>
+        <field name="service_type">timesheet</field>
+        <field name="service_policy">delivered_timesheet</field>
+        <field name="service_tracking">task_global_project</field>
+        <field name="project_id" ref="cmt.project_project_cmt_concrete_test"/>
+    </record>
+
+    <record id="product_product_cmt_field_test" model="product.template">
+        <field name="name">Field Test</field>
+        <field name="default_code">Facility_003</field>
+        <field name="type">service</field>
+        <field name="list_price">15000.0</field>
+        <field name="service_type">timesheet</field>
+        <field name="service_policy">delivered_timesheet</field>
+        <field name="service_tracking">task_global_project</field>
+        <field name="project_id" ref="cmt.project_project_cmt_field_test"/>
+    </record>
+
+    <record id="product_product_cmt_steel_test" model="product.template">
+        <field name="name">Steel Test</field>
+        <field name="default_code">Facility_004</field>
+        <field name="type">service</field>
+        <field name="list_price">3000.0</field>
+        <field name="service_type">timesheet</field>
+        <field name="service_policy">delivered_timesheet</field>
+        <field name="service_tracking">task_global_project</field>
+        <field name="project_id" ref="cmt.project_project_cmt_steel_test"/>
+    </record>
+
+    <record id="product_product_cmt_cement_lime_mortar_test" model="product.template">
+        <field name="name">Cement, Lime And Mortar Test</field>
+        <field name="default_code">Facility_005</field>
+        <field name="type">service</field>
+        <field name="list_price">3000.0</field>
+        <field name="service_type">timesheet</field>
+        <field name="service_policy">delivered_timesheet</field>
+        <field name="service_tracking">task_global_project</field>
+        <field name="project_id" ref="cmt.project_project_cmt_cement_lime_mortar_test"/>
+    </record>
+
+    <record id="product_product_cmt_sand_aggregate_fillers_test" model="product.template">
+        <field name="name">Sand, Aggregate And Fillers Test</field>
+        <field name="default_code">Facility_006</field>
+        <field name="type">service</field>
+        <field name="list_price">4000.0</field>
+        <field name="service_type">timesheet</field>
+        <field name="service_policy">delivered_timesheet</field>
+        <field name="service_tracking">task_global_project</field>
+        <field name="project_id" ref="cmt.project_project_cmt_sand_aggregate_fillers_test"/>
+    </record>
+
+    <record id="product_product_cmt_rock_test" model="product.template">
+        <field name="name">Rock Test</field>
+        <field name="default_code">Facility_007</field>
+        <field name="type">service</field>
+        <field name="list_price">3000.0</field>
+        <field name="service_type">timesheet</field>
+        <field name="service_policy">delivered_timesheet</field>
+        <field name="service_tracking">task_global_project</field>
+        <field name="project_id" ref="cmt.project_project_cmt_rock_test"/>
+    </record>
+
+    <record id="product_product_cmt_water_test" model="product.template">
+        <field name="name">Water Test</field>
+        <field name="default_code">Facility_008</field>
+        <field name="type">service</field>
+        <field name="list_price">2000.0</field>
+        <field name="service_type">timesheet</field>
+        <field name="service_policy">delivered_timesheet</field>
+        <field name="service_tracking">task_global_project</field>
+        <field name="project_id" ref="cmt.project_project_cmt_water_test"/>
+    </record>
+
+    <record id="product_product_cmt_brick_block_test" model="product.template">
+        <field name="name">Brick And Block Test</field>
+        <field name="default_code">Facility_009</field>
+        <field name="type">service</field>
+        <field name="list_price">3000.0</field>
+        <field name="service_type">timesheet</field>
+        <field name="service_policy">delivered_timesheet</field>
+        <field name="service_tracking">task_global_project</field>
+        <field name="project_id" ref="cmt.project_project_cmt_brick_block_test"/>
+    </record>
+
+    <record id="product_product_cmt_bitumen_asphalt_test" model="product.template">
+        <field name="name">Bitumen And Asphalt Test</field>
+        <field name="default_code">Facility_010</field>
+        <field name="type">service</field>
+        <field name="list_price">5000.0</field>
+        <field name="service_type">timesheet</field>
+        <field name="service_policy">delivered_timesheet</field>
+        <field name="service_tracking">task_global_project</field>
+        <field name="project_id" ref="cmt.project_project_cmt_bitumen_asphalt_test"/>
+    </record>
+
+    <record id="product_product_cmt_geotextile_test" model="product.template">
+        <field name="name">Geotextile Test</field>
+        <field name="default_code">Facility_011</field>
+        <field name="type">service</field>
+        <field name="list_price">8000.0</field>
+        <field name="service_type">timesheet</field>
+        <field name="service_policy">delivered_timesheet</field>
+        <field name="service_tracking">task_global_project</field>
+        <field name="project_id" ref="cmt.project_project_cmt_geotextile_test"/>
+    </record>
+
+</odoo>

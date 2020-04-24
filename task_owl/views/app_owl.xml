@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>	
+    <template>
+        <t t-name="home1" owl="1">
+            <div>
+        	   <h1>hello</h1>
+            </div>
+        </t>
+    </template>
+</odoo>

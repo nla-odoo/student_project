@@ -6,14 +6,9 @@
 		<script type="text/javascript" src="/task_owl/static/src/js/app.js"/>
         </xpath>
     </template>
-	<template id="cource">
-        <t t-call="portal.portal_layout">
-    	<h1>hello
-    	</h1>
-    </t>
-    </template>
     <template id="abc">
         <t t-call="portal.portal_layout">
+            <home/>
         </t>
     </template>
 </odoo>

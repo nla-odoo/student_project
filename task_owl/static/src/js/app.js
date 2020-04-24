@@ -6,16 +6,62 @@ odoo.define('task_owl.app', function (require) {
   		constructor() {
           super(...arguments);
           console.log("Asdafsafasf	")
-          // debugger;
+          // debugger;    </div>
+
      	}
-		static template = xml`
-		      <div>
-		        <h1>yyyyyyyyyyyyyyyyyy</h1>
-		      </div>`;
   	}
 
-
   	home = new home();
-  	Component.template = "abc"
+    home.template = "home1" 
+  	// Component.template = "abc"
   	// home.mount(Component.template)
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// component.js
+
+// create component
+
+// class new_component extends compontent {
+
+// }
+
+// new_component.template = 'com_template'
+
+
+// create tmeplate
+
+// <t t-name="com_template" owl="1">
+//      <div>
+//          <h1>Hello</h1>
+//      </div>
+// </t>
+
+// create controller
+// and render controller_template from here
+
+
+// <t t-name="controller_template">
+//      <div>
+//          <new_component>
+//      </div>
+// </t>

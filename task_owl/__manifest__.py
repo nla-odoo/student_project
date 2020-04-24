@@ -5,7 +5,9 @@
     'author': 'Tandel Yograj ',
     'category': 'Category',
     'description': """Manage & track vehicles in business like travells,transportation etc,""",
-    'data': ["views/app.xml"],
+    'data': ["views/app.xml",
+             "views/app_owl.xml"
+             ],
 
     'application': True
 }

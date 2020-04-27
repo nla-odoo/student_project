@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<odoo>	
-    <template>
+
+    <templates>
+            <template id="assets_frontend" inherit_id="web.assets_frontend" name="OAuth Providers Assets">
+        <xpath expr="//script[last()]" position="after">
+            <script type="text/javascript" src="/task_owl/static/src/js/owl.js"/>
+        <script type="text/javascript" src="/task_owl/static/src/js/app.js"/>
+        </xpath>
+    </template> 
         <t t-name="home1" owl="1">
             <div>
         	   <h1>hello</h1>
             </div>
         </t>
-    </template>
-</odoo>
+    </templates>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- tournamentdashboard -->
+        <record id="tournament_detail_dashboard_view" model="ir.ui.view">
+            <field name="name">tournament.detail.dashboard</field>
+            <field name="model">tournament.detail</field>
+            <field name="arch" type="xml">
+                <dashboard>
+                    <view type="graph" ref="cricket_tournament.tournament_detail_graph_view"/>
+                    <group>
+                        <aggregate name="team" field="team" string="team"/>
+                    </group>
+                    <view type="pivot" ref="cricket_tournament.tournament_detail_pivot_view"/>
+                </dashboard>
+            </field>
+        </record>
+        <record id="tournament_dashboard_act_window" model="ir.actions.act_window">
+            <field name="name">DashBoard</field>
+            <field name="res_model">tournament.detail</field>
+            <field name="view_mode">dashboard</field>
+        </record>
+
+
+        <!-- scoreboarddashboard -->
+        <record id="score_board_dashboard_view" model="ir.ui.view">
+            <field name="name">score.board.dashboard</field>
+            <field name="model">score.board</field>
+            <field name="arch" type="xml">
+                <dashboard>
+                    <view type="graph" ref="cricket_tournament.score_board_graph_view"/>
+                    <view type="pivot" ref="cricket_tournament.score_board_pivot_view"/>
+                </dashboard>
+            </field>
+        </record>
+        <record id="score_board_dashboard_act_window" model="ir.actions.act_window">
+            <field name="name">DashBoard</field>
+            <field name="res_model">score.board</field>
+            <field name="view_mode">dashboard</field>
+        </record>
+
+
+
+        <menuitem id="main_menu_live_cricket_score_board" name="Cricket Tournament" action="tournament_dashboard_act_window" web_icon="cricket_tournament,static/description/index.png"/>
+
+        <menuitem id="sub_menu_live_cricket_score_board" name="Configuration" parent="main_menu_live_cricket_score_board" sequence="4"/>
+
+        <menuitem id="sub_menu_tournament_detail" name="Tournament" action="tournament_detail_act_window" parent="sub_menu_live_cricket_score_board" sequence="1" />
+
+        <menuitem id="sub_menu_match_detail" name="Match" action="match_detail_act_window" parent="sub_menu_live_cricket_score_board" sequence="2" />
+
+        <menuitem id="sub_menu_team_detail" name="Team" action="team_detail_act_window" parent="sub_menu_live_cricket_score_board" sequence="3" />
+
+        <menuitem id="sub_menu_user_detail" name="Player" action="user_detail_act_window" parent="sub_menu_live_cricket_score_board" sequence="4" />
+
+        <menuitem id="sub_menu_score_board" name="Score Board" parent="main_menu_live_cricket_score_board" sequence="1"/>
+
+        <menuitem id="sub_menu_toss_detail" name="Toss" action="toss_detail_act_window" parent="sub_menu_score_board" sequence="1" />
+
+        <menuitem id="sub_menu_score" name="Score Board" action="score_board_act_window" parent="sub_menu_score_board" sequence="2" />
+
+        <menuitem id="sub_menu_Run_detail" name="Run" action="run_detail_act_window" parent="sub_menu_score_board" sequence="3" />
+
+        <menuitem id="sub_menu_prize_caremony" name="Prize Caremony" action="prize_caremony_act_window" parent="main_menu_live_cricket_score_board" sequence="2"/>
+
+        <menuitem id="sub_menu_report" name="Reporting" action="score_board_dashboard_act_window" parent="main_menu_live_cricket_score_board" sequence="3"/>
+    </data>
+</odoo>
+
+

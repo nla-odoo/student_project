@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="user_detail_form_view" model="ir.ui.view">
+        <field name="name">user.detail.form</field>
+        <field name="model">user.detail</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="user_type" widget="radio"/>
+                        <field name="image" widget="image"/>
+                        <field name="address"/>
+                        <field name="age"/>
+                        <field name="role" attrs="{'invisible': [('user_type', '!=', 'player')]}"/>
+                        <field name="batting_style" attrs="{'invisible': [('user_type', '!=', 'player')]}"/>
+                        <field name="bowling_style" attrs="{'invisible': [('user_type', '!=', 'player')]}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="user_detail_tree_view" model="ir.ui.view">
+        <field name="name">user.detail.tree</field>
+        <field name="model">user.detail</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="role=='batsman'" decoration-info="role=='bowler'" decoration-warning="role=='allrounder'" decoration-primary="role=='keeparbatsman'">
+                <field name="name"/>
+                <field name="image"/>
+                <field name="address"/>
+                <field name="age"/>
+                <field name="role"/>
+                <field name="batting_style"/>
+                <field name="bowling_style"/>
+            </tree>
+        </field>
+    </record>
+    <record id="user_detail_act_window" model="ir.actions.act_window">
+        <field name="name">Player</field>
+        <field name="res_model">user.detail</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

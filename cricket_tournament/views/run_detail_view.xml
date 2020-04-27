@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="run_detail_form_view" model="ir.ui.view">
+        <field name="name">run.detail.form</field>
+        <field name="model">run.detail</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="scoreboard_id"/>
+                        <field name="toss_id"/>
+                        <field name="batting_id"/>
+                        <field name="run"/>
+                        <field name="over"/>
+                        <field name="totalrun"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="run_detail_tree_view" model="ir.ui.view">
+        <field name="name">run.detail.tree</field>
+        <field name="model">run.detail</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="scoreboard_id"/>
+                <field name="toss_id"/>
+                <field name="batting_id"/>
+                <field name="run"/>
+                <field name="over"/>
+                <field name="totalrun"/>
+            </tree>
+        </field>
+    </record>
+    <record id="run_detail_act_window" model="ir.actions.act_window">
+        <field name="name">Run</field>
+        <field name="res_model">run.detail</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

@@ -1,18 +1,18 @@
 odoo.define('task_owl.app', function (require) {
 	// const { useState } = owl.hooks;
-  	const {Component, tags} = owl;
-  	const { xml } = tags;
+  	const {Component} = owl;
   	class home extends Component{
   		constructor() {
-          super(...arguments);
+          // debugger;    
           console.log("Asdafsafasf	")
-          // debugger;    </div>
+          super();
 
      	}
   	}
 
-  	home = new home();
-    home.template = "home1" 
+    // console.log(home1)
+  	home12 = new home();
+    home12.template = "xyz" 
   	// Component.template = "abc"
   	// home.mount(Component.template)
 });

@@ -3,11 +3,11 @@
     <data>
         <template id="assets_frontend" name="assets" inherit_id="web.assets_frontend">
             <xpath expr="." position="inside">
-                <script type="text/javascript" src="/lts/static/src/js/owl_component.js"></script>
+                <script type="text/javascript" src="/owl-demo/static/src/js/owl_component.js"></script>
             </xpath>
         </template>
 
-        <template id="lts.demo_template">
+        <template id="owl-demo.demo_template">
             <t t-call="portal.portal_layout">
                 <div class="my_component">
                 </div>

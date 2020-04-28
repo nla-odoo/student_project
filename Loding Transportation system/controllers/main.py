@@ -6,7 +6,7 @@ class OwlController(http.Controller):
 
     @http.route('/owl_demo', type='http', auth="public", csrf=False)
     def owl_demo(self, **post):
-        return http.request.render("lts.demo_template")
+        return http.request.render("owl-demo.demo_template")
 
     @http.route('/get_partner_data', type='http', auth="public", csrf=False)
     def get_partner(self, **post):

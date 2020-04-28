@@ -1,4 +1,4 @@
-odoo.define('lts.owl_component', function (require) {
+odoo.define('owl-demo.owl_component', function (require) {
     "use strict";
 
     require('web.dom_ready');

@@ -1,12 +1,21 @@
 # -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import http
 from odoo.http import request
-import werkzeug
+import json
 
 
-class UserRegister(http.Controller):
+class OwlController(http.Controller):
 
-    @http.route('/home/', method="post", auth="public", type="http")
-    def homepage1(self, **post):
-        return request.render('task_owl.abc')
+    @http.route('/product_list', type='http', auth="public", csrf=False)
+    def product_list(self, **post):
+        return http.request.render("task_owl.product_list")
+
+    @http.route('/get_product_data', type='json', auth="public", csrf=False)
+    def get_product_data(self, **post):
+        products1 = request.env['product.template'].sudo().search([])
+        mydict = {}
+        # product.image_1920,
+        for product in products1:
+            mydict[product.id] = [product.name, product.type, product.list_price]
+        # print("---------------------------", mydict)
+        return json.dumps(mydict)

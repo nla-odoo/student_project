@@ -1,67 +1,56 @@
-odoo.define('task_owl.app', function (require) {
-	// const { useState } = owl.hooks;
-  	const {Component} = owl;
-  	class home extends Component{
-  		constructor() {
-          // debugger;    
-          console.log("Asdafsafasf	")
-          super();
+odoo.define('owl_demo.owl_component', function (require) {
+    "use strict";
 
-     	}
-  	}
+    require('web.dom_ready');
+    if (!$('.product_list_component').length) {
+        return Promise.reject("DOM doesn't contain '.my_component'");
+    }
+    
+    const rpc = require('web.rpc');
+    const { Component, hooks } = owl;
+    const { xml } = owl.tags;
+    const { whenReady } = owl.utils;
 
-    // console.log(home1)
-  	home12 = new home();
-    home12.template = "xyz" 
-  	// Component.template = "abc"
-  	// home.mount(Component.template)
+    class OwlDemo extends Component {
+        async willStart() {
+            this.product_data = await this.get_product_data();
+        }
+
+        async get_product_data () {
+console.log("asdddd");
+
+            const products = await rpc.query({route: "/get_product_data"});
+            console.log(JSON.parse(products));
+            const abc =JSON.parse(products);
+            console.log(abc)
+            console.log("awfssdv"+products[5])
+            // return products;
+        }
+        get products ()  {
+            return this.product_data;
+        }
+         static template = xml`     
+         <div>
+hjbkbkbjkbkjb
+</div>
+                                `;
+
+//          static template = xml`     
+//          <div>
+//                             <div  t-foreach="products" t-as="product">
+//                                                 <img t-attf-src="data:image/png;base64, {{product}}"/>
+
+// </div>
+// </div>
+//                                 `;
+    }
+
+    function setup() {
+        const OwlDemoInstance = new OwlDemo();
+        OwlDemoInstance.mount($('.product_list_component')[0]);
+    }
+
+    whenReady(setup);
+
+    return OwlDemo;
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// component.js
-
-// create component
-
-// class new_component extends compontent {
-
-// }
-
-// new_component.template = 'com_template'
-
-
-// create tmeplate
-
-// <t t-name="com_template" owl="1">
-//      <div>
-//          <h1>Hello</h1>
-//      </div>
-// </t>
-
-// create controller
-// and render controller_template from here
-
-
-// <t t-name="controller_template">
-//      <div>
-//          <new_component>
-//      </div>
-// </t>

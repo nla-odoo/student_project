@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "task_cart_payment",
-    'depends': ['base', 'portal', 'web_dashboard', 'sale_timesheet', 'sale_management', 'sale_renting', 'sale'],
+    'depends': ['base', 'portal', 'sale_timesheet', 'sale_management', 'sale'],
     'author': 'Tandel Yograj ',
     'category': 'Category',
     'description': """Manage & track vehicles in business like travells,transportation etc,""",

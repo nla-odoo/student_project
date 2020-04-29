@@ -17,32 +17,49 @@ odoo.define('owl_demo.owl_component', function (require) {
         }
 
         async get_product_data () {
-console.log("asdddd");
-
             const products = await rpc.query({route: "/get_product_data"});
-            console.log(JSON.parse(products));
-            const abc =JSON.parse(products);
-            console.log(abc)
-            console.log("awfssdv"+products[5])
-            // return products;
+            console.log(products)
+            return products
         }
         get products ()  {
             return this.product_data;
         }
-         static template = xml`     
-         <div>
-hjbkbkbjkbkjb
-</div>
-                                `;
-
-//          static template = xml`     
-//          <div>
-//                             <div  t-foreach="products" t-as="product">
-//                                                 <img t-attf-src="data:image/png;base64, {{product}}"/>
-
-// </div>
-// </div>
-//                                 `;
+         static template = xml`
+         <t t-foreach="products" t-as="product" >
+            <li>
+                <div class="img">
+                    <a href="#">
+                        <img t-attf-src="data:image/png;base64, {{product.image_1920}}"/>
+                    </a>
+                </div>
+                <div class="info">
+                    <a class="title" href="#">
+                        <t t-esc="product.name"/>
+                    </a>
+                    <p>
+                        <b>Type : </b>
+                        <t t-if="product.type == 'consu'">Consumable</t>
+                        <t t-else="">
+                            <t t-esc="product.type"/>
+                        </t>
+                    </p>
+                    <div class="price1">
+                        <span class="st">price:</span>
+                        <strong>
+                            <t t-esc="product.list_price"/>
+                        </strong>
+                    </div>
+                    <div class="actions">
+                        <form action="/shop/cart/update" method="POST" t-if="product.active">
+                            <a role="button" href="#" onclick="this.parentNode.submit();">Add to cart</a>
+                            <a role="button" href="#">Inqury</a>
+                            <input class="product_template_id" name="product_template_id" t-att-value="product.id" type="hidden"/>
+                        </form>
+                    </div>
+                </div>
+            </li>
+        </t>
+        `;
     }
 
     function setup() {

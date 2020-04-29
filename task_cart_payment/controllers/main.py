@@ -26,14 +26,14 @@ class Home(Home):
 
 
 class UserRegister(http.Controller):
-    @http.route('/userregister/', auth="public", type="http")
-    def customer_index1(self, **kw):
-        currency = http.request.env['res.currency'].sudo().search([])
-        return http.request.render('task_cart_payment.customer_index1', {'currency_ids': currency})
+    # @http.route('/userregister/', auth="public", type="http")
+    # def customer_index1(self, **kw):
+    #     currency = http.request.env['res.currency'].sudo().search([])
+    #     return http.request.render('task_cart_payment.customer_index1', {'currency_ids': currency})
 
-    @http.route('/my/', method="post", auth="public", type="http")
-    def homepage(self, **post):
-        return request.render('task_cart_payment.home_page', {'odometer_ids': request.env['fleet.odometer'].sudo().search([])})
+    # @http.route('/my/', method="post", auth="public", type="http")
+    # def homepage(self, **post):
+    #     return request.render('task_cart_payment.home_page', {'odometer_ids': request.env['fleet.odometer'].sudo().search([])})
 
     @http.route(['/product_list/'], type='http', auth="public", website=True, csrf=False)
     def product(self, page=1, date_begin=None, date_end=None, sortby=None, **post):
@@ -110,19 +110,20 @@ class UserRegister(http.Controller):
         merchant_key = request.env['ir.config_parameter'].sudo().get_param('sandbox_merchant_key')
         checksum_status = checksum.verify_checksum(post, merchant_key, post.get('CHECKSUMHASH'))
         order_id = post.get('ORDERID')
-        contract = request.env['fleet.vehicle.contract.booking'].sudo().search([('order_id', '=', order_id)])
-        if checksum_status:
-            today = datetime.today()
-            payment_status = post.get('STATUS')
-            if payment_status == 'TXN_SUCCESS':
-                contract.write({'acquirer_ref': post.get('TXNID'), 'state': 'confirm', 'payment_status': 'success', 'payment_date': today})
-            elif payment_status == 'TXN_FAILURE':
-                contract.write({'acquirer_ref': post.get('TXNID'), 'state': 'draft', 'payment_status': 'fail', 'payment_date': today})
-            elif payment_status == 'TXN_PENDING':
-                contract.write({'acquirer_ref': post.get('TXNID'), 'state': 'draft', 'payment_status': 'pending', 'payment_date': today})
-            else:
-                raise ValidationError(_('For some reasion, There some error accure in payment process!'))
-        return werkzeug.utils.redirect('/payment/process?order_id=%s' % (order_id))
+        print(order_id, "--------------", checksum_status)
+        # contract = request.env['fleet.vehicle.contract.booking'].sudo().search([('order_id', '=', order_id)])
+        # if checksum_status:
+        #     today = datetime.today()
+        #     payment_status = post.get('STATUS')
+        #     if payment_status == 'TXN_SUCCESS':
+        #         contract.write({'acquirer_ref': post.get('TXNID'), 'state': 'confirm', 'payment_status': 'success', 'payment_date': today})
+        #     elif payment_status == 'TXN_FAILURE':
+        #         contract.write({'acquirer_ref': post.get('TXNID'), 'state': 'draft', 'payment_status': 'fail', 'payment_date': today})
+        #     elif payment_status == 'TXN_PENDING':
+        #         contract.write({'acquirer_ref': post.get('TXNID'), 'state': 'draft', 'payment_status': 'pending', 'payment_date': today})
+        #     else:
+        #         raise ValidationError(_('For some reasion, There some error accure in payment process!'))
+        # return werkzeug.utils.redirect('/payment/process?order_id=%s' % (order_id))
 
     @http.route('/payment/process', method="post", type="http", csrf=False)
     def paytm_process(self, **post):

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import http
 from odoo.http import request
-import json
 
 
 class OwlController(http.Controller):
@@ -12,10 +11,6 @@ class OwlController(http.Controller):
 
     @http.route('/get_product_data', type='json', auth="public", csrf=False)
     def get_product_data(self, **post):
-        products1 = request.env['product.template'].sudo().search([])
-        mydict = {}
-        # product.image_1920,
-        for product in products1:
-            mydict[product.id] = [product.name, product.type, product.list_price]
-        # print("---------------------------", mydict)
-        return json.dumps(mydict)
+        products = request.env['product.template'].sudo().search([])
+        mylist = ['id', 'image_1920', 'name', 'type', 'price', 'active']
+        return products.read(mylist)

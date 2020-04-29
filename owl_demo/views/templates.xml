@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="my_menu" name="mymenu" inherit_id="portal.portal_breadcrumbs"  priority="1">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li style="margin-left: 15px; font-weight: bold;"><a href="/home/">Property</a></li>
+            </xpath>
+        </template>
+        <template id="assets_frontend" name="assets" inherit_id="web.assets_frontend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/owl_demo/static/src/js/owl_component.js"></script>
+                <script type="text/javascript" src="/owl_demo/static/src/js/owl_dynamic_component.js"></script>
+            </xpath>
+        </template>
+
+        <template id="owl_demo.demo_template">
+            <t t-call="portal.portal_layout">
+                <div class="my_component">
+                </div>
+                <div class="my_dynamic_component"/>
+            </t>
+        </template>
+    </data>
+</odoo>

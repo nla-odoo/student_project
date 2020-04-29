@@ -12,7 +12,11 @@
             <t t-call="portal.portal_layout">
 
                 <div class="my_component">
-                    too 
+                     <t t-as="products" t-foreach="product_templates">
+                        <h1>product</h1>
+                        <t t-esc="product_templates.name"/>
+                     </t>
+                     123
                 </div>
                 <div class="my_dynamic_component"/>
                 <h1>run</h1>

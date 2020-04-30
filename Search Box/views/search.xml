@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="portal_search_box">
+        <head>
+        <style>
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            padding: 12px 16px;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        </style>
+        </head>
+        Sort By : 
+        <div class="dropdown">
+            <span>--select--</span>
+            <div class="dropdown-content">
+                <a href="/sort/name_asc">Name : A to Z</a><br/>
+                <a href="/sort/name_desc">Name : Z to A</a><br/>
+                <a href="/sort/price_asc">Price : Low to High</a><br/>
+                <a href="/sort/price_desc">Price : High to Low</a><br/>
+                <a href="/sort/type_service">Type : Service</a><br/>
+                <a href="/sort/type_consu">Type : Consumable</a>
+            </div>
+        </div>
+        <input type="text" placeholder="Search.." onkeyup="searchFunction()" name="search" id="search"/>
+        <button type="submit">Search</button>
+        <div>
+            <table id="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>List Price</th>
+                </tr>
+                <t t-foreach="products" t-as="product">
+                    <tr>
+                        <td><t t-esc="product.name"/></td>
+                        <td><t t-esc="product.type"/></td>
+                        <td><t t-esc="product.list_price"/></td>
+                    </tr>
+                </t>
+            </table>
+        </div>
+        <script src="/print_service/static/src/js/search.js"/>
+    </template>
+
+</odoo>

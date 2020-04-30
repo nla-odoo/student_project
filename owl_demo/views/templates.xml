@@ -7,22 +7,9 @@
                 <script type="text/javascript" src="/owl_demo/static/src/js/owl_dynamic_component.js"></script>
             </xpath>
         </template>
-       
         <template id="owl_demo.demo_template">
             <t t-call="portal.portal_layout">
-
-                <div class="my_component">
-                     <t t-as="products" t-foreach="product_templates">
-                        <h1>product</h1>
-                        <t t-esc="product_templates.name"/>
-                     </t>
-                     123
-                </div>
-                <div class="my_dynamic_component"/>
-                <h1>run</h1>
-
-
-                    
+                <div class="my_dynamic_component"></div>
             </t>
         </template>
     </data>

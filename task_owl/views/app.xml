@@ -3,7 +3,8 @@
     <data>
         <template id="assets_frontend" name="assets" inherit_id="web.assets_frontend">
             <xpath expr="." position="inside">
-                <script type="text/javascript" src="/task_owl/static/src/js/app.js"></script>
+                <script type="text/javascript" src="/task_owl/static/src/js/product_list.js"></script>
+                <script type="text/javascript" src="/task_owl/static/src/js/cart.js"></script>
                 <link href="/task_cart_payment/static/src/scss/cart_css.scss" rel="stylesheet" type="text/scss"/>
             </xpath>
         </template>
@@ -30,6 +31,10 @@
             </div>
         </t>
     </template>
-
+    <template id="task_owl.cart" name="Shopping Cart">
+        <t t-call="portal.frontend_layout">
+                    <div class="cart_component"></div>
+        </t>
+    </template>
     </data>
 </odoo>

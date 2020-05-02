@@ -34,8 +34,6 @@ class StudentDetails(CustomerPortal):
             product_templates = self.item_dict.get('1')
         else:
             product_templates = self.item_dict.get(str(offset), self.item_dict['1'])
-        return request.render("feescollection.cource",
-                              {
-                                  "product_templates": product_templates,
-                                  'offsets': len(self.item_dict.keys())
-                              })
+        return {"product_templates": product_templates,
+                'offsets': len(self.item_dict.keys())
+                }

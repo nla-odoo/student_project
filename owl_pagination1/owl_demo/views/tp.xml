@@ -1,0 +1,3 @@
+ <t t-as="products" t-foreach="product_templates">
+                        <h1>product</h1>
+                     </t>

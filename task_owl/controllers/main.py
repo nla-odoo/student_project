@@ -6,7 +6,6 @@ from werkzeug import urls
 from . import checksum
 import json
 
-
 class OwlController(http.Controller):
 
     @http.route('/product_list', type='http', auth="public", csrf=False)
@@ -46,7 +45,7 @@ class OwlController(http.Controller):
 
             request.session['order_id'] = order.sale_order_id
             request.session['slae_order_id'] = slae_order.id
-            # return request("/get_total_item")
+            return werkzeug.utils.redirect("/display_cart/")
             # return
         else:
 
@@ -64,7 +63,7 @@ class OwlController(http.Controller):
                 'price_unit': product_tmplet_id.list_price,
                 'product_uom_qty': 1,
             })
-            # return request("/get_total_item")
+            return werkzeug.utils.redirect("/display_cart/")
 
     @http.route('/get_cart_detail', type='json', auth="public", csrf=False)
     def cart(self, **post):

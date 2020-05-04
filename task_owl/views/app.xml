@@ -4,8 +4,10 @@
         <template id="assets_frontend" name="assets" inherit_id="web.assets_frontend">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/task_owl/static/src/js/product_list.js"></script>
-                <script type="text/javascript" src="/task_owl/static/src/js/cart.js"></script>
-                <link href="/task_cart_payment/static/src/scss/cart_css.scss" rel="stylesheet" type="text/scss"/>
+                <!-- <script type="text/javascript" src="/task_owl/static/src/js/cart.js"></script> -->
+                <!-- <script type="text/javascript" src="/task_owl/static/src/js/menu.js"></script> -->
+                <link href="/task_owl/static/src/scss/cart_css.scss" rel="stylesheet" type="text/scss"/>
+                <link href="/task_owl/static/src/scss/menu.scss" rel="stylesheet" type="text/scss"/>
             </xpath>
         </template>
 
@@ -17,24 +19,18 @@
     </template> -->
     <template id="task_owl.product_list">
         <t t-call="portal.frontend_layout">
+            <!-- <div class="menu_component"></div> -->
         <!-- <t t-call="task_cart_payment.fleet_portal_menu"/> -->
-            <div class="container">
-                <div id="main">
-                    <section id="content">
-                        <div id="left" >
-                            <ul>
+            
                                 <div class="product_list_component"></div>
-                            </ul>
-                        </div>
-                    </section>
-                </div>
-            </div>
+                            
         </t>
     </template>
-    <template id="task_owl.cart" name="Shopping Cart">
+<!--     <template id="task_owl.cart" name="Shopping Cart">
         <t t-call="portal.frontend_layout">
+        <div class="menu_component"></div>
                     <div class="cart_component"></div>
         </t>
-    </template>
+    </template> -->
     </data>
 </odoo>

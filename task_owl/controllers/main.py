@@ -2,6 +2,9 @@
 from odoo import http
 from odoo.http import request
 import werkzeug
+from werkzeug import urls
+from . import checksum
+import json
 
 
 class OwlController(http.Controller):
@@ -13,7 +16,7 @@ class OwlController(http.Controller):
     @http.route('/get_product_data', type='json', auth="public", csrf=False)
     def get_product_data(self, **post):
         products = request.env['product.template'].sudo().search([])
-        mylist = ['id', 'image_1920', 'name', 'type', 'price', 'active']
+        mylist = ['id', 'image_1920', 'name', 'type', 'list_price', 'active']
         return products.read(mylist)
 
     @http.route(['/shop/cart/update'], type='http', auth="public", methods=['GET', 'POST'], website=True, csrf=False)
@@ -43,7 +46,8 @@ class OwlController(http.Controller):
 
             request.session['order_id'] = order.sale_order_id
             request.session['slae_order_id'] = slae_order.id
-            return werkzeug.utils.redirect("/display_cart/")
+            # return request("/get_total_item")
+            # return
         else:
 
             order = request.env['sale.order'].sudo().browse(int(request.session.slae_order_id))
@@ -60,7 +64,7 @@ class OwlController(http.Controller):
                 'price_unit': product_tmplet_id.list_price,
                 'product_uom_qty': 1,
             })
-            return werkzeug.utils.redirect("/display_cart/")
+            # return request("/get_total_item")
 
     @http.route('/get_cart_detail', type='json', auth="public", csrf=False)
     def cart(self, **post):
@@ -88,3 +92,40 @@ class OwlController(http.Controller):
     @http.route('/display_cart/', type='http', auth="public", csrf=False)
     def display_cart(self, **post):
         return http.request.render("task_owl.cart")
+
+    @http.route('/get_total_item', type='json', auth="public", csrf=False)
+    def total_item_in_cart(self, **post):
+
+        if request.session.order_id:
+            sale_order_lines = request.env['sale.order.line'].sudo().search([]).filtered(lambda order_line: order_line.sale_order_id == request.session['order_id'])
+            print(len(sale_order_lines))
+            return len(sale_order_lines)
+        else:
+            return 0
+
+    @http.route('/confirm_order', method="post", auth="public", type="http", csrf=False)
+    def confirm_booking(self, **post):
+        # MID = amitgo59443067266036
+        # Merchant Key= bQfzzkKzeCbR7jOl
+        # Industry Type= Retail
+        # Website Name = WEBSTAGING
+
+        print("adbsdkjask==============================")
+        # print(post.get('contract_id'), "***********", post.get('amount'))
+        # base_url = request.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        # merchant_id = request.env['ir.config_parameter'].sudo().get_param('sandbox_merchant_id')
+        # merchant_key = request.env['ir.config_parameter'].sudo().get_param('sandbox_merchant_key')
+        # data_dict = {
+        #     'MID': merchant_id,
+        #     'WEBSITE': 'WEBSTAGING',
+        #     'ORDER_ID': post.get('contract_id'),
+        #     'CUST_ID': str(request.uid),
+        #     'INDUSTRY_TYPE_ID': 'Retail',
+        #     'CHANNEL_ID': 'WEB',
+        #     'TXN_AMOUNT': str(post.get('amount')),
+        #     'CALLBACK_URL': urls.url_join(base_url, '/paytm_response')
+        # }
+        # print("data_dict------------", data_dict)
+        # data_dict['CHECKSUMHASH'] = checksum.generate_checksum(data_dict, merchant_key)
+        # data_dict['redirection_url'] = "https://securegw-stage.paytm.in/order/process"
+        # return request.make_response(json.dumps(data_dict))

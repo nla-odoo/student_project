@@ -7,25 +7,36 @@ odoo.define('task_owl.product_list_component', function (require) {
     }
     
     const rpc = require('web.rpc');
+    const menu = require('task_owl.menu'); 
     const { Component, hooks } = owl;
     const { xml } = owl.tags;
     const { whenReady } = owl.utils;
 
     class product_list extends Component {
+        // static components = {menu}
         async willStart() {
+            console.log("2");
             this.product_data = await this.get_product_data();
         }
 
         async get_product_data () {
+            console.log("1");
             const products = await rpc.query({route: "/get_product_data"});
             console.log(products)
             return products
         }
         get products ()  {
+            console.log("3");
+
             return this.product_data;
         }
          static template = xml`
          <div>
+         <div class="container">
+                <div id="main">
+                    <section id="content">
+                        <div id="left" >
+                            <ul>
          <t t-foreach="products" t-as="product" >
             <li>
                 <div class="img">
@@ -46,9 +57,7 @@ odoo.define('task_owl.product_list_component', function (require) {
                     </p>
                     <div class="price1">
                         <span class="st">price:</span>
-                        <strong>
                             <t t-esc="product.list_price"/>
-                        </strong>
                     </div>
                     <div class="actions">
                         <form action="/shop/cart/update" method="POST" t-if="product.active">
@@ -60,12 +69,18 @@ odoo.define('task_owl.product_list_component', function (require) {
                 </div>
             </li>
         </t>
+        </ul>
+                        </div>
+                    </section>
+                </div>
+            </div>
         </div>
         `;
     }
 
 
     function setup() {
+            console.log("4");
         const ProductListInstance = new product_list();
         ProductListInstance.mount($('.product_list_component')[0]);
     }

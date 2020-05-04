@@ -50,7 +50,7 @@ odoo.define('task_owl.cart_component', function (require) {
                             <li class="li subtotal">Subtotal</li>
                         </ul>
                     </div>
-<t t-foreach="sale_order_lines" t-as="sale_order_line">
+                    <t t-foreach="sale_order_lines" t-as="sale_order_line">
                         
                     <div class="basket-product">
                         <div class="item">
@@ -99,8 +99,7 @@ odoo.define('task_owl.cart_component', function (require) {
                             </div>
                         </div>
                         <div class="summary-checkout">
-                            <button class="checkout-cta input-button" id="pay_now">Checkout</button>
-                            <script src="/task_cart_payment/static/src/js/make_payment.js" type="text/javascript"/>
+                            <button class="checkout-cta input-button" id="pay_now" t-on-click="paynow()">Checkout</button>
                         </div>                       
                     </div>
                     </t>
@@ -108,8 +107,11 @@ odoo.define('task_owl.cart_component', function (require) {
             </main>
         </div>
         `;
+    paynow(){
+        console.log("asdadsAAAS")
+        const payment_detail = rpc.query({route: "/get_cart_detail"});
     }
-    
+    }
 
     function setup() {
         const OwlCartInstance = new Cart();

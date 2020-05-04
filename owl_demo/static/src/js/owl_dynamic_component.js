@@ -20,19 +20,67 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
 
         async getPartners () {
             const partners = await rpc.query({route: "/get_partner_data"});
+            var i;
+            var a = [];
+            var b = [];
+            for (i = 0; i < partners.length; i++) 
+            {
+                var td = partners[i].amount_total;
+                a.push(td); 
+                var name = partners[i].name;
+                b.push(name);
+            }
+            console.log("a",a);
+            var ctx = document.getElementById('myChart');
+            var chart = new Chart(ctx, 
+            {
+                type: 'bar',
+                data: {
+                  labels: b,
+                  datasets: [
+                    {
+                      label: "Population (millions)",
+                      backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f"],
+                      data: a
+                    }
+                  ]
+                },
+            });
+        
             return partners;
         }
+
         get partners ()  {
             return this.partnersdata;
         }
 
         static template = xml`<div>
-        <table border="2"><td>
-        <th>partners Detail</th>
-        <div t-foreach="partners" t-as="partner">
-            <t t-esc="partner"/>
+        <table class="table" border="2">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>date</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <t t-set="summ" t-value="0.0"/>
+                        <t t-foreach="partners" t-as="d" t-key="id">
+                            <tr>
+                                <td><a t-attf-href="/get_data/{{d.id}}"><span t-esc="d.name"/></a></td>
+                                <td><span t-esc="d.date_order"/></td>
+                                <td><span t-esc="d.amount_total"/></td>
+                                <t t-set="summ" t-value="summ + d.amount_total" />
+                            </tr>
+                        </t>
+                        <tr>
+                            <td class="text-right" colspan="2"><h5>SubTotal : </h5></td>
+                            <td><h5><span t-esc="summ"/></h5></td>
+                        </tr>
+            </tbody>
+        </table>
         </div>
-        </td></table></div>`;
+        `;
     }
 
     function setup() {

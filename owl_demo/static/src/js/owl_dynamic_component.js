@@ -14,46 +14,36 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
 
     class OwlDynamicDemo extends Component {
 
-        itemObj = {};
-        itemCount = 1;
-        itemValue = [];
-        prouctCount = 0;
-        currentPage = 1;
+        offset = 1;
+        limit = 6
+        count = [];
 
         async willStart() {
-            this.partnersdata = await rpc.query({ route: "/get_partner_data" });
-            for (const data of this.partnersdata) {
-                if (this.prouctCount < 8) {
-                    this.itemValue.push(data);
-                    this.prouctCount += 1;
-                    if (data.name == this.partnersdata[this.partnersdata.length - 1].name) {
-                        this.itemObj[this.itemCount] = this.itemValue;
-                        this.itemCount = 0
-                        this.prouctCount = 0
-                    }
-                } else {
-                    this.itemObj[this.itemCount] = this.itemValue;
-                    this.itemValue = [];
-                    this.itemCount += 1;
-                    this.prouctCount = 0;
-                }
+            this.partnersdata = await rpc.query({ route: "/get_partner_data", params:{ 
+                offset: this.offset, limit: this.limit}});
+            for (let index = 1; index <= parseInt(this.partnersdata.count); index++) {
+                this.count.push(index);
             }
-            debugger;
-            this.itemValue = Object.keys(this.itemObj);
         }
-
-        _onClickLink(ev) {
+        async _onClickLink(ev) {
             ev.preventDefault();
+            let offset = ev.target.getAttribute('offset');
+            if (offset == 0) { offset = 1; }
+            this.partnersdata = await rpc.query({ route: "/get_partner_data", params:{ 
+                offset: parseInt(offset), limit: this.limit}});
+            debugger;
             const ulContent = this.el.querySelector('#ulcontent');
             ulContent.innerHTML = '';
-            for (const partner of this.itemObj[ev.currentTarget.textContent]) {
+            for (const partner of this.partnersdata.product_list) {
                 const li = document.createElement("li");
                 // image
                 const imgDiv = document.createElement('div');
                 imgDiv.setAttribute("class", 'img');
-                const image = document.createElement('img');
-                image.setAttribute('src', `data:image/jpg;base64, ${partner.image}`);
-                imgDiv.appendChild(image);
+               
+                    const image = document.createElement('img');
+                    image.setAttribute('src', `data:image/jpg;base64, ${partner.image}`);
+                    imgDiv.appendChild(image);
+               
                 li.appendChild(imgDiv);
 
                 // info div
@@ -123,10 +113,6 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
                         width: 1000px;
                         padding-left: 20px;
                         padding-right: 20px;
-                    }
-                    center
-                    {
-                        color:#000000;!important;
                     }
                     /* main section */
                     
@@ -222,7 +208,7 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
                             <div id="left">
                                 <ul id="ulcontent">
                                     <t t-log='partner_templates' />
-                                    <t t-as="partner" t-foreach="itemObj[currentPage]">
+                                    <t t-as="partner" t-foreach="partnersdata.product_list">
                                         <li>
                                             <div class="img">
                                                 <t t-if="partner.image">
@@ -259,9 +245,11 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
                     <div class="d-flex justify-content-center">
                         <nav aria-label="Page navigation example">
                             <ul class="pagination">
-                                <t t-as="page" t-foreach="itemValue">
+                                <t t-set="offset" t-value="0"/>
+                                <t t-as="page" t-foreach="count">
                                     <li class="page-item">
-                                        <a t-on-click="_onClickLink" class="page-link" href="#!"><span t-esc="page" /></a>
+                                        <a t-att-offset="offset" t-on-click="_onClickLink" class="page-link" href="#!"><span t-esc="page" /></a>
+                                        <t t-set="offset" t-value="offset + 6"/>
                                     </li>
                                 </t>
                             </ul>

@@ -3,7 +3,7 @@
 {
     'name': 'Owl Demo',
     'summary': 'Owl Demo',
-    'depends': ['base', 'portal'],
+    'depends': ['base', 'portal', 'sale_management'],
     'data': [
         'views/templates.xml',
     ],

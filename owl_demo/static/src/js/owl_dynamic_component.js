@@ -39,7 +39,7 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
                   labels: b,
                   datasets: [
                     {
-                      label: "Population (millions)",
+                      label: "order details",
                       backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f"],
                       data: a
                     }

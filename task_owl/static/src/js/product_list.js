@@ -1,10 +1,10 @@
 odoo.define('task_owl.product_list_component', function (require) {
     "use strict";
 
-    require('web.dom_ready');
-    if (!$('.product_list_component').length) {
-        return Promise.reject("DOM doesn't contain '.product_list_component'");
-    }
+    // require('web.dom_ready');
+    // if (!$('.product_list_component').length) {
+    //     return Promise.reject("DOM doesn't contain '.product_list_component'");
+    // }
     
     const rpc = require('web.rpc');
     const { Component, hooks } = owl;
@@ -13,6 +13,7 @@ odoo.define('task_owl.product_list_component', function (require) {
 
     class product_list extends Component {
         async willStart() {
+            debugger
             this.product_data = await this.get_product_data();
         }
 
@@ -21,10 +22,18 @@ odoo.define('task_owl.product_list_component', function (require) {
             console.log(products)
             return products
         }
+        _onClickAddCart (ev) {
+            var self = this;
+            rpc.query({route: "/shop/cart/update", params: {product_template_id: ev.target.dataset.product_template_id}}).then(function (cart_count) {
+                debugger
+                self.render(true);
+            });
+        }
         get products ()  {
             return this.product_data;
         }
-         static template = xml`
+
+        static template = xml`
          <div>
          <t t-foreach="products" t-as="product" >
             <li>
@@ -50,7 +59,7 @@ odoo.define('task_owl.product_list_component', function (require) {
                     </div>
                     <div class="actions">
                         <form action="/shop/cart/update" method="POST" t-if="product.active">
-                            <a role="button" href="#" onclick="this.parentNode.submit();">Add to cart</a>
+                            <a role="button" href="#" t-on-click="_onClickAddCart" t-att-data-product_template_id="product.id">Add to cart</a>
                             <a role="button" href="#">Inqury</a>
                             <input class="product_template_id" name="product_template_id" t-att-value="product.id" type="hidden"/>
                         </form>
@@ -63,12 +72,12 @@ odoo.define('task_owl.product_list_component', function (require) {
     }
 
 
-    function setup() {
-        const ProductListInstance = new product_list();
-        ProductListInstance.mount($('.product_list_component')[0]);
-    }
+    // function setup() {
+    //     const ProductListInstance = new product_list();
+    //     ProductListInstance.mount($('.product_list_component')[0]);
+    // }
 
-    whenReady(setup);
+    // whenReady(setup);
 
     return product_list;
 });

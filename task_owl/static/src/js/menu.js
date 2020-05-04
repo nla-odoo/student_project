@@ -7,35 +7,39 @@ odoo.define('task_owl.menu', function (require) {
     }
     
     const rpc = require('web.rpc');
+    const product_list = require('task_owl.product_list_component');
     const { Component, hooks } = owl;
     const { xml } = owl.tags;
     const { whenReady } = owl.utils;
 
     class menu extends Component {
         async willStart() {
-            console.log("2");
+            debugger
             this.total_item = await this.get_total_item_in_cart();
         }
 
         async get_total_item_in_cart() {
-            console.log("3");
+            debugger
             const item_in_cart = await rpc.query({route: "/get_total_item"});
             console.log(item_in_cart)
             return item_in_cart
         }
         get item_in_cart ()  {
+            debugger
             return this.total_item;
         }
 
-         static template = xml`<div class="topnav" id="myTopnav">
+        static components = {product_list};
+
+        static template = xml`<div><div class="topnav" id="myTopnav">
   <a href="/display_cart"><i class="fa fa-shopping-cart"> <t t-esc="item_in_cart"/></i></a>
-  <a href="/product_list" class="active">Home</a>
-</div>`;
+</div><product_list/></div>
+`;
     }
 
-    function setup() {
-        console.log("4");
+    menu.components = {product_list};
 
+    function setup() {
         const OwlmenuInstance = new menu();
         OwlmenuInstance.mount($('.menu_component')[0]);
     }

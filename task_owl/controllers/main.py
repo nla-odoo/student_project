@@ -6,7 +6,12 @@ from werkzeug import urls
 from . import checksum
 import json
 
+
 class OwlController(http.Controller):
+
+    @http.route('/shop', type='http', auth="public", csrf=False)
+    def shop(self, **post):
+        return http.request.render("task_owl.shop")
 
     @http.route('/product_list', type='http', auth="public", csrf=False)
     def product_list(self, **post):
@@ -18,9 +23,8 @@ class OwlController(http.Controller):
         mylist = ['id', 'image_1920', 'name', 'type', 'list_price', 'active']
         return products.read(mylist)
 
-    @http.route(['/shop/cart/update'], type='http', auth="public", methods=['GET', 'POST'], website=True, csrf=False)
+    @http.route(['/shop/cart/update'], type='json', auth="public", methods=['GET', 'POST'], website=True, csrf=False)
     def cart_update(self, add_qty=1, set_qty=0, **kw):
-        print("kw******************", kw)
         product_tmplet_id = request.env['product.template'].sudo().browse(int(kw['product_template_id']))
         product_id = request.env['product.product'].sudo().search([('product_tmpl_id', '=', product_tmplet_id.id)])
         print("--------------------product_tmplet_id", product_tmplet_id.id)
@@ -45,8 +49,7 @@ class OwlController(http.Controller):
 
             request.session['order_id'] = order.sale_order_id
             request.session['slae_order_id'] = slae_order.id
-            return werkzeug.utils.redirect("/display_cart/")
-            # return
+            return len(order.order_line)
         else:
 
             order = request.env['sale.order'].sudo().browse(int(request.session.slae_order_id))
@@ -63,7 +66,7 @@ class OwlController(http.Controller):
                 'price_unit': product_tmplet_id.list_price,
                 'product_uom_qty': 1,
             })
-            return werkzeug.utils.redirect("/display_cart/")
+            return len(order.order_line)
 
     @http.route('/get_cart_detail', type='json', auth="public", csrf=False)
     def cart(self, **post):

@@ -5,7 +5,6 @@
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/owl_demo/static/src/js/owl_component.js"></script>
                 <script type="text/javascript" src="/owl_demo/static/src/js/owl_dynamic_component.js"></script>
-                <link rel="stylesheet" type="text/css" href="/owl_demo/static/src/csss/app.css"/>
                 <link href="/owl_demo/static/src/scss/app.scss" rel="stylesheet" type="text/scss"/>
 
             </xpath>

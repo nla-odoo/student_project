@@ -20,7 +20,10 @@ class OwlController(http.Controller):
         count = request.env.cr.fetchone()[0] / 6
         if isinstance(count, (float)):
             count = int(count) + 1
-        return request.env['product.template'].sudo().search_read([], ['id', 'image_1920', 'name', 'type', 'list_price', 'active'], offset=offset, count=count, limit=limit, )
+        resulrt = request.env['product.template'].sudo().search_read([], ['id', 'image_1920', 'name', 'type', 'list_price', 'active'], offset=offset, limit=limit)
+        print("\n\n\n\n", resulrt)
+        return {"resulrt": resulrt, 'count': count}
+
         # products = request.env['product.template'].sudo().search([], offset=offset, ,limit=limit)
         # for product in products:
         #     product_list.append({

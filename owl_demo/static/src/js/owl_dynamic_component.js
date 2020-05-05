@@ -18,9 +18,11 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
         limit = 6
         count = [];
 
-        async willStart() {
+        async willStart() { 
             this.partnersdata = await rpc.query({ route: "/get_partner_data", params:{ 
-                offset: this.offset, limit: this.limit}});
+                offset: this.offset, limit: this.limit}});debugger;
+               
+            
             for (let index = 1; index <= parseInt(this.partnersdata.count); index++) {
                 this.count.push(index);
             }
@@ -32,7 +34,6 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
             this.partnersdata = await rpc.query({ route: "/get_partner_data", params:{ 
                 offset: parseInt(offset), limit: this.limit}});
                 this.render(true);
-            debugger;
           
         }
 
@@ -45,28 +46,29 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
                             <div id="left">
                                 <ul id="ulcontent">
                                     <t t-log='partner_templates' />
-                                    <t t-as="partner" t-foreach="partnersdata.product_list">
+                                    <t t-esc="console.log(partnersdata)"/>
+                                    <t t-as="product" t-foreach="partnersdata.resulrt">
                                         <li>
                                             <div class="img">
-                                                <t t-if="partner.image">
-                                                    <img t-att-src="'data:image/jpg;base64,' + partner.image" />
+                                                <t t-if="product.image_1920">
+                                                    <img t-att-src="'data:image/jpg;base64,' + product.image_1920" />
                                                 </t>
                                             </div>
                                             <div class="info">
                                                 <a class="title" href="#">
-                                                    <t t-esc="partner.name" />
+                                                    <t t-esc="product.name" />
                                                 </a>
                                                 <p><b>Type : </b>
-                                                    <t t-if="partner.type == 'consu'">Consumable</t>
+                                                    <t t-if="product.type == 'consu'">Consumable</t>
                                                     <t t-else="">
-                                                        <t t-esc="partner.type" />
+                                                        <t t-esc="product.type" />
                                                     </t>
                                                 </p>
                                                 <div class="price1">
                                                     <span class="st">price:</span>
                                                     <strong>
                                                             <span>
-                                                                <t t-esc="partner.price" />
+                                                                <t t-esc="product.price" />
                                                                 </span></strong>
                                                 </div>
                                                 <div class="actions">

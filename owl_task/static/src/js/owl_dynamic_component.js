@@ -6,27 +6,50 @@ odoo.define('owl_task.owl_dynamic_component', function (require) {
         return Promise.reject("DOM doesn't contain '.my_dynamic_component'");
     }
 
-    const rpc = require('web.rpc');
-
     const { Component, hooks } = owl;
     const { xml } = owl.tags;
     const { whenReady } = owl.utils;
 
     class OwlDynamicDemo extends Component {
 
-        async willStart() {
-            this.partnersdata = await this.getPartners();
-        }
 
-        async getPartners () {
-            const partners = await rpc.query({route: "/get_partner_data"});
-            return partners;
-        }
-        get partners ()  {
-            return this.partnersdata;
-        }
-
-        static template = xml`<div><div t-foreach="partners" t-as="partner"><t t-esc="partner"/></div></div>`;
+        static template = xml`<div>
+        <div>
+            <div>
+                <form method="post" t-attf-action="/services/form/">
+                    <div>
+                        <label>Product name</label>
+                        <input type="text" name='name'/>
+                    </div>
+                    <div>
+                        <label>Purchase</label>
+                        <input type="checkbox" name='purchase_ok'/>
+                    </div>
+                    <div>
+                        <label>Sale</label>
+                        <input type="checkbox" name='sale_ok'/>
+                    </div>
+                    <div>
+                        <label>Type</label>
+                        <select id="complaint_details" name="type">
+                            <option value="consu">Consumable</option>
+                            <option value="service">Service</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Cost</label>
+                        <input type="text" name='standard_price'/>
+                    </div>
+                    <div>
+                        <label>Sale price</label>
+                        <input type="text" name='list_price'/>
+                    </div>
+                <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+        </div>
+        `;
     }
 
     function setup() {

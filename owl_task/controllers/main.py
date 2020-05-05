@@ -9,6 +9,14 @@ class OwlController(http.Controller):
     def owl_demo(self, **post):
         return http.request.render("owl_task.demo_template")
 
-    @http.route('/get_partner_data', type='json', auth="public", csrf=False)
-    def get_partner(self, **post):
-        return request.env['res.partner'].search([]).mapped('name')
+    @http.route('/services/form', auth="user", type="http", csrf=False)
+    def services_form(self, **post):
+        request.env['product.product'].sudo().create([{
+                    'name': post.get('name'),
+                    'purchase_ok': post.get('purchase_ok'),
+                    'sale_ok': post.get('sale_ok'),
+                    'type': post.get('type'),
+                    'standard_price': post.get('standard_price'),
+                    'list_price': post.get('list_price'),
+                    }])
+        return http.local_redirect('/owl_demo')

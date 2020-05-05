@@ -1,4 +1,4 @@
-odoo.define('owl_demo.owl_dynamic_component', function (require) {
+odoo.define('loading_transportation_system.owl_dynamic_component', function (require) {
     "use strict";
 
     require('web.dom_ready');

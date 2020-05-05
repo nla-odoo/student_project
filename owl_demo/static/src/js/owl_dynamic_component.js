@@ -29,8 +29,9 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
         }
         async _onClickLink(ev) {
             ev.preventDefault();
-            let offset = ev.target.getAttribute('offset');
+            let offset = ev.currentTarget.getAttribute('offset');
             if (offset == 0) { offset = 1; }
+            debugger;
             this.partnersdata = await rpc.query({ route: "/get_partner_data", params:{ 
                 offset: parseInt(offset), limit: this.limit}});
                 this.render(true);
@@ -39,7 +40,7 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
 
         static template = xml`
             <div>
-                <link rel="stylesheet" type="text/scss" href="/owl_demo/static/src/csss/app.css"/>
+                
                 <div class="container">
                     <div id="main">
                         <section id="content">
@@ -50,13 +51,15 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
                                     <t t-as="product" t-foreach="partnersdata.resulrt">
                                         <li>
                                             <div class="img">
-                                                <t t-if="product.image_1920">
+                                               
                                                     <img t-att-src="'data:image/jpg;base64,' + product.image_1920" />
-                                                </t>
+                                                
                                             </div>
-                                            <div class="info">
+                                            <div class="info text-wrap">
                                                 <a class="title" href="#">
+                                                <p class="text-lowercase">
                                                     <t t-esc="product.name" />
+                                                </p>
                                                 </a>
                                                 <p><b>Type : </b>
                                                     <t t-if="product.type == 'consu'">Consumable</t>
@@ -68,7 +71,7 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
                                                     <span class="st">price:</span>
                                                     <strong>
                                                             <span>
-                                                                <t t-esc="product.price" />
+                                                                <t t-esc="product.list_price" />
                                                                 </span></strong>
                                                 </div>
                                                 <div class="actions">

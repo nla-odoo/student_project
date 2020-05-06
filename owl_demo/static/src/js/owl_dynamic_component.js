@@ -12,6 +12,13 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
     const { xml } = owl.tags;
     const { whenReady } = owl.utils;
 
+    class OwlSubDemo extends Component {
+
+        static template = xml`<div><t t-esc="props.name"/></div>`;
+    }
+
+    OwlSubDemo.props = ["name"];
+
     class OwlDynamicDemo extends Component {
 
         async willStart() {
@@ -26,7 +33,9 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
             return this.partnersdata;
         }
 
-        static template = xml`<div><div t-foreach="partners" t-as="partner"><t t-esc="partner"/></div></div>`;
+        static template = xml`<div><div t-foreach="partners" t-as="partner"><OwlSubDemo name="partner"/></div></div>`;
+
+        static components = {OwlSubDemo};
     }
 
     function setup() {

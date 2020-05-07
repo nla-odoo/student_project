@@ -4,6 +4,9 @@
         <template id="assets_frontend" name="assets" inherit_id="web.assets_frontend">
         	<xpath expr="." position="inside">
                 <script type="text/javascript" src="/owl_work/static/src/js/btn_component.js"></script>
+                <!-- <link rel="stylesheet" href="http://localhost:8069/im_livechat/external_lib.css"/> -->
+                <!-- <script type="text/javascript" src="http://localhost:8069/im_livechat/external_lib.js"></script>
+                <script type="text/javascript" src="http://localhost:8069/im_livechat/loader/2"></script>    -->
             </xpath>
         </template>
 

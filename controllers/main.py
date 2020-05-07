@@ -1,7 +1,17 @@
 # -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import http
 from odoo.http import request
+
+
+class OwlController(http.Controller):
+
+    @http.route('/search', type='http', auth="public")
+    def search(self, **post):
+        return http.request.render("owl_search_box.portal_search_box_template")
+
+    @http.route('/get_product_data', type='json', auth="public", csrf=False)
+    def get_product(self, **post):
+        return request.env['product.template'].sudo().search([]).mapped('name')
 
 
 class SearchBox(http.Controller):

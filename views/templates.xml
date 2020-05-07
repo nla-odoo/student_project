@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="assets_frontend" name="assets" inherit_id="web.assets_frontend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/owl_search_box/static/src/js/owl_search_box.js"></script>
+                <script type="text/javascript" src="/owl_search_box/static/src/js/search.js"></script>
+            </xpath>
+        </template>
+
+        <template id="owl_search_box.portal_search_box_template">
+            <t t-call="portal.portal_layout">
+                <div>
+                    <input type="text" id="search" name="search" onkeyup="searchFunction()" />
+                </div>
+                <div class="my_dynamic_search_box"/>
+            </t>
+        </template>
+    </data>
+</odoo>

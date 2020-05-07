@@ -13,10 +13,10 @@ class OwlController(http.Controller):
     def get_partner(self, **post):
         return request.env['res.partner'].search([]).mapped('name')
 
-    @http.route('/product', type='json', auth="public", csrf=False)
-    def get_product(self, **post):
-        return request.env['product.product'].search([]).mapped('name')
+    # @http.route('/product', type='json', auth="public", csrf=False)
+    # def get_product(self, **post):
+    #     return request.env['product.product'].search([]).mapped('name')
 
     @http.route('/inquirey', type='json', auth="public", csrf=False)
     def get_leads(self, **post):
-        return request.env['crm.lead'].search([])
+        return request.env['crm.lead'].search_read([], ['name', 'description'])

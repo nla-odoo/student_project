@@ -1,4 +1,4 @@
-odoo.define('owl_demo.owl_dynamic_component', function (require) {
+odoo.define('owl_demo.owl_dynamic_component', function(require) {
     "use strict";
 
     require('web.dom_ready');
@@ -18,11 +18,8 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
         limit = 6
         count = [];
 
-        async willStart() { 
-            this.partnersdata = await rpc.query({ route: "/get_partner_data", params:{ 
-                offset: this.offset, limit: this.limit}});debugger;
-               
-            
+        async willStart() {
+            this.partnersdata = await this._getProducts(this.offset);
             for (let index = 1; index <= parseInt(this.partnersdata.count); index++) {
                 this.count.push(index);
             }
@@ -30,15 +27,20 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
         async _onClickLink(ev) {
             ev.preventDefault();
             let offset = ev.currentTarget.getAttribute('offset');
-            if (offset == 0) { offset = 1; }
-            debugger;
-            this.partnersdata = await rpc.query({ route: "/get_partner_data", params:{ 
-                offset: parseInt(offset), limit: this.limit}});
-                this.render(true);
-          
+            this.partnersdata = await this._getProducts(offset);
+            this.render(true);
         }
 
-        static template = xml`
+        async _getProducts(offset) {
+            this.Products = await rpc.query({
+                route: "/get_partner_data",
+                params: { offset: parseInt(offset), limit: this.limit }
+            });
+            return this.Products;
+        }
+
+
+        static template = xml `
             <div>
                 
                 <div class="container">

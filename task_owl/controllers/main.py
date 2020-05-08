@@ -46,6 +46,9 @@ class OwlController(http.Controller):
             request.session['order_id'] = order.sale_order_id
             request.session['slae_order_id'] = slae_order.id
             return werkzeug.utils.redirect("/display_cart/")
+            # sale_order_lines = request.env['sale.order.line'].sudo().search([]).filtered(lambda order_line: order_line.sale_order_id == request.session['order_id'])
+            # print(len(sale_order_lines))
+            # return len(sale_order_lines)
             # return
         else:
 
@@ -63,6 +66,7 @@ class OwlController(http.Controller):
                 'price_unit': product_tmplet_id.list_price,
                 'product_uom_qty': 1,
             })
+            # return 0
             return werkzeug.utils.redirect("/display_cart/")
 
     @http.route('/get_cart_detail', type='json', auth="public", csrf=False)
@@ -94,7 +98,8 @@ class OwlController(http.Controller):
 
     @http.route('/get_total_item', type='json', auth="public", csrf=False)
     def total_item_in_cart(self, **post):
-
+        print("asdxasasasc===========================")
+        # return 1
         if request.session.order_id:
             sale_order_lines = request.env['sale.order.line'].sudo().search([]).filtered(lambda order_line: order_line.sale_order_id == request.session['order_id'])
             print(len(sale_order_lines))

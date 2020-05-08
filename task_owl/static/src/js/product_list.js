@@ -7,13 +7,16 @@ odoo.define('task_owl.product_list_component', function (require) {
     }
     
     const rpc = require('web.rpc');
+    const OwlSubDemo = require('task_owl.sub_component');
     const { Component, hooks } = owl;
     const { xml } = owl.tags;
     const { whenReady } = owl.utils;
 
+    OwlSubDemo.props = ["item_in_cart"];
     class product_list extends Component {
         async willStart() {
             this.product_data = await this.get_product_data();
+            this.total_item = await this.get_total_item_in_cart();
         }
 
         async get_product_data () {
@@ -24,8 +27,25 @@ odoo.define('task_owl.product_list_component', function (require) {
         get products ()  {
             return this.product_data;
         }
+
+        async get_total_item_in_cart() {
+            console.log("3");
+            const item_in_cart = await rpc.query({route: "/get_total_item"});
+            console.log(item_in_cart)
+            return item_in_cart
+        }
+        get item_in_cart ()  {
+            return this.total_item;
+        }
+
          static template = xml`
          <div>
+         <OwlSubDemo name="item_in_cart"/>
+                     <div class="container">
+                <div id="main">
+                    <section id="content">
+                        <div id="left" >
+                            <ul>
          <t t-foreach="products" t-as="product" >
             <li>
                 <div class="img">
@@ -58,8 +78,15 @@ odoo.define('task_owl.product_list_component', function (require) {
                 </div>
             </li>
         </t>
+        </ul>
+                        </div>
+                    </section>
+                </div>
+            </div>'
         </div>
         `;
+        static components = {OwlSubDemo};
+
     }
 
 

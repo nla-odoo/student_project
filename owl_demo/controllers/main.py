@@ -13,24 +13,26 @@ class OwlController(http.Controller):
     def get_partner(self, **post):
         user_id = request.env.user.partner_id
         print("\n\n\n\n", user_id)
-        SaleOrder = request.env['sale.order']
+        # SaleOrder = request.env['sale.order']
         domain = [
             ('partner_id', '=', user_id.id),
             ('state', 'in', ['sale', 'done'])
         ]
-        orders = SaleOrder.search(domain)
+        orders = request.env['sale.order'].sudo().search(domain)
         print("\n\n\n\n order", orders)
         hh = orders.read(['id', 'name', 'date_order', 'amount_total'])
         print("\n\n\n\n hh", hh)
         return orders.read(['id', 'name', 'date_order', 'amount_total'])
+        # return request.env['sale.order'].search([]).mapped('name')
 
-    # @http.route('/owl_details', type='http', auth="public", csrf=False)
-    # def owl_details(self, **post):
-    #     return http.request.render("owl_demo.detail_template")
+    @http.route('/get_data', type='http', auth="public", csrf=False)
+    def owl_details(self, **post):
+        return http.request.render("owl_demo.detail_template")
 
-    # @http.route('/get_data/<model("sale.order"):saleid>', type='http', auth="public", csrf=False)
-    # def get_data(self, saleid=None):
-    #     print("\n\n\n\nsaleid ", saleid)
-    #     details = request.env['sale.order.line'].search([])
-    #     order_detail = details.read(['id', 'name', 'price_unit', 'price_tax', 'price_total', 'product_uom_qty'])
-    #     return http.request.render("owl_demo.detail_template", {"order_detail": order_detail})
+    @http.route('/get_order_detail', type='json', auth="public", csrf=False)
+    def get_data(self, **kw):
+        print("\n\n\n\n\n", kw)
+        details = request.env['sale.order.line'].sudo().browse(int(kw['order_id']))
+        order_detail = details.read(['id', 'name', 'price_unit', 'price_tax', 'price_total', 'product_uom_qty'])
+        print("\n\n\n\n", order_detail)
+        return details.read(['id', 'name', 'price_unit', 'price_tax', 'price_total', 'product_uom_qty'])

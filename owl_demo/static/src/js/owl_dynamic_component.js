@@ -8,11 +8,12 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
 
     const rpc = require('web.rpc');
 
-    const { Component, hooks } = owl;
+    const { Component, hooks, useState } = owl;
     const { xml } = owl.tags;
     const { whenReady } = owl.utils;
 
     class OwlDynamicDemo extends Component {
+
 
         async willStart() {
             this.partnersdata = await this.getPartners();
@@ -34,12 +35,12 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
             var ctx = document.getElementById('myChart');
             var chart = new Chart(ctx, 
             {
-                type: 'bar',
+                type: 'line',
                 data: {
                   labels: b,
                   datasets: [
                     {
-                      label: "order details",
+                      label: "Population (millions)",
                       backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f"],
                       data: a
                     }
@@ -54,6 +55,16 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
             return this.partnersdata;
         }
 
+        details(ev)
+        {
+            console.log("details");
+            const rr = rpc.query({ route: "/get_order_detail", params:{order_id: ev.target.datasets.order_id }});
+            console.log("hhhhh", rr);
+            this.render(true);
+        }
+
+        
+
         static template = xml`<div>
         <table class="table" border="2">
             <thead>
@@ -66,8 +77,9 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
             <tbody>
                     <t t-set="summ" t-value="0.0"/>
                         <t t-foreach="partners" t-as="d" t-key="id">
+                            
                             <tr>
-                                <td><a t-attf-href="/get_data/{{d.id}}"><span t-esc="d.name"/></a></td>
+                                <td><a role="button" href="/get_data" t-on-click="details()" t-att-data-order_id="d.id"><span t-esc="d.name"/></a></td>
                                 <td><span t-esc="d.date_order"/></td>
                                 <td><span t-esc="d.amount_total"/></td>
                                 <t t-set="summ" t-value="summ + d.amount_total" />
@@ -81,6 +93,7 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
         </table>
         </div>
         `;
+
     }
 
     function setup() {

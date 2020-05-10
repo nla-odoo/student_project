@@ -1,0 +1,20 @@
+#btnstyle {
+    position: fixed;
+    bottom: 0px;
+    right: 6px;
+    min-width: 100px;
+    cursor: pointer;
+    white-space: nowrap;
+    background-color: rgba(60, 60, 60, 0.6);
+    font-family: 'Lucida Grande', 'Lucida Sans Unicode', Arial, Verdana, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px;
+    color: white;
+    text-shadow: rgb(59, 76, 88) 1px 1px 0px;
+    border: 1px solid rgb(80, 80, 80);
+    border-bottom: 0px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    z-index: 5;
+}

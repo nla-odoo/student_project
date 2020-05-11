@@ -11,6 +11,5 @@ odoo.define('task_owl.sub_component', function (require) {
   <a href="/product_list">Home</a>
 </div>`;
     }
-sub_component.props = ["item_in_cart"];
     return sub_component;
 });

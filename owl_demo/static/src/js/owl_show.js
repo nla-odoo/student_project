@@ -11,7 +11,7 @@ odoo.define('owl_demo.owl_show', function (require) {
     const { whenReady } = owl.utils;
 
     class OwlDemo extends Component {
-         static template = xml`<div>todo app hello</div>`;
+         static template = xml`<div></div>`;
     }
 
     function setup() {

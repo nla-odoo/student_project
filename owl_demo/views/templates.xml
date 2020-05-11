@@ -4,7 +4,6 @@
         <template id="my_menu" name="mymenu" inherit_id="portal.portal_breadcrumbs"  priority="1">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
                 <li style="margin-left: 15px; font-weight: bold;"><a href="/owl_demo/">Owl_demo</a></li>
-                <li style="margin-left: 15px; font-weight: bold;"><a href="/saleorder_detail">/saleorder_detail</a></li>
             </xpath>
         </template>
         <template id="assets_frontend" name="assets" inherit_id="web.assets_frontend">
@@ -21,8 +20,8 @@
                 <div class="my_component">
                 </div>
                 <div class="my_dynamic_component">
-                     <div class='col-md-5'>
-                        <canvas id="myChart" style="width: 80%; height: 80%"></canvas>    
+                     <div class='col-md-5 border border-light rounded mx-auto'>
+                        <canvas id="myChart" style="width: 80%; height: 80%;"></canvas>    
                     </div>
                     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
                 </div>

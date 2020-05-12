@@ -15,12 +15,11 @@ class OwlController(http.Controller):
 
     @http.route('/inquirey', type='json', auth="public", csrf=False)
     def get_leads(self, **post):
-        return request.env['crm.lead'].sudo().search_read([], ['name', 'description', 'partner_id'])
-
-    # @http.route(['/inquirey/'], auth='public')
-    # def Inquirey(self, **kw):
-    #     partner = request.env.user.partner_id
-    #     return http.request.render({'partner': partner})
+        partner = request.env.user.partner_id
+        inquiries = http.request.env['crm.lead'].sudo().search([('partner_id', '=', partner.id)])
+        print("\n\n\n\n\n\n", inquiries)
+        return request.env['crm.lead'].sudo().search_read([], ['name', 'description', 'partner_id', 'type'])
+        # return request.env['crm.lead'].sudo().search_read([], ['name', 'description', 'partner_id', 'type']).mapped('partner_id')
 
     @http.route('/lead/form/', auth="public", type="json", csrf=False)
     def lead_form(self, **kw):
@@ -31,17 +30,3 @@ class OwlController(http.Controller):
                     'user_id': False
                     }])
         return {'var': var}
-
-    # @http.route('/services/form', auth="user", type="json", csrf=False)
-    # def services_form(self, **kw):
-    #     print('\n\n\n\n\n\n\n\n', kw)
-    #     pm = request.env['product.product'].sudo().create([{
-    #                 'name': kw.get('name'),
-    #                 'purchase_ok': kw.get('purchase_ok'),
-    #                 'sale_ok': kw.get('sale_ok'),
-    #                 'type': kw.get('type'),
-    #                 'standard_price': kw.get('standard_price'),
-    #                 'list_price': kw.get('list_price'),
-    #                 }])
-    #     # return http.local_redirect('/owl_demo')
-    #     return {"pm": pm}

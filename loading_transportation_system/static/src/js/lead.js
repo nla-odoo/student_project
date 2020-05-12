@@ -34,11 +34,13 @@ odoo.define('loading_transportation_system.lead', function (require) {
             <th>Name</th>
             <th>Description</th>
             <th>Partner ID</th>
+            <th>Type</th>
         </tr>
         <tr t-foreach="leads" t-as="lead">
         <td><t t-esc="lead.name"/></td>
         <td><t t-esc="lead.description"/></td>
         <td><t t-esc="lead.partner_id"/></td>
+        <td><t t-esc="lead.type"/></td>
         </tr>
         </table>
         </div>`

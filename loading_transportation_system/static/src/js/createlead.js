@@ -19,22 +19,25 @@ odoo.define('loading_transportation_system.createlead', function (require) {
             name:"",
         });
     }
-        async willStart() {
-            this.lead = await this.getLead();
+      
+
+    async willStart() {
+            this.leadsdata = await this.getLeads();
         }
 
-        async getLead () {
-           return this.myleads;
+        async getLeads () {
+            const leads = await rpc.query({route: "/inquirey"});
+            return leads;
         }
-        get myleads ()  {
-            debugger
-            return this.lead;
+        get leads ()  {
+            return this.leadsdata;
         }
+
 
         async _onClickLink(ev) {
             this.lead = await rpc.query({ route: "/lead/form", 
                 params:{name: this.state.name , 
-                    description: this.state.description
+                    description: this.state.description 
                 }});
             this.render(true);
           
@@ -54,6 +57,7 @@ odoo.define('loading_transportation_system.createlead', function (require) {
                         <label>Description</label>
                         <input type="text" name='description' t-model="state.description" class="form-control"/>
                     </div>
+
                 <a t-on-click="_onClickLink" class="btn btn-primary">Submit</a>
                 </form>
             </div>

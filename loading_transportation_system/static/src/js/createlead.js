@@ -11,7 +11,7 @@ odoo.define('loading_transportation_system.createlead', function (require) {
     const { xml } = owl.tags;
     const { whenReady } = owl.utils;
 
-    class OwlDynamicDemo extends Component {
+    class CreateLead extends Component {
         constructor() {
         super(...arguments);
         this.state = useState({
@@ -20,19 +20,19 @@ odoo.define('loading_transportation_system.createlead', function (require) {
         });
     }
         async willStart() {
-            this.product = await this.getProduct();
+            this.lead = await this.getLead();
         }
 
-        async getProduct () {
-           return this.service;
+        async getLead () {
+           return this.myleads;
         }
-        get service ()  {
+        get myleads ()  {
             debugger
-            return this.product;
+            return this.lead;
         }
 
         async _onClickLink(ev) {
-            this.product = await rpc.query({ route: "/lead/form", 
+            this.lead = await rpc.query({ route: "/lead/form", 
                 params:{name: this.state.name , 
                     description: this.state.description
                 }});
@@ -45,14 +45,14 @@ odoo.define('loading_transportation_system.createlead', function (require) {
         <div>
             <div>
                 <form method="post">
-                    
-                    <div>
+                    <center><h1>Create Inquirey</h1></center>
+                    <div class="form-group">
                         <label>Name</label>
-                        <input type="text" name='name' t-model="state.name"/>
+                        <input type="text" name='name' t-model="state.name" class="form-control"/>
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label>Description</label>
-                        <input type="text" name='description' t-model="state.description"/>
+                        <input type="text" name='description' t-model="state.description" class="form-control"/>
                     </div>
                 <a t-on-click="_onClickLink" class="btn btn-primary">Submit</a>
                 </form>
@@ -63,13 +63,13 @@ odoo.define('loading_transportation_system.createlead', function (require) {
     }
 
     function setup() {
-        const OwlDynamicDemoInstance = new OwlDynamicDemo();
-        OwlDynamicDemoInstance.mount($('.create_lead')[0]);
+        const CreateLeadInstance = new CreateLead();
+        CreateLeadInstance.mount($('.create_lead')[0]);
     }
 
     whenReady(setup);
 
-    return OwlDynamicDemo;
+    return CreateLead;
 });
 
 

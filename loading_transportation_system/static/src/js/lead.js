@@ -28,7 +28,7 @@ odoo.define('loading_transportation_system.lead', function (require) {
 
         
         static template = xml`<div>
-        <center><h1>Inquiries</h1></center>
+        <center><h1>Leads</h1></center>
         <table class="table table-stripded">
         <tr>
             <th>Name</th>

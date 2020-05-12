@@ -66,19 +66,12 @@ odoo.define('owl_work.btn_component', function(require){
             const self = this;
             rpc.query({route: 'get_livechat_mail_channel_vals'})
             .then(function (response) {
-                let def = session.rpc('/im_livechat/get_session', {
+                let def = session.rpc('/open_channel', {
                     channel_id : response.livechat_channel_id,
-                    anonymous_name : response.anonymous_name,
-                    previous_operator_id: response.livechat_operator_id,
-                }, {shadow: true});
+                });
 
                 def.then(function (livechatData) {
-                if (!livechatData) {
-                        const a = new OwlChat();
-                        const div = document.querySelector('.oe_empty');
-                        $(self.el.firstElementChild).hide();
-                        a.mount(div);
-                    }
+                    debugger;
                 });
             });
         }
@@ -86,5 +79,5 @@ odoo.define('owl_work.btn_component', function(require){
 
     const workInstance = new OwlWork();
     const div = document.querySelector('.oe_empty');
-    workInstance.mount(div);
+    workInstance.mount(document.body);
 });

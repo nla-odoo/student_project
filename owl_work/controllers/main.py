@@ -19,7 +19,7 @@ class OwlController(http.Controller):
         #     visitor_user = http.request.env['res.users'].browse(user_id)
         #     if visitor_user and visitor_user.active:  # valid session user (not public)
         #         channel_partner_to_add.append((4, visitor_user.partner_id.id))
-        return {
+        mail_channel_vals = {
             'channel_partner_ids': channel_partner_to_add,
             'livechat_active': True,
             'livechat_operator_id': operator_partner_id,
@@ -27,7 +27,16 @@ class OwlController(http.Controller):
             'anonymous_name': 3,
             'country_id': 2,
             'channel_type': 'livechat',
-            # 'name': ' '.join([visitor_user.display_name if visitor_user else anonymous_name, operator.livechat_username if operator.livechat_username else operator.name]),
+            'name': 'sd',
             'public': 'private',
             'email_send': False,
         }
+
+        mail_channel = http.request.env["mail.channel"].with_context(mail_create_nosubscribe=False).sudo().create(mail_channel_vals)
+        print('mail_channel', mail_channel)
+        mail_channel._broadcast([operator_partner_id])
+        return mail_channel.sudo().channel_info()[0]
+
+    @http.route('/open_channel', type='json', auth='public', csrf=False, website=True)
+    def open_channel(self, channel_id):
+        print(channel_id)

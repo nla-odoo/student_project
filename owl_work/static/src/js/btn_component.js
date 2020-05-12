@@ -57,7 +57,7 @@ odoo.define('owl_work.btn_component', function(require){
             <div id="chat_btn" class="d-flex p-2 justify-content-center">
                 <button id="btnstyle" t-on-click="_onClickButton">
                     Have a Question? Chat with us...
-                 </button>
+                </button>
             </div>
         `;
         state = useState({ value: "Helllooooo"})

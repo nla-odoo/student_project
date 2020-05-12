@@ -32,11 +32,13 @@ class OwlController(http.Controller):
             'email_send': False,
         }
 
+        print("******************************************")
         mail_channel = http.request.env["mail.channel"].with_context(mail_create_nosubscribe=False).sudo().create(mail_channel_vals)
-        print('mail_channel', mail_channel)
+        print('mail_channel***************************', mail_channel)
         mail_channel._broadcast([operator_partner_id])
+        print(">>>>>>>>>>>>>>>", mail_channel.sudo().channel_info()[0])
         return mail_channel.sudo().channel_info()[0]
 
-    @http.route('/open_channel', type='json', auth='public', csrf=False, website=True)
-    def open_channel(self, channel_id):
-        print(channel_id)
+    # @http.route('/open_channel', type='json', auth='public', csrf=False, website=True)
+    # def open_channel(self, channel_id):
+    #     print('++++++++++++++++++++++++++++++++', channel_id)

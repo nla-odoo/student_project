@@ -6,6 +6,7 @@ odoo.define('loading_transportation_system.createlead', function (require) {
         return Promise.reject("DOM doesn't contain '.create_lead'");
     }
     const rpc = require('web.rpc');
+    const lead = require('loading_transportation_system.lead');
 
     const { Component, hooks, useState } = owl;
     const { xml } = owl.tags;
@@ -13,34 +14,22 @@ odoo.define('loading_transportation_system.createlead', function (require) {
 
     class CreateLead extends Component {
         constructor() {
-        super(...arguments);
-        this.state = useState({
-            description: "",
-            name:"",
-        });
-    }
-      
-
-    async willStart() {
-            this.leadsdata = await this.getLeads();
+            super(...arguments);
+            this.state = useState({
+                description: "",
+                name:"",
+            });
         }
-
-        async getLeads () {
-            const leads = await rpc.query({route: "/inquirey"});
-            return leads;
-        }
-        get leads ()  {
-            return this.leadsdata;
-        }
-
 
         async _onClickLink(ev) {
-            this.lead = await rpc.query({ route: "/lead/form", 
-                params:{name: this.state.name , 
-                    description: this.state.description 
-                }});
-            this.render(true);
-          
+            const self = this;
+            rpc.query({ route: "/lead/form",
+                params:{name: this.state.name,
+                description: this.state.description
+            }}).then(function (result) {
+                self.render(true);
+                self.env.qweb.forceUpdate();
+            });
         }
 
 
@@ -64,6 +53,8 @@ odoo.define('loading_transportation_system.createlead', function (require) {
         </div>
         </div>
         `;
+
+        static components = {lead};
     }
 
     function setup() {

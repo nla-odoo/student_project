@@ -16,17 +16,17 @@ class OwlController(http.Controller):
     @http.route('/inquirey', type='json', auth="public", csrf=False)
     def get_leads(self, **post):
         partner = request.env.user.partner_id
-        inquiries = http.request.env['crm.lead'].sudo().search([('partner_id', '=', partner.id)])
-        print("\n\n\n\n\n\n", inquiries)
+        return http.request.env['crm.lead'].sudo().search_read([('partner_id', '=', partner.id)], ['name', 'description', 'partner_id', 'type'])
         return request.env['crm.lead'].sudo().search_read([], ['name', 'description', 'partner_id', 'type'])
         # return request.env['crm.lead'].sudo().search_read([], ['name', 'description', 'partner_id', 'type']).mapped('partner_id')
 
     @http.route('/lead/form/', auth="public", type="json", csrf=False)
     def lead_form(self, **kw):
         print('\n\n\n\n\n\n\n\n', kw)
-        var = request.env['crm.lead'].sudo().create([{
+        request.env['crm.lead'].sudo().create([{
                     'description': kw.get('description'),
                     'name': kw.get('name'),
-                    'user_id': False
+                    'user_id': False,
+                    'partner_id': request.env.user.partner_id.id
                     }])
-        return {'var': var}
+        return self.get_leads()

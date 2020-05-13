@@ -12,7 +12,6 @@ odoo.define('OWL_DEMO.owl_component', function (require) {
 
     class OwlDemo extends Component {
          static template = xml`<div>
-         <h3>Feedback</h3>
          <div>
             Name: <input type="text" id="fname" name="fname"/><br/>
             Email: <input type="text" id="fname" name="fname"/><br/>

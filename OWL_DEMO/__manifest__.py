@@ -1,7 +1,7 @@
 {
     'name': 'Owl Demo',
     'summary': 'Owl Demo',
-    'depends': ['base', 'portal'],
+    'depends': ['base', 'portal', 'crm'],
     'data': [
         'views/templates.xml'
     ],

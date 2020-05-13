@@ -6,8 +6,19 @@
                 <script type="text/javascript" src="/OWL_DEMO/static/src/js/owl_component.js"></script>
                 <script type="text/javascript" src="/OWL_DEMO/static/src/js/owl_dynamic_component.js"></script>
                 <script type="text/javascript" src="/OWL_DEMO/static/src/js/owl_feedback_component.js"></script>
+                <script type="text/javascript" src="/OWL_DEMO/static/src/js/owl_rating_component.js"></script>
+                <script type="text/javascript" src="/OWL_DEMO/static/src/js/owl_complain_component.js"></script>
+                <script type="text/javascript" src="/OWL_DEMO/static/src/js/createlead.js"></script>
             </xpath>
         </template>
+
+        <template id="OWL_DEMO.create_lead">
+            <t t-call="portal.portal_layout">
+                <!-- <div class="my_leads"/> -->
+                <div class="create_lead"/>
+            </t>
+        </template>
+
 
         <template id="OWL_DEMO.demo_template">
             <t t-call="portal.portal_layout">

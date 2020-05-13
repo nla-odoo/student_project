@@ -1,4 +1,4 @@
-odoo.define('OWL_DEMO.owl_component', function (require) {
+odoo.define('OWL_DEMO.owl_complain_component', function (require) {
     "use strict";
 
     require('web.dom_ready');
@@ -13,6 +13,18 @@ odoo.define('OWL_DEMO.owl_component', function (require) {
     class OwlComplain extends Component {
          static template = xml`<div>
          <h3>Complain</h3>
+
+         
+          <form name="frm">
+        <div class="form-group col-4">
+           <input type="email" name="email" class="form-control"/><br/>
+           <input type="password" name="password" class="form-control"/><br/>
+           <input type="text" name="feedback" class="form-control"/><br/>
+           <input type="submit" name="submit" class="btn btn-primary"/>
+           </div>
+        </form>
+
+
          </div>`;
     }
 

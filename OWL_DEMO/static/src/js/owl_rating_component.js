@@ -1,4 +1,4 @@
-odoo.define('OWL_DEMO.owl_component', function (require) {
+odoo.define('OWL_DEMO.owl_rating_component', function (require) {
     "use strict";
 
     require('web.dom_ready');
@@ -13,6 +13,14 @@ odoo.define('OWL_DEMO.owl_component', function (require) {
     class OwlRating extends Component {
          static template = xml`<div>
          		<h3>Rating</h3>
+
+
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star"></span>
+        
          </div>`;
     }
 

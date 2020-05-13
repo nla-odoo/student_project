@@ -54,8 +54,8 @@ class OwlController(http.Controller):
             return False
 
         # find the author from the user session
-        author_id = False
-        email_from = 'Visitor'
+        author_id = 1
+        email_from = 'Admin'
         # post a message without adding followers to the channel. email_from=False avoid to get author from email data
         body = tools.plaintext2html(message_content)
         message = mail_channel.with_context(mail_create_nosubscribe=True).message_post(author_id=author_id, email_from=email_from, body=body, message_type='comment', subtype_xmlid='mail.mt_comment')

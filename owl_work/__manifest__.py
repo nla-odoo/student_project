@@ -3,7 +3,7 @@
 {
     'name': 'Owl Work',
     'summary': 'Owl Work',
-    'depends': ['base', 'portal'],
+    'depends': ['base', 'im_livechat', 'portal', 'website'],
     'data': [
         'views/templates.xml',
     ],

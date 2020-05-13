@@ -2,9 +2,6 @@ odoo.define('owl_work.btn_component', function(require){
     "use strict";
 
     var session = require('web.session');
-    var WebsiteLivechat = require('im_livechat.model.WebsiteLivechat');
-    var WebsiteLivechatMessage = require('im_livechat.model.WebsiteLivechatMessage');
-    var WebsiteLivechatWindow = require('im_livechat.WebsiteLivechatWindow');
     var rpc = require('web.rpc');
          
     require('web.dom_ready');
@@ -15,12 +12,17 @@ odoo.define('owl_work.btn_component', function(require){
     class OwlChat extends Component {
 
         static template = xml`
-            <div>
-                <div class="d-flex p-2 justify-content-center">
-                    <input id="txt_chat_input" type="text" t-on-keyup="addChat"/>
-                    <input type="submit" t-on-click="_sendChat"/>
+            <div class="chatbox">
+                <div class="fa fa-close"></div>
+                <div class="chatlogs">
+                    <div class="chat">
+                        <div id="chat_div" style="display: block;"></div>
+                    </div>
                 </div>
-                <center><div id="chat_div" style="display: block;"></div></center>
+                <div class="chat-form">
+                    <input id="txt_chat_input" class="chat_txt" type="text" t-on-keyup="addChat"/>
+                    <input class="btn btn-secondary" type="submit" value="Send" t-on-click="_sendChat"/>
+                </div>
             </div>
         `;
 
@@ -39,15 +41,22 @@ odoo.define('owl_work.btn_component', function(require){
             this._sendChatToOther(tci.value);
             chat_div.appendChild(chat_lbl);
             tci.value = "";
+            this._reciveChatToOther(tci.value);
         }
 
         _sendChatToOther(chat) {
             return session
-            .rpc('/mail/chat_post', {uuid: 1, message_content: chat})
+            .rpc('/mail/send_message', {uuid: this.props.uuid, message_content: chat})
             .then(function (messageId) {
-                if (!messageId) {
-                    debugger;
-                }
+                debugger;
+            });
+        }
+
+        _reciveChatToOther(chat) {
+            return session
+            .rpc('/mail/recive_message', {uuid: this.props.uuid, message_content: chat})
+            .then(function (messageId) {
+                debugger;
             });
         }
     }
@@ -66,18 +75,20 @@ odoo.define('owl_work.btn_component', function(require){
             const self = this;
             rpc.query({route: 'get_livechat_mail_channel_vals'})
             .then(function (response) {
-                let def = session.rpc('/open_channel', {
-                    channel_id : response.livechat_channel_id,
-                });
-
-                def.then(function (livechatData) {
-                    debugger;
-                });
+                if (response) {
+                    const cc = document.querySelector("#chat_container");
+                    if (!cc) {
+                        const OwlChatInstance = new OwlChat(self, response);
+                        OwlChatInstance.mount(document.body);
+                    }
+                } else {
+                    alert('No operators are available, Please try to contact later')
+                }
             });
         }
+        static Components = {OwlChat};
     }
 
     const workInstance = new OwlWork();
-    const div = document.querySelector('.oe_empty');
     workInstance.mount(document.body);
 });

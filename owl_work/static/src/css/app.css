@@ -1,4 +1,4 @@
-#btnstyle {
+#chat_btn #btnstyle {
     position: fixed;
     bottom: 0px;
     right: 6px;
@@ -59,8 +59,8 @@
 .chat_txt {
     background: #fbfbfb;
     width: 75%;
-    height: 30px;
-    border: 2px solid #eee;
+    height: 35px;
+    border: 1px solid #757876;
     border-radius: 3px;
     resize: none;
     font-size: 18px;

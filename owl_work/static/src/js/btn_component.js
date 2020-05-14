@@ -13,7 +13,7 @@ odoo.define('owl_work.btn_component', function(require){
 
         static template = xml`
             <div class="chatbox">
-                <div class="fa fa-close"></div>
+                <div class="fa fa-close" t-on-click="closeChatbord"></div>
                 <div class="chatlogs">
                     <div class="chat">
                         <div id="chat_div" style="display: block;"></div>
@@ -30,6 +30,11 @@ odoo.define('owl_work.btn_component', function(require){
             if (ev.keyCode === 13) {
                 this._sendChat();
             }
+        }
+
+        closeChatbord(ev) {
+            ev.target.parentNode.setAttribute('style', 'display: none');
+            document.querySelector('#btnstyle').removeAttribute('style');
         }
 
         _sendChat() {
@@ -80,6 +85,7 @@ odoo.define('owl_work.btn_component', function(require){
                     if (!cc) {
                         const OwlChatInstance = new OwlChat(self, response);
                         OwlChatInstance.mount(document.body);
+                        self.el.firstElementChild.setAttribute('style','display:none');
                     }
                 } else {
                     alert('No operators are available, Please try to contact later')

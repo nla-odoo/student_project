@@ -3,7 +3,7 @@
 {
     'name': 'loading_transportation_system',
     'summary': 'loading_transportation_system',
-    'depends': ['base', 'portal', 'sale_management', ],
+    'depends': ['base', 'portal', 'crm', ],
     'data': [
         'views/templates.xml',
     ],

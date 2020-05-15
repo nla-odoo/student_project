@@ -12,48 +12,21 @@
             </xpath>
         </template>
 
-        <template id="OWL_DEMO.create_lead">
-            <t t-call="portal.portal_layout">
-                <!-- <div class="my_leads"/> -->
-                <div class="create_lead"/>
-            </t>
-        </template>
-
 
         <template id="OWL_DEMO.demo_template">
             <t t-call="portal.portal_layout">
-                <div class="my_component">
-                </div>
-                <div class="my_dynamic_component"/>
-            </t>
-        </template>
-
-        <template id="OWL_DEMO.demo_template_complain">
-            <t t-call="portal.portal_layout">
                 <!-- <div class="my_component"> -->
                 <!-- </div> -->
-                <!-- <div class="my_dynamic_component"/> -->
-                <div class="my_complain_component">
-                </div>
-            </t>
-        </template>
-
-        <template id="OWL_DEMO.demo_template_feedback">
-            <t t-call="portal.portal_layout">
-                <!-- <div class="my_component"> -->
-                <!-- </div> -->
-                <!-- <div class="my_dynamic_component"/> -->
-                <div class="my_feedback_component"/>
-            </t>
-        </template>
-
-        <template id="OWL_DEMO.demo_template_rating">
-            <t t-call="portal.portal_layout">
-                <!-- <div class="my_component"> -->
-                <!-- </div> -->
-                <!-- <div class="my_dynamic_component"/> -->
+                <div class="my_rating_component2"/>
                 <div class="my_rating_component"/>
             </t>
         </template>
+
+<!--         <template id="loading_transportation_system.demo_template">
+            <t t-call="portal.portal_layout">
+                <div class="my_leads"/>
+                <div class="create_lead"/>
+            </t>
+        </template> -->
     </data>
 </odoo>

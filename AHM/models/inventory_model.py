@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 # from datetime import datetime
-from odoo import models, fields, api
+from odoo import fields, models
 
 
 class Medicine(models.Model):
@@ -23,20 +26,6 @@ class Bill(models.Model):
     comp = fields.Char(string="Company", required=True)
     price = fields.Float(string="Price", required=True)
     quantity = fields.Integer(string="Quantity", required=True)
-
-    @api.model
-    def create(self, vals):
-        return super(Bill, self).create(vals)
-
-    def write(self, vals):
-        self.env['ahm.bill'].browse([1, 2])._context
-        return super(Bill, self).write(vals)
-
-    def copy(self, default=None):
-        return super(Bill, self).copy()
-
-    def unlink(self, default=None):
-        return super(Bill, self).unlink()
 
 
 class DoctorEquipment(models.Model):

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+<template id="portal_patient_payment">
+        <title>Patient Payment Portal</title>
+        <t t-call="portal.portal_layout">
+            <body oncontextmenu="return false;">
+                <div class="oe_structure">
+                    <div class="container">
+                        <div class="card text-center">
+                            <div class="card-header">
+                                Payment
+                            </div>
+                                <div class="card-body">
+                                    <h5>
+                                        <input type="hidden" t-att-value="appointments_id.id" name="appointments_id"/>
+                                    </h5>
+                                    <h5 class="card-text">
+                                        <h4><t t-esc="appointments_id.org_id.org_name" readonly="1"/></h4>
+                                    </h5>
+                                    <h5 class="card-text">
+                                        <h4><input type="text" readonly="1"  class="border-0" t-att-value="appointments_id.visit_charges" name="visit_charges" disabled="disabled"/></h4>
+                                    </h5>
+                                    <button name="pay_now" class="btn btn-primary" id="pay_now">Proceed To Pay</button>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    <h3> Happy To Pay! :)</h3>
+                                </div>
+                            </div>
+                               <script type="text/javascript" src="/AHM/static/src/js/ahm_payment.js"/>
+                    </div>
+                </div>
+            </body>
+        </t>
+    </template>
+
+    <template id="paytm_process">
+        <title>Payment Confirm Portal</title>
+        <t t-call="portal.portal_layout">
+            <div class="jumbotron text-center">
+                <div class="container">
+                    <p class="display-5"><h3>Transaction Id:- <t t-esc="contract.acquirer_ref"/></h3></p>
+                    <p class="display-5"><h3>Date Of Payment:- <t t-esc="contract.payment_date"/></h3></p>
+                    <p class="display-5"><h3>Name Of Patient:- <t t-esc="contract.name"/></h3></p>
+                </div>
+                <h6 class="display-4">Your Payment is Successfully Done!</h6>
+                <p>
+                    Having trouble? <a href="#">Contact us</a>
+                </p>
+                <p class="lead">
+                    <a class="btn btn-primary btn-sm" href="/appointment" role="button">Continue to homepage</a>
+                </p>
+            </div>
+        </t>
+    </template>
+</odoo>

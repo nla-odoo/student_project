@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="total_charges_view_tree" model="ir.ui.view">
+        <field name="name">ahm.total.charges.tree</field>
+        <field name="model">ahm.total.charges</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date"/>
+                <field name="app_id"/>
+                <field name="medicine_charges"/>
+                <field name="visiting_charges"/>
+                <field name="total_bill"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="total_charges_view_form" model="ir.ui.view">
+        <field name="name">ahm.total.charges.form</field>
+        <field name="model">ahm.total.charges</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="date"/>
+                        <field name="app_id"/>
+                        <field name="medicine_charges"/>
+                        <field name="visiting_charges"/>
+                        <field name="total_bill"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record id="total_charges_action" model="ir.actions.act_window">
+        <field name="name">Total Charges</field>
+        <field name="res_model">ahm.total.charges</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="registration_menu" name="Animal Health Monitoring" web_icon="AHM,static/description/iv.png"/>
+    
+    <menuitem id="Appointment_Menu" name="Animal" parent="AHM.registration_menu"/>
+    
+    <menuitem id="Report_Menu" name="Report" parent="AHM.registration_menu"/>
+    
+    <menuitem id="Appointment_Menu" name="Animal" parent="AHM.registration_menu" sequence="1"/>
+    
+    <menuitem action="total_charges_action" id="total_charges_sub_menu_1" name="Patient Total Bill" parent="AHM.Appointment_Menu"/>
+
+</odoo>

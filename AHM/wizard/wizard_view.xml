@@ -12,13 +12,13 @@
                         <field name="comp"/>
                     </group>
                     <footer>
-                        <button name="get_default_stock" string="Finished" type="object" class="btn-primary"/>
-                        <button string="Cancel" class="btn-default" special="cancel" />
+                        <button class="btn-primary" name="get_default_stock" string="Finished" type="object"/>
+                        <button class="btn-default" special="cancel" string="Cancel"/>
                     </footer>
                 </form>
             </field>
         </record>
-
+    
         <record id="action_view_wizard" model="ir.actions.act_window">
             <field name="name">Wizard</field>
             <field name="type">ir.actions.act_window</field>
@@ -26,7 +26,5 @@
             <field name="view_id" ref="ahm_stocks_wizard"/>
             <field name="target">new</field>
         </record>
-
-        <!-- <menuitem id="wizard_memu" name="Wizard Menu" parent="AHM.Inventory_Menu" action="action_view_wizard"/> -->
     </data>
 </openerp>

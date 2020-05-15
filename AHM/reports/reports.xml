@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <odoo>
 
     <report
@@ -45,15 +44,15 @@
             </t>
         </template>
 
-    <report
+    <!-- <report
         id="report_total_charges"
         model="ahm.total.charges"
         string="Patient Total Bill"
         name="AHM.report_total_charges"
         file="AHM.report_total_charges"
         report_type="qweb-pdf" />
-
-        <template id="report_total_charges">
+ -->
+        <!-- <template id="report_total_charges">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="doc">
                     <t t-call="web.external_layout"> 
@@ -83,8 +82,7 @@
                 </t>
             </t>
         </template>
-
-
+ -->
 <report
         id="report_medicine_bill"
         model="ahm.bill"

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="registration_view_search" model="ir.ui.view">
+        <field name="name">ahm.registration.search</field>
+        <field name="model">ahm.registration</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="contact"/>
+            </search>
+        </field>
+    </record>
+    
+    <record id="registration_view_tree" model="ir.ui.view">
+        <field name="name">ahm.registration.tree</field>
+        <field name="model">ahm.registration</field>
+        <field name="arch" type="xml">
+            <tree string="Registration Form">
+                <field invisible="1" name="company_id"/>
+                <field name="org_doc_id"/>
+                <field name="name"/>
+                <field name="contact"/>
+                <field name="email"/>
+                <field name="address"/>
+                <field name="specialization"/>
+                <field name="opening_time"/>
+                <field name="closing_time"/>
+                <field name="workingdays"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="registration_view_form" model="ir.ui.view">
+        <field name="name">ahm.registration.form</field>
+        <field name="model">ahm.registration</field>
+        <field name="arch" type="xml">
+            <form string="Registration Form">
+                <sheet>
+                    <group>
+                        <group>
+                            <field class="oe_avatar oe_left" name="image" widget="image"/>
+                        </group>
+                        <group string="Name">
+                            <field invisible="1" name="company_id"/>
+                            <field name="name"/>
+                        </group>
+                        <group string="Personal Details">
+                            <field name="contact"/>
+                            <field name="email"/>
+                            <field name="address"/>
+                        </group>
+                        <group string="Additional">
+                            <field name="specialization"/>
+                            <field name="opening_time"/>
+                            <field name="closing_time"/>
+                            <field name="workingdays" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record id="registration_view_kanban" model="ir.ui.view">
+        <field name="name">ahm.registration.kanban</field>
+        <field name="model">ahm.registration</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field invisible="1" name="company_id"/>
+                <field name="name"/>
+                <field name="image" widget="oe_avatar"/>
+                <field name="contact"/>
+                <field name="email"/>
+                <field name="address"/>
+                <field name="specialization"/>
+                <field name="opening_time"/>
+                <field name="closing_time"/>
+                <field name="workingdays"/>
+                <field name="id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <strong>
+                                Dr.
+                                <field name="name"/>
+                                <div class="oe_kanban_avatar float-right">
+                                    <img alt="Image" height="75" t-att-src="kanban_image('ahm.registration','image',record.id.raw_value)" width="75"/></div>
+                                <br/>Contact:
+                                <field name="contact"/>
+                                <br/>
+                                Email:
+                                <field name="email"/>
+                                <br/>
+                                Specialization:
+                                <field name="specialization"/>
+                            </strong>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    
+    <record id="registration_action" model="ir.actions.act_window">
+        <field name="name">Doctor Registration</field>
+        <field name="res_model">ahm.registration</field>
+        <field name="view_mode">tree,form,kanban</field>
+    </record>
+    
+    <record id="organization_registration_view_search" model="ir.ui.view">
+        <field name="name">ahm.organization_registration.search</field>
+        <field name="model">ahm.organization.registration</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="org_name"/>
+                <field name="contact"/>
+            </search>
+        </field>
+    </record>
+    
+    <record id="organization_registration_view_tree" model="ir.ui.view">
+        <field name="name">ahm.organization_registration.tree</field>
+        <field name="model">ahm.organization.registration</field>
+        <field name="arch" type="xml">
+            <tree string="Animal Registration Form">
+                <field name="org_name"/>
+                <field invisible="1" name="doc_id"/>
+                <field name="contact"/>
+                <field name="helpline_number"/>
+                <field name="email"/>
+                <field name="facility"/>
+                <field name="address"/>
+                <field name="opening_time"/>
+                <field name="closing_time"/>
+                <field name="workingdays"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="organization_registration_view_form" model="ir.ui.view">
+        <field name="name">ahm.organization_registration.form</field>
+        <field name="model">ahm.organization.registration</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group string="Organization Registration Detail">
+                            <field name="org_name"/>
+                            <field name="helpline_number"/>
+                            <field name="contact"/>
+                            <field name="email"/>
+                            <field name="facility"/>
+                        </group>
+                        <group string="Working Details">
+                            <field name="address"/>
+                            <field name="opening_time"/>
+                            <field name="closing_time"/>
+                            <field name="workingdays" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="doc_id"/>
+                        </group>
+                        <group>
+                            <field name="animal_name"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record id="organization_registration_view_kanban" model="ir.ui.view">
+        <field name="name">ahm.organization_registration.kanban</field>
+        <field name="model">ahm.organization.registration</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="company_id"/>
+                <field name="org_name"/>
+                <field name="doc_id"/>
+                <field name="contact"/>
+                <field name="helpline_number"/>
+                <field name="email"/>
+                <field name="facility"/>
+                <field name="address"/>
+                <field name="opening_time"/>
+                <field name="closing_time"/>
+                <field name="workingdays"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <strong>
+                                Organization Name : 
+                                <field name="org_name"/>
+                                <br/>
+                                Contact No. :
+                                <field name="contact"/>
+                                <br/>
+                                Facilty : 
+                                <field name="facility"/>
+                                <br/>
+                            </strong>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    
+    <record id="organization_registration_action" model="ir.actions.act_window">
+        <field name="name">Organization Registration</field>
+        <field name="res_model">ahm.organization.registration</field>
+        <field name="view_mode">tree,form,kanban</field>
+    </record>
+    
+    <menuitem id="staff_management" name="Veterinary" parent="AHM.registration_menu" sequence="2"/>
+    
+    <menuitem action="registration_action" id="registration_sub_menu_1" name="Doctor" parent="AHM.staff_management" sequence="1"/>
+    
+    <menuitem action="appointment_action" id="appointment_sub_menu_1" name="Appointment" parent="AHM.registration_menu" sequence="1"/>
+    
+    <menuitem action="organization_registration_action" id="organization_registration_sub_menu_1" name="Organization" parent="AHM.staff_management"/>
+
+</odoo>

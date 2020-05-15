@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="patient_detail_view_search" model="ir.ui.view">
+        <field name="name">ahm.patient.detail.search</field>
+        <field name="model">ahm.patient.detail</field>
+        <field name="arch" type="xml">
+            <search>
+                <field filter_domain="[('name', 'like',self)]" name="name" string="Name"/>
+                <group string="Group BY">
+                    <filter context="{'group_by' : 'medicine'}" name="group_by_medicine" string="Medicine"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="animal_registration_view_tree" model="ir.ui.view">
+        <field name="name">ahm.animal_registration.tree</field>
+        <field name="model">ahm.animal.registration</field>
+        <field name="arch" type="xml">
+            <tree string="Animal Registration Form">
+                <field name="breed_name"/>
+                <field name="breed_type"/>
+                <field name="onwer_contact"/>
+                <field name="email"/>
+                <field name="address"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="animal_registration_view_form" model="ir.ui.view">
+        <field name="name">ahm.animal_registration.form</field>
+        <field name="model">ahm.animal.registration</field>
+        <field name="arch" type="xml">
+            <form create="false">
+                <sheet>
+                    <group string="Animal Registration Detail">
+                        <group>
+                            <field class="oe_avatar oe_left" name="image" widget="image"/>
+                            <field name="breed_name"/>
+                            <field name="breed_type"/>
+                        </group>
+                        <group>
+                            <field name="onwer_contact"/>
+                            <field name="email"/>
+                            <field name="address"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record id="animal_registration_view_kanban" model="ir.ui.view">
+        <field name="name">ahm.animal_registration.form</field>
+        <field name="model">ahm.animal.registration</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field class="oe_avatar" name="image" widget="image"/>
+                <field name="breed_name"/>
+                <field name="breed_type"/>
+                <field name="onwer_contact"/>
+                <field name="email"/>
+                <field name="address"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <strong>
+                                <field height="55" name="image" widget="image" width="55"/>
+                                <br/>Breed Name:
+                                <field name="breed_name"/>
+                                <br/>
+                                Owner Contact:
+                                <field name="onwer_contact"/>
+                                <br/>
+                                Email:
+                                <field name="email"/>
+                            </strong>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    
+    <record id="animal_registration_action" model="ir.actions.act_window">
+        <field name="name">Animal Registration</field>
+        <field name="res_model">ahm.animal.registration</field>
+        <field name="view_mode">tree,form,kanban</field>
+    </record>
+    
+    <record id="appointment_view_tree" model="ir.ui.view">
+        <field name="name">ahm.appointment.tree</field>
+        <field name="model">ahm.appointment</field>
+        <field name="arch" type="xml">
+            <tree string="Appointment Form">
+                <field name="breed_type_id" invisible="1"/>
+                <field name="org_id"/>
+                <field name="doc_id" invisible="1"/>
+                <field name="patient_id"/>
+                <field name="name"/>
+                <field name="contact"/>
+                <field name="visiting_date"/>
+                <field name="visiting_time"/>
+                <field name="visit_charges"/>
+                <field name="address"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="appointment_view_form" model="ir.ui.view">
+        <field name="name">ahm.appointment.form</field>
+        <field name="model">ahm.appointment</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button decoration-info="status=='pending'" name="pending" string="Appointment Pending" type="object"/>
+                    <button decoration-info="status=='confirm'" name="confirm" string="Appointment Confirm" type="object"/>
+                    <button decoration-success="status=='done'" name="done" string="Done" type="object"/>
+                    <field name="status" status_visible="confirm,done" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group string="Appointment Detail">
+                        <group>
+                            <field invisible="1" name="hospital_ids"/>
+                            <field name="breed_type_id" invisible="1"/>
+                            <field name="org_id"/>
+                            <field invisible="1" name="add_doc_ids"/>
+                            <field name="doc_id" invisible="1"/>
+                            <field name="patient_id"/>
+                            <field name="name"/>
+                            <field name="address"/>
+                            <field name="contact"/>
+                        </group>
+                        <group>
+                            <field name="visiting_date"/>
+                            <field name="visiting_time"/>
+                            <field name="visit_charges"/>
+                            <field name="order_id" invisible="1"/>
+                            <field name="acquirer_ref" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record id="appointment_action" model="ir.actions.act_window">
+        <field name="name">Appointment</field>
+        <field name="res_model">ahm.appointment</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+    <record id="patient_detail_view_tree" model="ir.ui.view">
+        <field name="name">ahm.patient.detail.tree</field>
+        <field name="model">ahm.patient.detail</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="contact"/>
+                <field name="email"/>
+                <field name="medicine"/>
+                <field name="prescription"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="patient_detail_view_form" model="ir.ui.view">
+        <field name="name">ahm.patient.detail.form</field>
+        <field name="model">ahm.patient.detail</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group string="Patient Detail">
+                        <group>
+                            <field class="oe_avatar oe_left" height="65" name="image" widget="image" width="65"/>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="contact"/>
+                            <field name="email"/>
+                            <field name="medicine"/>
+                            <field name="prescription"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record id="patient_detail_view_kanban" model="ir.ui.view">
+        <field name="name">ahm.patient.detail.kanban</field>
+        <field name="model">ahm.patient.detail</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <field name="contact"/>
+                <field name="email"/>
+                <field name="medicine"/>
+                <field name="prescription"/>
+                <field name="image"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <group>
+                                <div>
+                                    <field class="oe_avatar oe_left" height="85" name="image" widget="image" width="85"/>
+                                </div>
+                            </group>
+                            <strong>
+                                <group>
+                                    Visitor's Name : 
+                                    <field name="name"/>
+                                    <br/>
+                                    Medicine :
+                                    <field name="medicine"/>
+                                    <br/>
+                                    Prescription :
+                                    <field name="prescription"/>
+                                </group>
+                            </strong>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    
+    <record id="patient_detail_action" model="ir.actions.act_window">
+        <field name="name">Patient Detail</field>
+        <field name="res_model">ahm.patient.detail</field>
+        <field name="view_mode">tree,form,kanban</field>
+    </record>
+    
+    <record id="breed_type_view_form" model="ir.ui.view">
+        <field name="name">ahm.breed.type.form</field>
+        <field name="model">ahm.breed.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="breed_type_id"/>
+                        <field name="org_id"/>
+                        <field name="name"/>
+                        <field name="visit_charges"/>
+                        <field name="opening_time"/>
+                        <field name="closing_time"/>
+                        <field name="workingdays" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record id="breed_type_view_tree" model="ir.ui.view">
+        <field name="name">ahm.breed.type.tree</field>
+        <field name="model">ahm.breed.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="breed_type_id"/>
+                <field name="org_id"/>
+                <field name="name"/>
+                <field name="visit_charges"/>
+                <field name="opening_time"/>
+                <field name="closing_time"/>
+                <field name="workingdays"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="breed_type_action" model="ir.actions.act_window">
+        <field name="name">Veterinary Department</field>
+        <field name="res_model">ahm.breed.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+    <menuitem id="confi_menu" name="Configuration" parent="AHM.registration_menu" sequence="6"/>
+    
+    <menuitem action="breed_type_action" id="breed_type_sub_menu_1" name="Veterinary Department" parent="AHM.confi_menu"/>
+    
+    <menuitem action="patient_detail_action" id="patient_detail_sub_menu_1" name="Patient Detail" parent="AHM.Appointment_Menu" sequence="3"/>
+    
+    <menuitem action="animal_registration_action" id="animal_registration_sub_menu_1" name="Animal" parent="AHM.Appointment_Menu" sequence="1"/>
+
+</odoo>

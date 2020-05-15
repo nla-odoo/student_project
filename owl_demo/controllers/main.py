@@ -43,9 +43,7 @@ class OwlController(http.Controller):
         details = request.env['sale.order.line'].sudo().search([('order_id', '=', session_id)])
         order = request.env['sale.order'].sudo().search([('id', '=', session_id)])
         partner = request.env['res.partner'].sudo().search([('id', '=', request.env.user.partner_id.id)])
-
         order_detail = details.read(['id', 'name', 'price_unit', 'price_tax', 'price_total', 'product_uom_qty'])
         sale_detail = order.read(['name', 'date_order'])
         partner_detail = partner.read(['id', 'name', 'street', 'city', 'zip'])
-
         return {'details': order_detail, 'order': sale_detail, 'partner': partner_detail}

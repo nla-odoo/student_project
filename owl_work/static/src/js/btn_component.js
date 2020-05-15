@@ -12,8 +12,13 @@ odoo.define('owl_work.btn_component', function(require){
     class OwlChat extends Component {
 
         static template = xml`
-            <div class="chatbox">
-                <div class="fa fa-close" t-on-click="closeChatbord"></div>
+            <div class="chatbox" id="cbox">
+                <div class="chat_header">
+                    <span class="chat_title">Visitor</span>
+                    <span class="close_btn">
+                        <a href="#" class="fa fa-close cb" t-on-click="closeChatbord"></a>
+                    </span>
+                </div>
                 <div class="chatlogs">
                     <div class="chat">
                         <div id="chat_div" style="display: block;"></div>
@@ -21,7 +26,7 @@ odoo.define('owl_work.btn_component', function(require){
                 </div>
                 <div class="chat-form">
                     <input id="txt_chat_input" class="chat_txt" type="text" t-on-keyup="addChat"/>
-                    <input class="btn btn-secondary" type="submit" value="Send" t-on-click="_sendChat"/>
+                    <input class="btn" type="submit" value="Send" t-on-click="_sendChat"/>
                 </div>
             </div>
         `;
@@ -34,7 +39,7 @@ odoo.define('owl_work.btn_component', function(require){
 
         closeChatbord(ev) {
             ev.target.parentNode.setAttribute('style', 'display: none');
-            document.querySelector('#btnstyle').removeAttribute('style');
+            document.querySelector('#cbox').removeAttribute('style');
         }
 
         _sendChat() {

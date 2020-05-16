@@ -19,8 +19,10 @@ odoo.define('OWL_DEMO.owl_rating_component', function (require) {
         constructor() {
             super(...arguments);
             this.state = useState({
-                res_id: "",
+                rating: "",
                 feedback:"",
+                res_id:"",
+                res_model:"",
             });
         }
 
@@ -38,8 +40,10 @@ odoo.define('OWL_DEMO.owl_rating_component', function (require) {
 
         async _onClickLink(ev) {
             this.product = await rpc.query({ route: "/owl_demo_rating", 
-                params:{res_id: this.state.res_id, 
-                    feedback: this.state.feedback 
+                params:{rating: this.state.rating, 
+                    feedback: this.state.feedback,
+                    res_id: this.state.res_id,
+                    res_model: this.state.res_model
                 }});
             this.render(true);
           
@@ -62,12 +66,20 @@ odoo.define('OWL_DEMO.owl_rating_component', function (require) {
                 <form method="post">
                     <center><h1>Create Inquirey</h1></center>
                     <div class="form-group">
-                        <label>Feedback</label>
-                        <input type="number" name='res_id' t-model="state.res_id" class="form-control"/>
+                        <label>Rate</label>
+                        <input type="number" name='rate' t-model="state.rating" class="form-control"/>
                     </div>
                     <div class="form-group">
-                        <label>Feedback</label>
+                        <label>feedback</label>
                         <input type="text" name='feedback' t-model="state.feedback" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Res-id</label>
+                        <input type="number" name='res_id' t-model="state.res_id" class="form-control"/>
+                    </div>
+                     <div class="form-group">
+                        <label>res_model</label>
+                        <input type="text" name='res_model' t-model="state.res_model" class="form-control"/>
                     </div>
                 <a t-on-click="_onClickLink" class="btn btn-primary">Submit</a>
                 </form>

@@ -3,7 +3,7 @@
 {
     'name': 'OWL_DEMO',
     'summary': 'OWL_DEMO',
-    'depends': ['base', 'portal', 'rating', ],
+    'depends': ['base', 'portal', 'rating', 'sale_management'],
     'data': [
         'views/templates.xml',
     ],

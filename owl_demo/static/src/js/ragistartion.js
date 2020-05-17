@@ -27,7 +27,7 @@ odoo.define('owldemo.ragi', function (require) {
             let formData = new FormData(form);
             formData = Object.fromEntries(formData);
             
-            this.product = await rpc.query({
+            this.registartion = await rpc.query({
                 route: "/my/user_register", 
                 params: {'form_data': formData}
             });

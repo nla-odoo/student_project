@@ -27,70 +27,60 @@ odoo.define('owldemo.AddStudent', function (require) {
             let formData = new FormData(form);
             formData = Object.fromEntries(formData);
 
-           this.product = await rpc.query({
-                route: "/demo_AddCource", 
+           this.student = await rpc.query({
+                route: "/demo_AddStudent", 
                 params: {'form_data': formData}
             });
         }
 
-//        student_name
-// course_id
-// company_id
-// enrolment_no
-// mobile_number
-// address
-// institute_id
-// res_user_id
-// state
-// order_ref
-// acquirer_ref
+
 
         static template = xml` 
-        <div>
-
-
-         
-<div>
-       
-           <h1 class='h1'><span class='styling'>Add</span>Student</h1>
-
-               <form class="form" id="addstudent">
-        
-
-  <label class='label'>
-    <p class="label-txt">ENTER STUDENT EMAIL</p>
-    <input type="text" name="email" class="input"/>
-    <div class="line-box">
-      <div class="line"></div>
-    </div>
-  </label>
-  <label class='label'>
-    <p class="label-txt">ENTER STUDENT NAME</p>
-    <input type="text" name="name" class="input"/>
-    <div class="line-box">
-      <div class="line"></div>
-    </div>
-  </label>
-   <label class='label'>
-    <p class="label-txt">ENTER STUDENT NUMBER</p>
-    <input type="text" name="password" class="input"/>
-    <div class="line-box">
-      <div class="line"></div>
-    </div>
-  </label>
-   <label class='label'>
-    <p class="label-txt">ENTER STUDENT PASSWORD</p>
-    <input type="text" name="password" class="input"/>
-    <div class="line-box">
-      <div class="line"></div>
-    </div>
-  </label>
- 
-    
-  <button t-on-click="_onClickLink" class="button" type="button">submit</button>
-</form>
-</div>
-</div>  
+            <div>
+              <div>
+                <h1 class='h1'><span class='styling'>Add</span>Student</h1>
+                  <form class="form" id="addstudent">
+                    <label class='label'>
+                        <p class="label-txt">ENTER STUDENT EMAIL</p>
+                        <input type="text" name="email" class="input"/>
+                            <div class="line-box">
+                                <div class="line"></div>
+                            </div>
+                    </label>
+                    <label class='label'>
+                        <p class="label-txt">ENTER STUDENT NAME</p>
+                        <input type="text" name="name" class="input"/>
+                            <div class="line-box">
+                                <div class="line"></div>
+                            </div>
+                    </label>
+                    <label class='label'>
+                        <p class="label-txt">ENTER STUDENT NUMBER</p>
+                        <input type="text" name="password" class="input"/>
+                            <div class="line-box">
+                                <div class="line"></div>
+                            </div>
+                    </label>
+                    <label class='label'>
+                        <p class="label-txt">ENTER STUDENT PASSWORD</p>
+                        <input type="text" name="password" class="input"/>
+                            <div class="line-box">
+                                <div class="line"></div>
+                            </div>
+                    </label>
+                    <div id="currncy_id">
+                        <select name="currency_id" class="form-control currency_id">
+                            <t t-foreach="student.resulrt" t-as="course"  t-key="'row_' + row_index">
+                                <option t-att-value="student.id">
+                                    <t t-esc="course.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div><p></p>
+                          <button t-on-click="_onClickLink" class="button" type="button">submit</button>
+                  </form>
+                </div>
+            </div>  
 `;   }
 
     function setup() {

@@ -4,11 +4,12 @@ body {
 .form {
   width: 60%;
   margin: 60px auto;
-  background: #efefef;
+  background:#f1f1ff;
+  // background: #efefef;
   padding: 60px 120px 80px 120px;
   text-align: center;
-  -webkit-box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
-  box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
+  -webkit-box-shadow: 10px 15px 30px rgba(0,0,0,0.1);
+  box-shadow: 210x 200px 300px rgba(0,0,0,0.1);
 }
 .label {
   display: block;

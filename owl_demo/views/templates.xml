@@ -6,6 +6,7 @@
                 <script type="text/javascript" src="/owl_demo/static/src/js/owl_component.js"></script>
                 <script type="text/javascript" src="/owl_demo/static/src/js/owl_dynamic_component.js"></script>
                 <script type="text/javascript" src="/owl_demo/static/src/js/ragistartion.js"></script>
+                <script type="text/javascript" src="/owl_demo/static/src/js/studentlist.js"></script>
                 <script type="text/javascript" src="/owl_demo/static/src/js/AddStudent.js"></script>
                 <script type="text/javascript" src="/owl_demo/static/src/js/add_cource.js"></script>
                 <link href="/owl_demo/static/src/scss/app.scss" rel="stylesheet" type="text/scss" />
@@ -34,13 +35,21 @@
          <template id="owl_demo.demo_AddCource">
             <t t-call="portal.portal_layout">
 
-                <div class="my_addCource_com">done</div>
+                <div class="my_addCource_com"></div>
+                
+            </t>
+        </template>
+
+        <template id="owl_demo.studentlistent">
+            <t t-call="portal.portal_layout">
+
+                <div class="liststudent"></div>
                 
             </t>
         </template>
 
 
-         <template id="menu_item" name="first" inherit_id="portal.portal_breadcrumbs" priority="1">
+         <template id="Institute_menu" name="first" inherit_id="portal.portal_breadcrumbs" priority="1">
         <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
             <ul>
                 <li>
@@ -50,6 +59,11 @@
             <ul>
                 <li>
                     <a href="/owl_demo_add_cource">Add course</a>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <a href="/studentlist">Student list</a>
                 </li>
             </ul>
         </xpath>

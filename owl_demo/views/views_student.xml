@@ -12,29 +12,11 @@
                 <link href="/owl_demo/static/src/scss/rag.scss" rel="stylesheet" type="text/scss" />
             </xpath>
         </template>
-        <template id="owl_demo.demo_template">
-            <t t-call="portal.portal_layout">
-                <div class="my_dynamic_component"></div>
-            </t>
-        </template>
-        <template id="owl_demo.demo_ragi">
+       
+         <template id="owl_demo.student">
             <t t-call="portal.portal_layout">
 
-                <div class="my_ragistration_com"></div>
-                
-            </t>
-        </template>
-        <template id="owl_demo.demo_AddStudent">
-            <t t-call="portal.portal_layout">
-
-                <div class="my_AddStudent_com"></div>
-                
-            </t>
-        </template>
-         <template id="owl_demo.demo_AddCource">
-            <t t-call="portal.portal_layout">
-
-                <div class="my_addCource_com">done</div>
+                <div>student</div>
                 
             </t>
         </template>
@@ -44,12 +26,12 @@
         <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
             <ul>
                 <li>
-                    <a href="/owl_demo_add_Student">Add student </a>
+                    <a href="/owl_demo_add_Student">Pyment</a>
                 </li>
             </ul>
             <ul>
                 <li>
-                    <a href="/owl_demo_add_cource">Add course</a>
+                    <a href="/owl_demo_add_cource">Payment details</a>
                 </li>
             </ul>
         </xpath>

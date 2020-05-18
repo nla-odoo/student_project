@@ -8,10 +8,8 @@
         </template>
         <template id="assets_frontend" name="assets" inherit_id="web.assets_frontend">
             <xpath expr="." position="inside">
-                <script type="text/javascript" src="/owl_demo/static/src/js/owl_component.js"></script>
                 <script type="text/javascript" src="/owl_demo/static/src/js/owl_dynamic_component.js"></script>
-                <script type="text/javascript" src="/owl_demo/static/src/js/owl_show.js"></script>
-                <script type="text/javascript" src="/owl_demo/static/src/js/owl_detail.js"></script>
+                <!-- <script type="text/javascript" src="/owl_demo/static/src/js/owl_detail.js"></script> -->
             </xpath>
         </template>
 

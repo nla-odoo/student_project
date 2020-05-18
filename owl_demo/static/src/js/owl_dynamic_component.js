@@ -14,6 +14,78 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
 
     class OwlDynamicDemo extends Component {
 
+        async willStart() {
+            this.orderdetail = await this.getdetails(this.props);
+        }
+
+        async getdetails (order_id) {
+            const details = await rpc.query({route: "/order_detail", params: {order_id: order_id}});
+            return details;
+
+        }
+        get details ()  {
+            return this.orderdetail;
+            debugger;
+        }
+
+        async modelFunction(ev) {
+            const instance = new OwlDetailComponent(null);
+            instance.mount($('.my_dynamic_component')[0]);
+            this.destroy();
+        }
+
+        static template = xml`
+        <div class="container-fluid">
+            <br/><br/>
+            <div class="card">
+                <t t-foreach="details.order" t-as="d" t-key="id">
+                    <div class="card-header bg-secondary">
+                        <h4><span t-esc="d.name"/><span class="pull-right fa fa-arrow-left" t-on-click="modelFunction()"/></h4>
+                    </div>
+                    <div class="card-body">
+                        <h5>Order Date : <span t-esc="d.date_order"/></h5>
+                        <t t-foreach="details.partner" t-as="d" t-key="id">
+                            <h5>Shipping Address : </h5>
+                            <h6> <span t-esc="d.name" /> , </h6>
+                            <h6> <span t-esc="d.street" /> , </h6>
+                            <h6><span t-esc="d.city"/> - <span t-esc="d.zip"/></h6>
+                            <br/><br/>
+                        </t>
+                <br/><br/>
+                <h4>Price :</h4>
+                    <table class="table table-striped  table-hover">
+                    <thead class="thead-dark">
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Taxes</th>
+                        <th>Amount</th>
+                    </thead>
+                    <t t-set="summ" t-value="0.0"/>
+                    <t t-foreach="details.details" t-as="d">
+                    <tr class="value">
+                        <td><span t-esc="d.name" /></td>
+                        <td><span t-esc="d.product_uom_qty" /></td>
+                        <td><span t-esc="d.price_unit" /></td>
+                        <td class="sum"><span t-esc="d.price_tax" /></td>
+                        <td class="sum"><span t-esc="d.price_total" /></td>
+                        <t t-set="summ" t-value="summ + d.price_total + d.price_tax" />
+                    </tr>
+                    </t>
+                    <tr>
+                        <td class="text-right" colspan="4"><h5>SubTotal : </h5></td>
+                        <td><h5><span t-esc="summ"/></h5></td>
+                    </tr>
+                    </table>
+                </div> 
+                </t>       
+            </div>
+        </div>
+        `;
+    }
+
+    class OwlDetailComponent extends Component {
+
     
         async willStart() {
             this.partnersdata = await this.getPartners();
@@ -30,7 +102,9 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
         }
 
         async modelFunction(ev){
-            const rr = rpc.query({ route: "/get_order_detail", params:{order_id: ev.target.dataset.order_id}});
+            const instance = new OwlDynamicDemo(null, ev.target.dataset.order_id);
+            instance.mount($('.my_dynamic_component')[0]);
+            this.destroy();
         }
 
     
@@ -64,7 +138,7 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
                         <td><span t-esc="d.date_order"/></td>
                         <td>
                         <form action="#" method="POST">
-                            <a role="button" href="/get_data" t-on-click="modelFunction()" t-attf-data-order_id="{{d.id}}">details</a>
+                            <a role="button" href="#" t-on-click="modelFunction()" t-attf-data-order_id="{{d.id}}">details</a>
                         </form>
                         </td>
                         <td><span t-esc="d.amount_total"/></td>
@@ -109,11 +183,11 @@ odoo.define('owl_demo.owl_dynamic_component', function (require) {
 }
 
     function setup() {
-        const OwlDynamicDemoInstance = new OwlDynamicDemo();
-        OwlDynamicDemoInstance.mount($('.my_dynamic_component')[0]);
+        const OwlDetailComponentInstance = new OwlDetailComponent();
+        OwlDetailComponentInstance.mount($('.my_dynamic_component')[0]);
     }
 
     whenReady(setup);
 
-    return OwlDynamicDemo;
+    return OwlDetailComponent;
 });

@@ -17,21 +17,13 @@ class OwlController(http.Controller):
         ]
         return request.env['sale.order'].sudo().search_read(domain, ['id', 'name', 'date_order', 'amount_total'])
 
-    @http.route('/get_order_detail', type='json', auth="public", csrf=False)
-    def get_data(self, **kw):
-
-        details = request.env['sale.order.line'].sudo().browse(int(kw['order_id']))
-        order_detail = details.read(['id', 'name', 'price_unit', 'price_tax', 'price_total', 'product_uom_qty'])
-        print("\n\n\n\n", order_detail)
-        request.session['detail_id'] = details.id
-
     @http.route('/get_data/', type='http', auth="public", csrf=False)
     def owl_details(self, **post):
         return http.request.render("owl_demo.detail_template")
 
     @http.route('/order_detail', type='json', auth="public", csrf=False)
     def order_data(self, **kw):
-        order = request.env['sale.order'].sudo().search([('id', '=', request.session.detail_id)])
+        order = request.env['sale.order'].sudo().search([('id', '=', kw.get('order_id'))])
         order_detail = order.order_line.read(['id', 'name', 'price_unit', 'price_tax', 'price_total', 'product_uom_qty'])
         sale_detail = order.read(['name', 'date_order'])
         partner_detail = order.partner_id.read(['id', 'name', 'street', 'city', 'zip'])

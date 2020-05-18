@@ -5,33 +5,17 @@ from odoo.http import request
 
 class OwlController(http.Controller):
 
-    @http.route('/owl_demo', type='http', auth="public", csrf=False)
+    @http.route('/my_orders', type='http', auth="public", csrf=False)
     def owl_demo(self, **post):
-        return http.request.render("owl_demo.demo_template")
+        return http.request.render("owl_demo.orders_template")
 
-    @http.route('/get_partner_data', type='json', auth="public", csrf=False)
+    @http.route('/get_order_details', type='json', auth="public", csrf=False)
     def get_partner(self, **post):
-        user_id = request.env.user.partner_id
-        print("\n\n\n\n", user_id)
-        # SaleOrder = request.env['sale.order']
         domain = [
-            ('partner_id', '=', user_id.id),
+            ('partner_id', '=', request.env.user.partner_id.id),
             ('state', 'in', ['sale', 'done'])
         ]
-        orders = request.env['sale.order'].sudo().search(domain)
-        print("\n\n\n\n order", orders)
-        hh = orders.read(['id', 'name', 'date_order', 'amount_total'])
-        print("\n\n\n\n hh", hh)
-        return orders.read(['id', 'name', 'date_order', 'amount_total'])
-        # return request.env['sale.order'].search([]).mapped('name')
-
-    @http.route('/get_order_detail', type='json', auth="public", csrf=False)
-    def get_data(self, **kw):
-
-        details = request.env['sale.order.line'].sudo().browse(int(kw['order_id']))
-        order_detail = details.read(['id', 'name', 'price_unit', 'price_tax', 'price_total', 'product_uom_qty'])
-        print("\n\n\n\n", order_detail)
-        request.session['detail_id'] = details.id
+        return request.env['sale.order'].sudo().search_read(domain, ['id', 'name', 'date_order', 'amount_total'])
 
     @http.route('/get_data/', type='http', auth="public", csrf=False)
     def owl_details(self, **post):
@@ -39,11 +23,8 @@ class OwlController(http.Controller):
 
     @http.route('/order_detail', type='json', auth="public", csrf=False)
     def order_data(self, **kw):
-        session_id = request.session.detail_id
-        details = request.env['sale.order.line'].sudo().search([('order_id', '=', session_id)])
-        order = request.env['sale.order'].sudo().search([('id', '=', session_id)])
-        partner = request.env['res.partner'].sudo().search([('id', '=', request.env.user.partner_id.id)])
-        order_detail = details.read(['id', 'name', 'price_unit', 'price_tax', 'price_total', 'product_uom_qty'])
+        order = request.env['sale.order'].sudo().search([('id', '=', kw.get('order_id'))])
+        order_detail = order.order_line.read(['id', 'name', 'price_unit', 'price_tax', 'price_total', 'product_uom_qty'])
         sale_detail = order.read(['name', 'date_order'])
-        partner_detail = partner.read(['id', 'name', 'street', 'city', 'zip'])
+        partner_detail = order.partner_id.read(['id', 'name', 'street', 'city', 'zip'])
         return {'details': order_detail, 'order': sale_detail, 'partner': partner_detail}

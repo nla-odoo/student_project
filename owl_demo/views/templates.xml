@@ -3,36 +3,22 @@
     <data>
         <template id="my_menu" name="mymenu" inherit_id="portal.portal_breadcrumbs"  priority="1">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
-                <li style="margin-left: 15px; font-weight: bold;"><a href="/owl_demo/">Owl_demo</a></li>
+                <li style="margin-left: 15px; font-weight: bold;"><a href="/my_orders/">Owl_demo</a></li>
             </xpath>
         </template>
         <template id="assets_frontend" name="assets" inherit_id="web.assets_frontend">
             <xpath expr="." position="inside">
-                <script type="text/javascript" src="/owl_demo/static/src/js/owl_component.js"></script>
-                <script type="text/javascript" src="/owl_demo/static/src/js/owl_dynamic_component.js"></script>
-                <script type="text/javascript" src="/owl_demo/static/src/js/owl_show.js"></script>
-                <script type="text/javascript" src="/owl_demo/static/src/js/owl_detail.js"></script>
+                <script type="text/javascript" src="/owl_demo/static/src/js/orders_detail.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
             </xpath>
         </template>
 
-        <template id="owl_demo.demo_template">
+        <template id="owl_demo.orders_template">
             <t t-call="portal.portal_layout">
-                <div class="my_component">
+                <div class="order_List">
                 </div>
-                <div class="my_dynamic_component">
-                     <div class='col-md-5 border border-light rounded mx-auto'>
-                        <canvas id="myChart" style="width: 80%; height: 80%;"></canvas>    
-                    </div>
-                    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+                <div class="orders_details">
                 </div>
-            </t>
-        </template>
-
-        <template id="owl_demo.detail_template">
-            <t t-call="portal.portal_layout">
-                <div class="owldetail_component">
-                </div>
-                <div class="detail_component"></div>
             </t>
         </template>
     </data>

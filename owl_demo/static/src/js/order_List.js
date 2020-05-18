@@ -1,9 +1,9 @@
-odoo.define('owl_demo.owl_show', function (require) {
+odoo.define('owl_demo.order_List', function (require) {
     "use strict";
 
     require('web.dom_ready');
-    if (!$('.owldetail_component').length) {
-        return Promise.reject("DOM doesn't contain '.owldetail_component'");
+    if (!$('.order_List').length) {
+        return Promise.reject("DOM doesn't contain '.order_List'");
     }
 
     const { Component, hooks } = owl;
@@ -11,12 +11,12 @@ odoo.define('owl_demo.owl_show', function (require) {
     const { whenReady } = owl.utils;
 
     class OwlDemo extends Component {
-         static template = xml`<div></div>`;
+         static template = xml`<div>todo app hello</div>`;
     }
 
     function setup() {
         const OwlDemoInstance = new OwlDemo();
-        OwlDemoInstance.mount($('.owldetail_component')[0]);
+        OwlDemoInstance.mount($('.order_List')[0]);
     }
 
     whenReady(setup);

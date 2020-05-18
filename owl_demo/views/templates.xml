@@ -8,8 +8,13 @@
         </template>
         <template id="assets_frontend" name="assets" inherit_id="web.assets_frontend">
             <xpath expr="." position="inside">
+<<<<<<< HEAD
                 <script type="text/javascript" src="/owl_demo/static/src/js/orders_detail.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+=======
+                <script type="text/javascript" src="/owl_demo/static/src/js/owl_dynamic_component.js"></script>
+                <!-- <script type="text/javascript" src="/owl_demo/static/src/js/owl_detail.js"></script> -->
+>>>>>>> c695b3ada0a2da805903101ce1ce59ed7b9fefb1
             </xpath>
         </template>
 

@@ -1,11 +1,7 @@
 odoo.define('task_owl.cart_component', function (require) {
     "use strict";
 
-    require('web.dom_ready');
-    if (!$('.cart_component').length) {
-        return Promise.reject("DOM doesn't contain '.cart_component'");
-    }
-    
+    const OwlSubDemo = require('task_owl.sub_component');
     const rpc = require('web.rpc');
     const { Component, hooks } = owl;
     const { xml } = owl.tags; 
@@ -37,8 +33,13 @@ odoo.define('task_owl.cart_component', function (require) {
         get order_line(){
             return this.order;
         }
+
+        get item_in_cart () {
+            return this.props
+        }
          static template = xml`
         <div>
+         <OwlSubDemo count="item_in_cart"  t-on-click="homePage()"/>
 
         <main>
                 <div class="basket">
@@ -111,14 +112,16 @@ odoo.define('task_owl.cart_component', function (require) {
         console.log("asdadsAAAS")
         const payment_detail = rpc.query({route: "/get_cart_detail"});
     }
+        static components = {OwlSubDemo};
+
     }
 
-    function setup() {
-        const OwlCartInstance = new Cart();
-        OwlCartInstance.mount($('.cart_component')[0]);
-    }
+    // function setup() {
+    //     const OwlCartInstance = new Cart();
+    //     OwlCartInstance.mount($('.cart_component')[0]);
+    // }
 
-    whenReady(setup);
+    // whenReady(setup);
 
     return Cart;
 });

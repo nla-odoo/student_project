@@ -8,7 +8,7 @@ import json
 
 class OwlController(http.Controller):
 
-    @http.route('/product_list', type='http', auth="public", csrf=False)
+    @http.route('/shop', type='http', auth="public", csrf=False)
     def product_list(self, **post):
         return http.request.render("task_owl.product_list")
 
@@ -18,56 +18,22 @@ class OwlController(http.Controller):
         mylist = ['id', 'image_1920', 'name', 'type', 'list_price', 'active']
         return products.read(mylist)
 
-    @http.route(['/shop/cart/update'], type='http', auth="public", methods=['GET', 'POST'], website=True, csrf=False)
-    def cart_update(self, add_qty=1, set_qty=0, **kw):
-        print("kw******************", kw)
-        product_tmplet_id = request.env['product.template'].sudo().browse(int(kw['product_template_id']))
-        product_id = request.env['product.product'].sudo().search([('product_tmpl_id', '=', product_tmplet_id.id)])
-        print("--------------------product_tmplet_id", product_tmplet_id.id)
-        print("product_id=", product_id)
+    @http.route(['/shop/cart/update'], type='json', auth="public", website=True, csrf=False)
+    def cart_update(self, **kw):
+        product_id = request.env['product.product'].sudo().search([('product_tmpl_id', '=', int(kw['product_template_id']))])
         if not request.session.order_id:
-
-            slae_order = request.env['sale.order'].sudo().create({
+            sale_order = request.env['sale.order'].sudo().create({
                 'partner_id': request.env['res.users'].browse([request.session.uid]).partner_id.id,
-                'amount_total': product_id.list_price
                 })
-            print("if order does not exist--------------------in not orderid", slae_order.order_id)
-
-            order = request.env['sale.order.line'].sudo().create({
-                'order_id': slae_order.id,
-                'sale_order_id': slae_order.order_id,
-                'name': product_tmplet_id.name,
-                'product_id': product_id.id,
-                'price_unit': product_tmplet_id.list_price,
-                'product_uom_qty': 1,
-                })
-            print("--------------------order.orderid", order.sale_order_id)
-
-            request.session['order_id'] = order.sale_order_id
-            request.session['slae_order_id'] = slae_order.id
-            return werkzeug.utils.redirect("/display_cart/")
-            # sale_order_lines = request.env['sale.order.line'].sudo().search([]).filtered(lambda order_line: order_line.sale_order_id == request.session['order_id'])
-            # print(len(sale_order_lines))
-            # return len(sale_order_lines)
-            # return
+            request.session['order_id'] = sale_order.id
         else:
-
-            order = request.env['sale.order'].sudo().browse(int(request.session.slae_order_id))
-            order.write({
-                'amount_total': product_tmplet_id.list_price + order.amount_total
-                })
-            # product_id = request.env['product.template'].sudo().browse(int(kw['product_template_id']))
-            print("if order exist--------------------in order")
-            request.env['sale.order.line'].sudo().create({
-                'order_id': order.id,
-                'sale_order_id': order.order_id,
-                'name': product_tmplet_id.name,
-                'product_id': product_id.id,
-                'price_unit': product_tmplet_id.list_price,
-                'product_uom_qty': 1,
-            })
-            # return 0
-            return werkzeug.utils.redirect("/display_cart/")
+            sale_order = request.env['sale.order'].sudo().browse(int(request.session.order_id))
+        request.env['sale.order.line'].sudo().create({
+            'order_id': sale_order.id,
+            'sale_order_id': sale_order.order_id,
+            'product_id': product_id.id,
+        })
+        return len(sale_order.order_line)
 
     @http.route('/get_cart_detail', type='json', auth="public", csrf=False)
     def cart(self, **post):
@@ -86,7 +52,7 @@ class OwlController(http.Controller):
     @http.route('/order', type='json', auth="public", csrf=False)
     def order(self, **post):
         if request.session.order_id:
-            order = request.env['sale.order'].sudo().browse(int(request.session.slae_order_id))
+            order = request.env['sale.order'].sudo().browse(int(request.session.order_id))
             order_details = ['amount_total']
             return order.read(order_details)
         else:
@@ -98,14 +64,7 @@ class OwlController(http.Controller):
 
     @http.route('/get_total_item', type='json', auth="public", csrf=False)
     def total_item_in_cart(self, **post):
-        print("asdxasasasc===========================")
-        # return 1
-        if request.session.order_id:
-            sale_order_lines = request.env['sale.order.line'].sudo().search([]).filtered(lambda order_line: order_line.sale_order_id == request.session['order_id'])
-            print(len(sale_order_lines))
-            return len(sale_order_lines)
-        else:
-            return 0
+        return len(request.env['sale.order'].sudo().browse(int(request.session.order_id)).order_line) or 0
 
     @http.route('/confirm_order', method="post", auth="public", type="http", csrf=False)
     def confirm_booking(self, **post):

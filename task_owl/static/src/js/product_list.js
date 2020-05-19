@@ -8,6 +8,7 @@ odoo.define('task_owl.product_list_component', function (require) {
     
     const rpc = require('web.rpc');
     const OwlSubDemo = require('task_owl.sub_component');
+    const cartComponent = require('task_owl.cart_component');
     const { Component, hooks } = owl;
     const { xml } = owl.tags;
     const { whenReady } = owl.utils;
@@ -21,7 +22,6 @@ odoo.define('task_owl.product_list_component', function (require) {
 
         async get_product_data () {
             const products = await rpc.query({route: "/get_product_data"});
-            console.log(products)
             return products
         }
         get products ()  {
@@ -29,18 +29,36 @@ odoo.define('task_owl.product_list_component', function (require) {
         }
 
         async get_total_item_in_cart() {
-            console.log("3");
             const item_in_cart = await rpc.query({route: "/get_total_item"});
-            console.log(item_in_cart)
             return item_in_cart
         }
         get item_in_cart ()  {
             return this.total_item;
         }
 
+        homePage (ev) {
+            if (ev.target.dataset.mode == 'showCart') {
+                const cartInstance = new cartComponent(null, this.total_item);
+                cartInstance.mount($('.product_list_component')[0]);
+                this.destroy();
+            } else {
+                this.render(true);
+            }
+        }
+
+        addToCart (ev) {
+            return rpc.query({
+                route: ev.target.action,
+                params: {product_template_id: ev.target.querySelector('input[name="product_template_id"]').value}
+            }).then((count) => {
+                this.total_item = count;
+                this.render();
+            });
+        }
+
          static template = xml`
          <div>
-         <OwlSubDemo name="item_in_cart"/>
+         <OwlSubDemo count="item_in_cart"  t-on-click="homePage()"/>
                      <div class="container">
                 <div id="main">
                     <section id="content">
@@ -68,9 +86,9 @@ odoo.define('task_owl.product_list_component', function (require) {
                         <span class="st">price:</span>
                             <t t-esc="product.list_price"/>
                     </div>
-                    <div class="actions">
-                        <form action="/shop/cart/update" method="POST" t-if="product.active">
-                            <a role="button" href="#" onclick="this.parentNode.submit();">Add to cart</a>
+                    <div class="actions" t-if="product.active">
+                        <form action="/shop/cart/update" method="POST" t-on-submit.prevent="addToCart()">
+                            <button type="submit" class="btn btn-success">Add to cart</button>
                             <a role="button" href="#">Inqury</a>
                             <input class="product_template_id" name="product_template_id" t-att-value="product.id" type="hidden"/>
                         </form>

@@ -6,10 +6,16 @@ odoo.define('task_owl.sub_component', function (require) {
     const { xml } = owl.tags;
 
     class sub_component extends Component {
+
+        get count() {
+            return this.props.count;
+        }
+
+
         static template = xml`<div class="topnav" id="myTopnav">
-  <a href="/display_cart"><i class="fa fa-shopping-cart"> <t t-esc="props.item_in_cart"/></i></a>
-  <a href="/product_list">Home</a>
-</div>`;
+              <a href="#" class="fa fa-shopping-cart" data-mode='showCart'> <t t-esc="count"/></a>
+              <a href="#">Home</a>
+            </div>`;
     }
     return sub_component;
 });

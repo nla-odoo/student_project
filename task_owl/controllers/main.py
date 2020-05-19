@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 from odoo import http
 from odoo.http import request
-import werkzeug
-from werkzeug import urls
+
 from . import checksum
-import json
+
 
 class OwlController(http.Controller):
 
@@ -37,17 +36,11 @@ class OwlController(http.Controller):
 
     @http.route('/get_cart_detail', type='json', auth="public", csrf=False)
     def cart(self, **post):
-        print("in cart")
         if request.session.order_id:
-            sale_order_lines = request.env['sale.order.line'].sudo().search([]).filtered(lambda order_line: order_line.sale_order_id == request.session['order_id'])
+            sale_order = request.env['sale.order'].sudo().browse(int(request.session.order_id))
             product_details = ['name', 'product_id', 'price_unit', 'sale_order_id']
-            print(sale_order_lines.read(['name']))
-            return sale_order_lines.read(product_details)
-            # return request.render('task_cart_payment.cart', {'sale_order_lines': request.env['sale.order.line'].sudo().search([]).filtered(lambda order_line: order_line.sale_order_id == request.session['order_id']),
-            #                       'order_id': request.env['sale.order'].sudo().browse(int(request.session.slae_order_id))})
-        else:
-            return [{}]
-            # return request.render('task_cart_payment.cart', {'sale_order_lines': None})
+            return sale_order.order_line.read(product_details)
+        return [{}]
 
     @http.route('/order', type='json', auth="public", csrf=False)
     def order(self, **post):
@@ -55,16 +48,11 @@ class OwlController(http.Controller):
             order = request.env['sale.order'].sudo().browse(int(request.session.order_id))
             order_details = ['amount_total']
             return order.read(order_details)
-        else:
-            return [{}]
-
-    @http.route('/display_cart/', type='http', auth="public", csrf=False)
-    def display_cart(self, **post):
-        return http.request.render("task_owl.cart")
+        return [{}]
 
     @http.route('/get_total_item', type='json', auth="public", csrf=False)
     def total_item_in_cart(self, **post):
-        return len(request.env['sale.order'].sudo().browse(int(request.session.order_id)).order_line) or 0
+        return len(request.env['sale.order'].sudo().browse(int(request.session.order_id)).order_line) if request.session.order_id else 0
 
     @http.route('/confirm_order', method="post", auth="public", type="http", csrf=False)
     def confirm_booking(self, **post):

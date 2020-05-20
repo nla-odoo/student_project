@@ -44,6 +44,13 @@ class OwlController(http.Controller):
     def student(self, **post):
         return http.request.render("owl_demo.student")
 
+    @http.route('/is_student', type='json', auth="public", csrf=False, website=True)
+    def is_student(self, **post):
+        user = request.env['res.users'].sudo().browse(request.session.uid)
+        if user.has_group('base.group_portal') and user.is_student:
+            return True
+        return False
+
     # register all  institute
     @http.route('/owl_demo_ragi', type='http', auth="public", csrf=False, website=True)
     def demo_ragi(self, **post):
@@ -92,7 +99,10 @@ class OwlController(http.Controller):
     # add course
     @http.route('/owl_demo_add_cource', type='http', auth="public", csrf=False, website=True)
     def demo_AddCource(self, **post):
-        return http.request.render("owl_demo.demo_AddCource")
+        user = request.env['res.users'].sudo().browse(request.session.uid)
+        if user.has_group('base.group_portal') and not user.is_student:
+            return http.request.render("owl_demo.demo_AddCource")
+        return request.redirect('/owl_demo_student')
 
     # add course rpc page
     @http.route('/demo_AddCource', type='json', auth="public", csrf=False, website=True)

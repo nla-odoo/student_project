@@ -7,12 +7,70 @@ odoo.define('owldemo.my_addCource_com', function(require) {
     }
 
     const rpc = require('web.rpc');
-
+    //this is problem
+    // const Menu = require('owl_demo.menucom');
     const { Component, hooks } = owl;
     const { xml } = owl.tags;
     const { whenReady } = owl.utils;
 
+    
+
+   class Menu extends Component {
+
+        isStudent = false;
+
+         async willStart() {
+            console.log('menu me')
+            this.isStudent= await rpc.query({ route: '/is_student' });
+            debugger;
+
+        }
+       _onClickLink(ev) {
+                debugger
+            ev.preventDefault();
+            if(ev.target.pathname==='/demo_AddStudent')
+            {
+                const owladdcourceInstance = new owlAddCource();
+                owladdcourceInstance.mount($('.my_addCource_com')[0]);
+            }
+             if(ev.target.pathname==='/demo_AddCource')
+            {
+                const owladdcourceInstance = new owlAddCource();
+                owladdcourceInstance.mount($('.my_addCource_com')[0]);
+            }
+            
+        }
+
+        constructor(){
+            super(...arguments)
+            // this.Regist = await rpc.query({ route: '/' });
+        }
+
+        static template = xml`
+
+            <div class="topnav" id="myTopnav">
+                <t t-if='!isStudent'>
+                <a href="#" class="fa fa-shopping-cart" > <t t-esc="count"/></a>
+                <a t-on-click="_onClickLink" href="/demo_AddCource">addcource</a>
+                <br/>
+                <a t-on-click="_onClickLink" href="/demo_AddStudent">addstudnt</a>
+                <a href="#">ragister</a>
+                <br/>
+                <a href="#">Home</a>
+                <br/>
+                </t>
+                <t t-else=''>
+                <a href="#">pymeny</a>
+                <br/>
+                <a href="#">pyment details</a>
+                <br/>
+                
+                </t>
+            </div>`;
+    }
     class owlAddCource extends Component {
+
+
 
         async willStart() {
             console.log('hhhhhhhhhhhhhhhh')
@@ -32,12 +90,13 @@ odoo.define('owldemo.my_addCource_com', function(require) {
                 params: {'form_data': formData}
             });
         }
-
-
+       
         static template = xml `
         
 
         <div>
+
+        <Menu></Menu>
             <h1 class='h1'><span class='styling'>ADD</span>COURSE</h1>
         <form class="form" id="addcource">
             <label class='label'>
@@ -58,6 +117,7 @@ odoo.define('owldemo.my_addCource_com', function(require) {
         </form>
         </div>
 `;
+     static components = {Menu};
     }
 
     function setup() {

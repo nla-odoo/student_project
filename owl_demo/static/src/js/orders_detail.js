@@ -40,17 +40,17 @@ odoo.define('owl_demo.orders_detail', function (require) {
         <div class="container-fluid">
             <br/><br/>
             <div class="card">
-                <t t-foreach="details.order" t-as="d" t-key="id">
+                <t t-foreach="details.order" t-as="order" t-key="id">
                     <div class="card-header bg-secondary">
-                        <h4><span t-esc="d.name"/><span class="pull-right fa fa-arrow-left" t-on-click="modelFunction()"/></h4>
+                        <h4><span t-esc="order.name"/><span class="pull-right fa fa-arrow-left" t-on-click="modelFunction()"/></h4>
                     </div>
                     <div class="card-body">
-                        <h5>Order Date : <span t-esc="d.date_order"/></h5>
-                        <t t-foreach="details.partner" t-as="d" t-key="id">
+                        <h5>Order Date : <span t-esc="order.date_order"/></h5>
+                        <t t-foreach="details.partner" t-as="partner" t-key="id">
                             <h5>Shipping Address : </h5>
-                            <h6> <span t-esc="d.name" /> , </h6>
-                            <h6> <span t-esc="d.street" /> , </h6>
-                            <h6><span t-esc="d.city"/> - <span t-esc="d.zip"/></h6>
+                            <h6> <span t-esc="partner.name" /> , </h6>
+                            <h6> <span t-esc="partner.street" /> , </h6>
+                            <h6><span t-esc="partner.city"/> - <span t-esc="partner.zip"/></h6>
                             <br/><br/>
                         </t>
                 <br/><br/>
@@ -58,21 +58,30 @@ odoo.define('owl_demo.orders_detail', function (require) {
                     <table class="table table-striped  table-hover">
                     <thead class="thead-dark">
                         <th>Name</th>
+                        <th>Image</th>
                         <th>Quantity</th>
                         <th>Unit Price</th>
                         <th>Taxes</th>
                         <th>Amount</th>
                     </thead>
                     <t t-set="summ" t-value="0.0"/>
-                    <t t-foreach="details.details" t-as="d">
-                    <tr class="value">
-                        <td><span t-esc="d.name" /></td>
-                        <td><span t-esc="d.product_uom_qty" /></td>
-                        <td><span t-esc="d.price_unit" /></td>
-                        <td class="sum"><span t-esc="d.price_tax" /></td>
-                        <td class="sum"><span t-esc="d.price_total" /></td>
-                        <t t-set="summ" t-value="summ + d.price_total + d.price_tax" />
-                    </tr>
+                    
+                        <t t-foreach="details.details" t-as="d">
+                            
+                            <tr class="value">
+                                <td><span t-esc="d.name" /></td>
+                                <td><t t-foreach="details.product" t-as="p" >
+                                    <t t-if='p.name = d.name' >
+                                        <img t-attf-src="data:image/png;base64, {{p.image_1920}}" style="width:30%;"/>
+                                    </t></t>
+                                </td>
+                                
+                                <td><span t-esc="d.product_uom_qty" /></td>
+                                <td><span t-esc="d.price_unit" /></td>
+                                <td class="sum"><span t-esc="d.price_tax" /></td>
+                                <td class="sum"><span t-esc="d.price_total" /></td>
+                                <t t-set="summ" t-value="summ + d.price_total + d.price_tax" />
+                            </tr>
                     </t>
                     <tr>
                         <td class="text-right" colspan="4"><h5>SubTotal : </h5></td>

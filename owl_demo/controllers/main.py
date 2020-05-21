@@ -25,7 +25,9 @@ class OwlController(http.Controller):
     def order_data(self, **kw):
         order = request.env['sale.order'].sudo().search([('id', '=', kw.get('order_id'))])
         order_detail = order.order_line.read(['id', 'name', 'price_unit', 'price_tax', 'price_total', 'product_uom_qty', 'product_id'])
-        product = order.order_line.product_id.read(['image_1920'])
+        products = {}
+        for line in order.order_line:
+            products[line.id] = line.product_id.image_1920
         sale_detail = order.read(['name', 'date_order'])
         partner_detail = order.partner_id.read(['id', 'name', 'street', 'city', 'zip'])
-        return {'details': order_detail, 'order': sale_detail, 'partner': partner_detail, 'product': product}
+        return {'details': order_detail, 'order': sale_detail, 'partner': partner_detail, 'products': products}

@@ -21,13 +21,11 @@ odoo.define('owl_demo.orders_detail', function (require) {
 
         async getdetails (order_id) {
             const details = await rpc.query({route: "/order_detail", params: {order_id: order_id}});
-            debugger;
             return details;
 
         }
         get details ()  {
             return this.orderdetail;
-            debugger;
         }
 
         async modelFunction(ev) {
@@ -70,10 +68,8 @@ odoo.define('owl_demo.orders_detail', function (require) {
                             
                             <tr class="value">
                                 <td><span t-esc="d.name" /></td>
-                                <td><t t-foreach="details.product" t-as="p" >
-                                    <t t-if='p.name = d.name' >
-                                        <img t-attf-src="data:image/png;base64, {{p.image_1920}}" style="width:30%;"/>
-                                    </t></t>
+                                <td>
+                                    <img t-attf-src="data:image/png;base64, {{details.products[d.id]}}" style="width:30%;"/>
                                 </td>
                                 
                                 <td><span t-esc="d.product_uom_qty" /></td>

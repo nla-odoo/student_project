@@ -8,6 +8,11 @@
                 <script type="text/javascript" src="/loading_transportation_system/static/src/js/user.js"></script>
                 <script type="text/javascript" src="/loading_transportation_system/static/src/js/lead.js"></script>
                 <script type="text/javascript" src="/loading_transportation_system/static/src/js/createlead.js"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/transporter.js"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/register.js"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/createtransporter.js"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/vehicle.js"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/createvehicle.js"></script>
             </xpath>
         </template>
 
@@ -16,6 +21,41 @@
                 <div class="my_user_component"/>
                 <div class="my_leads"/>
                 <div class="create_lead"/>
+                <div class="transporter_temp"></div>
+            </t>
+
+        </template>
+
+
+        <template id="loading_transportation_system.transporter_template">
+            <t t-call="portal.portal_layout">
+
+                <div class="transporter_regi"></div>
+                
+            </t>
+
+        </template>
+
+        <template id="loading_transportation_system.display_template">
+            <t t-call="portal.portal_layout">
+
+                <!-- <div class="transporter_temp"></div> -->
+                <div class="vehicle_temp"></div>
+                <div class="create_vehicle"></div>
+
+                
+            </t>
+
+        </template>
+
+
+
+
+        <template id="loading_transportation_system.demo_ragi">
+            <t t-call="portal.portal_layout">
+
+                <div class="registrationform"></div>
+                
             </t>
         </template>
     </data>

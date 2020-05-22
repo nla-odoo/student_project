@@ -12,23 +12,25 @@
                 <link href="/owl_demo/static/src/scss/rag.scss" rel="stylesheet" type="text/scss" />
                 <script type="text/javascript" src="/owl_demo/static/src/js/studentlist.js"></script>
                 <script type="text/javascript" src="/owl_demo/static/src/js/menu.js"></script>
+                <script type="text/javascript" src="/owl_demo/static/src/js/payment.js"></script>
+                
             </xpath>
         </template>
        
          <template id="owl_demo.student">
             <t t-call="portal.portal_layout">
 
-                <div>student</div>
+                <div class="payment_com" >student</div>
                 
             </t>
         </template>
 
 
-         <!-- <template id="student_item" name="second" inherit_id="portal.portal_breadcrumbs" priority="2">
+         <template id="student_item" name="second" inherit_id="portal.portal_breadcrumbs" priority="2">
         <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
             <ul>
                 <li>
-                    <a href="/owl_demo_add_Student">Pyment</a>
+                    <a href="/owl_demo_student">Pyment</a>
                 </li>
             </ul>
             <ul>
@@ -37,7 +39,7 @@
                 </li>
             </ul>
         </xpath>
-    </template> -->
+    </template>
 
 
     </data>

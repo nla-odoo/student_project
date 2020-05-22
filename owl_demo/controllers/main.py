@@ -44,6 +44,16 @@ class OwlController(http.Controller):
     def student(self, **post):
         return http.request.render("owl_demo.student")
 
+    @http.route('/studentpayment', type='json', auth="public", csrf=False, website=True)
+    def payment(self, **post):
+        res_users = request.env['res.users'].sudo().browse([request.session.uid])
+        course = request.env['product.template'].sudo().browse([res_users.course_names])
+        return {
+            "name": res_users.name,
+            "course_name": course.name,
+            "fees": res_users.fess,
+        }
+
     @http.route('/is_student', type='json', auth="public", csrf=False, website=True)
     def is_student(self, **post):
         user = request.env['res.users'].sudo().browse(request.session.uid)
@@ -67,25 +77,44 @@ class OwlController(http.Controller):
     # rpc page for studnet add
     @http.route('/demo_AddStudent', type='json', auth="public", csrf=False, website=True)
     def demo_AddStudents(self, form_data=False, **post):
-        print('\n\n\n\n', form_data)
         if form_data:
             partner = request.env['res.partner'].sudo().create({
                 'name': form_data.get("name"),
                 "email": form_data.get("email"),
             })
-            course = request.env['product.template'].sudo().search([('name', '=', form_data.get('course_id'))])
-            print('\n\n\n\n', course.id)
+            course = request.env['product.template'].sudo().search([('id', '=', form_data.get('currency_id'))])
+            print("\n\n\n")
+            print(">>>>>> course", course.id)
             var = request.env["res.users"].sudo().create({
                 'login': form_data.get("name"),
                 'password': form_data.get('password'),
                 'name': form_data.get('name'),
                 'groups_id': [(6, 0, [request.env.ref('base.group_portal').id])],
                 'is_student': 1,
-                'course_name': course.id,
+                'course_names': course.id,
                 'fess': course.list_price
             })
-            # current_login = request.env['res.partner'].sudo().browse([request.session.uid])
-            # self.send_email(current_login.email, partner.email, var)
+            print(var, "\n\n\n\n")
+            current_login = request.env['res.users'].sudo().browse([request.session.uid])
+
+            template_obj = request.env['mail.template'].sudo().search([('name', '=', 'Student')], limit=1)
+            body = template_obj.body_html % (form_data.get("name"), form_data.get('password'))
+            if template_obj:
+                mail_values = {
+                    'body_html': body,
+                    'email_to': form_data.get("email"),
+                    'email_from': current_login.email,
+                }
+                request.env['mail.mail'].sudo().create(mail_values).send()
+# mail
+            print("\n\n\n")
+            print(request.env['res.users'].send_mail_to_student)
+            print("\n\n\n")
+            request.env['res.users'].send_mail_to_student(current_login.email, partner.email, form_data.get('password'))
+            match_id = request.env['res.partner'].sudo().browse([current_login.partner_id])
+            print('\n\n\n\n\n', match_id)
+            print('\n\n\n\n\n', current_login.email)
+            self.sudo().send_email(current_login.email, partner.email, var)
         # resulrt = request.env['product.template'].sudo().search_read([], ['id',  'name'])
         # print(resulrt, "\n\n\n\n")
         # import pdb
@@ -124,13 +153,13 @@ class OwlController(http.Controller):
         if isinstance(count, (float)):
             count = int(count) + 1
         resulrt = request.env['product.template'].sudo().search_read([], ['id', 'image_1920', 'name', 'type', 'list_price', 'active'], offset=offset, limit=limit)
-        print("\n\n\n\n", resulrt)
+        # print("\n\n\n\n", resulrt)
         return {"resulrt": resulrt, 'count': count}
 
     # institute refistartion epc page
     @http.route(['/my/user_register'], type='json', auth="public", website=True, methods=['GET', 'POST'])
     def user_registration(self, form_data=False, **kw):
-        print("\n\n\n\n\n")
+        # print("\n\n\n\n\n")
         # print(form_data, form_data)
         if form_data:
             partner = request.env['res.partner'].sudo().create({
@@ -138,21 +167,21 @@ class OwlController(http.Controller):
                 "email": form_data.get("email"),
             })
 
-            print("\n\n\n\n\n")
-            print(partner)
+            # print("\n\n\n\n\n")
+            # print(partner)
 
             currency = request.env['res.currency'].browse(
                 [int(form_data.get("currency_id"))])
 
-            print("\n\n\n\n\n")
-            print(currency)
+            # print("\n\n\n\n\n")
+            # print(currency)
             company = request.env['res.company'].sudo().create({
                 "name": form_data.get("name"),
                 "partner_id": partner.id,
                 "currency_id": currency.id,
             })
-            print("\n\n\n\n\n")
-            print(company)
+            # print("\n\n\n\n\n")
+            # print(company)
 
             # currency_list = request.env['res.currency'].sudo().search([])
             # request.env['res.currency'].sudo().search_read([], ['id',  'name'])
@@ -161,6 +190,7 @@ class OwlController(http.Controller):
                 'login': form_data.get("name"),
                 'password': form_data.get('password'),
                 'name': form_data.get('name'),
+                'email': form_data.get('email'),
                 'company_id': company.id,
                 'company_ids': [(4, company.id)],
                 'groups_id': [(6, 0, [request.env.ref('base.group_portal').id])],
@@ -168,19 +198,23 @@ class OwlController(http.Controller):
         return {'resulrt': request.env['res.currency'].sudo().search_read([], ['id',  'name'])}
         # return ({"currency_list": request.env['res.currency'].sudo().search([])})
 
-    def send_email(self, sender_email, reciver_email, user):
-        template = False
-        try:
-            template = request.env['mail.template'].sudo().search([('name', '=', 'Student')])
-        except ValueError:
-            pass
+    # def send_email(self, sender_email, reciver_email, user):
+    #     template = False
+    #     try:
+    #         template = request.env['mail.template'].sudo().search([('name', '=', 'Student')])
+    #     except ValueError:
+    #         pass
+    #     body = template.body_html
+    #     body = body % (reciver_email, reciver_email)
+    #     print("\n\n")
+    #     print(">>>> body", body)
+    #     template_values = {
+    #         'email_from': sender_email,
+    #         'email_to': reciver_email,
+    #         'html_body': body
+    #     }
+    #     request.env['mail.mail'].sudo().create(template_values).send()
+    #     # template.write(template_values)
 
-        template_values = {
-            'email_from': 'anuch983@gmail.com',
-            'email_to': reciver_email,
-            'html_body': ''
-        }
-        template.write(template_values)
-
-        template.send_mail(user.id, force_send=True, raise_exception=True)
-        _logger.info("Password reset email sent for user <%s> to <%s>", user.login, user.email)
+        # template.send_mail(user.id, force_send=True, raise_exception=True)
+        # _logger.info("Password reset email sent for user <%s> to <%s>", user.login, user.email)

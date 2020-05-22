@@ -22,11 +22,9 @@ odoo.define('owldemo.AddStudent', function (require) {
         }
 
          async _onClickLink(ev) {
-            debugger
             const form = document.querySelector('#addstudent');
             let formData = new FormData(form);
             formData = Object.fromEntries(formData);
-
            this.student = await rpc.query({
                 route: "/demo_AddStudent", 
                 params: {'form_data': formData}
@@ -71,7 +69,8 @@ odoo.define('owldemo.AddStudent', function (require) {
                     <div id="currncy_id">
                         <select name="currency_id" class="form-control currency_id">
                             <t t-foreach="student.resulrt" t-as="course"  t-key="'row_' + row_index">
-                                <option t-att-value="student.id">
+                                <t t-esc="console.log(student.id)"/>
+                                <option t-att-value="course.id">
                                     <t t-esc="course.name"/>
                                 </option>
                             </t>

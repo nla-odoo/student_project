@@ -80,4 +80,3 @@ odoo.define('loading_transportation_system.createtransporter', function (require
 
     return owlRagistartion;
 });
-a

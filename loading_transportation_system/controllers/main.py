@@ -22,9 +22,9 @@ class Home(Home):
 
 class OwlController(http.Controller):
 
-    # @http.route('/owl_demo', type='http', auth="public", csrf=False)
-    # def owl_demo(self, **post):
-    #     return http.request.render("loading_transportation_system.demo_template2")
+    @http.route('/owl_demo', type='http', auth="public", csrf=False)
+    def owl_demo(self, **post):
+        return http.request.render("loading_transportation_system.demo_template2")
 
     @http.route('/get_partner_data', type='json', auth="public", csrf=False)
     def get_partner(self, **post):
@@ -146,6 +146,9 @@ class OwlController(http.Controller):
     def get_vehicle(self, **post):
         # partner = request.env.user.partner_id
         # return http.request.env['crm.lead'].sudo().search_read([('partner_id', '=', partner.id)], ['name', 'description', 'partner_id', 'type'])
+        v = request.env['product.template'].sudo().search_read([], ['name', 'description', ])
+        console.log(v)
+        print("\n\n\n\n\n\n\n\n\n\n\n\n\n vehicle", v)
         return request.env['product.template'].sudo().search_read([], ['name', 'description', ])
 
     @http.route('/vehicle/form/', auth="public", type="json", csrf=False)
@@ -158,30 +161,3 @@ class OwlController(http.Controller):
                     'partner_id': request.env.user.partner_id.id
                     }])
         return self.get_vehicle()
-
-    @http.route('/my_orders', type='http', auth="public", csrf=False)
-    def owl_demo(self, **post):
-        return http.request.render("loading_transportation_system.orders_template")
-
-    @http.route('/get_order_details', type='json', auth="public", csrf=False)
-    def get_partner(self, **post):
-        domain = [
-            ('partner_id', '=', request.env.user.partner_id.id),
-            ('state', 'in', ['sale', 'done'])
-        ]
-        return request.env['sale.order'].sudo().search_read(domain, ['id', 'name', 'date_order', 'amount_total'])
-
-    @http.route('/get_data/', type='http', auth="public", csrf=False)
-    def owl_details(self, **post):
-        return http.request.render("loading_transportation_system.detail_template")
-
-    @http.route('/order_detail', type='json', auth="public", csrf=False)
-    def order_data(self, **kw):
-        order = request.env['sale.order'].sudo().search([('id', '=', kw.get('order_id'))])
-        order_detail = order.order_line.read(['id', 'name', 'price_unit', 'price_tax', 'price_total', 'product_uom_qty', 'product_id'])
-        products = {}
-        for line in order.order_line:
-            products[line.id] = line.product_id.image_1920
-        sale_detail = order.read(['name', 'date_order'])
-        partner_detail = order.partner_id.read(['id', 'name', 'street', 'city', 'zip'])
-        return {'details': order_detail, 'order': sale_detail, 'partner': partner_detail, 'products': products}

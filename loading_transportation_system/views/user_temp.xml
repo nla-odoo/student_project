@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="my_menu" name="mymenu" inherit_id="portal.portal_breadcrumbs"  priority="1">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li style="margin-left: 15px; font-weight: bold;"><a href="/my_orders/">Owl_demo</a></li>
+            </xpath>
+        </template>
+        <template id="assets_frontend" name="assets" inherit_id="web.assets_frontend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/orders_detail.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+            </xpath>
+        </template>
+
+        <template id="loading_transportation_system.orders_template">
+            <t t-call="portal.portal_layout">
+                <div class="order_List">
+                </div>
+                <div class="orders_details">
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

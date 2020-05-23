@@ -18,7 +18,7 @@
         </template>
         <template id="owl_demo.student">
             <t t-call="portal.portal_layout">
-                <div class="payment_com">student</div>
+                <div class="payment_com"></div>
             </t>
         </template>
         <template id="student_item" name="second" inherit_id="portal.portal_breadcrumbs" priority="2">

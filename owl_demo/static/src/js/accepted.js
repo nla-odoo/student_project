@@ -1,7 +1,7 @@
-odoo.define('owl.list', function(require) {
+odoo.define('owl.acceptedlist', function(require) {
     "use strict";
     require('web.dom_ready');
-    if (!$('.liststudent').length) {
+    if (!$('.acceptedlist').length) {
         return Promise.reject("DOM doesn't contain '.my_dynamic_component'");
     }
 
@@ -11,11 +11,11 @@ odoo.define('owl.list', function(require) {
     const { xml } = owl.tags;
     const { whenReady } = owl.utils;
 
-    class owlAddStudentList extends Component {
-        
+    class owlAddStudentacceptedList extends Component {
+        // res_active=[]
         async willStart() {
             console.log('me student list')
-            this.student = await rpc.query({ route: '/studentlists' });
+            this.student = await rpc.query({ route: '/acceptedstudent_rpc' });
             debugger;
         }
 
@@ -34,9 +34,9 @@ odoo.define('owl.list', function(require) {
         async _activeStudent(ev) {
             debugger;
             this.product = await rpc.query({
-                route: "/studentlists", 
+                route: "/studentlists",
                 params: {
-                    'action': 'active', 
+                    'action': 'active',
                     'student_id': ev.target.parentElement.parentElement.id
                 }
             });
@@ -45,15 +45,15 @@ odoo.define('owl.list', function(require) {
 
         async _rejectStudent(ev) {
             this.product = await rpc.query({
-                route: "/studentlists", 
+                route: "/studentlists",
                 params: {
-                    'action': 'delete', 
+                    'action': 'delete',
                     'student_id': ev.target.parentElement.parentElement.id
                 }
 
             });
             this.render(true);
-        }        
+        }
 
         static template = xml ` 
         <div>
@@ -61,29 +61,19 @@ odoo.define('owl.list', function(require) {
                 <thead>
                     <tr>
                         <th scope="col">student list</th>
+                        <th scope="col">course fess</th>
+                        <th scope="col">course name</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <t t-foreach="student.resulrt" t-as="student"  t-key="'row_' + row_index">
+                    <t t-foreach="student.res_active" t-as="student"  t-key="'row_' + row_index">
                         <tr t-att-id="student.id">
                             <td><span t-esc="student.name"/></td>
-                            <td><span t-esc="student.list_price"/></td>
-                            <td><span t-esc="student.course_name"/></td>
-                            <td><span t-esc="student.fess"/></td>
-                            <t t-if="!student.active">
-                                <td>
-                                    <button class="btn btn-primary" t-on-click="_activeStudent" name="btn_accept">Accept</button>
-                                    <button class="btn btn-danger" t-on-click="_rejectStudent" name="btn_delete">Reject</button>
-                                </td>
-                            </t>
-                            <t t-if="student.active">
-                                <td>hello
-                                    <button class="btn btn-primary" t-on-click="_activeStudent" name="btn_accept">Accept</button>
-                                    <button class="btn btn-danger" t-on-click="_rejectStudent" name="btn_delete">Reject</button>
-                                </td>
-                            </t>
+                            <td><span t-esc="student.fess"/></td>        
+                            <td><span t-esc="student.course_name"/></td>        
                         </tr>
                     </t>
+
                 </tbody>
             </table>
 
@@ -92,11 +82,11 @@ odoo.define('owl.list', function(require) {
     }
 
     function setup() {
-        const owlstudentlist = new owlAddStudentList();
-        owlstudentlist.mount($('.liststudent')[0]);
+        const acceptedlistptedstudent = new owlAddStudentacceptedList();
+        acceptedlistptedstudent.mount($('.acceptedlist')[0]);
     }
 
     whenReady(setup);
 
-    return owlAddStudentList;
+    return owlAddStudentacceptedList;
 });

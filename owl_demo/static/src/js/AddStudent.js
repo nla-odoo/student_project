@@ -17,8 +17,7 @@ odoo.define('owldemo.AddStudent', function (require) {
         async willStart(){
             console.log('me login')
             this.student = await rpc.query({route: '/demo_AddStudent'});
-            debugger; 
-
+            // debugger;
         }
 
          async _onClickLink(ev) {
@@ -29,6 +28,28 @@ odoo.define('owldemo.AddStudent', function (require) {
                 route: "/demo_AddStudent", 
                 params: {'form_data': formData}
             });
+        }
+        async _onChange(ev){
+            // if (ev.target.value === 'select_ins') {
+            //     for(const op of ev.target.options) {
+            //         if (op !== 'select_ins') {
+            //             op.remove();
+            //         }
+            //     }
+            // }
+            if (ev.target.value !== 'select_ins') {
+                const cources = await rpc.query({
+                    route: "/coursefillter", 
+                    params: {'cource_id': ev.target.value }
+                });
+                const cd = document.querySelector("select[name='cource_dropdown']");
+                for (const cource of cources) {
+                    const option = document.createElement('option');
+                    option.setAttribute('value', cource.id)
+                    option.textContent = cource.name;
+                    cd.appendChild(option);
+                }
+            }
         }
 
 
@@ -52,28 +73,21 @@ odoo.define('owldemo.AddStudent', function (require) {
                                 <div class="line"></div>
                             </div>
                     </label>
-                    <label class='label'>
-                        <p class="label-txt">ENTER STUDENT NUMBER</p>
-                        <input type="text" name="password" class="input"/>
-                            <div class="line-box">
-                                <div class="line"></div>
-                            </div>
-                    </label>
-                    <label class='label'>
-                        <p class="label-txt">ENTER STUDENT PASSWORD</p>
-                        <input type="text" name="password" class="input"/>
-                            <div class="line-box">
-                                <div class="line"></div>
-                            </div>
-                    </label>
-                    <div id="currncy_id">
-                        <select name="currency_id" class="form-control currency_id">
+
+                   
+                    <div id="ins_dropdown">
+                        <select name="ins_dropdown" class="form-control" t-on-change="_onChange">
+                            <option value="select_ins">select institute</option>
                             <t t-foreach="student.resulrt" t-as="course"  t-key="'row_' + row_index">
-                                <t t-esc="console.log(student.id)"/>
                                 <option t-att-value="course.id">
                                     <t t-esc="course.name"/>
                                 </option>
                             </t>
+                        </select>
+                    </div><p></p>
+                    <div id="cource_dropdown">
+                        <select name="cource_dropdown" class="form-control" >
+                            <option>select course</option>
                         </select>
                     </div><p></p>
                           <button t-on-click="_onClickLink" class="button" type="button">submit</button>

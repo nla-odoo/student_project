@@ -3,7 +3,7 @@ import logging
 from odoo import http
 from odoo.http import request
 from odoo.addons.web.controllers.main import Home
-from odoo.exceptions import UserError
+# from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -28,16 +28,71 @@ class OwlController(http.Controller):
     def owl_demo(self, **post):
         return http.request.render("owl_demo.demo_template")
 
+    @http.route('/acceptedstudent', type='http', auth="public", csrf=False, website=True)
+    def acceptedstudent(self, **post):
+        return http.request.render("owl_demo.acceptedstudentlist")
+
+    @http.route('/acceptedstudent_rpc', type='json', auth="public", csrf=False, website=True)
+    def acceptedstudentrpc(self, **post):
+        res_users = request.env['res.users'].sudo().browse([request.session.uid])
+        # res = request.env['res.users'].sudo().search_read([('institute_id', '=', res_users.company_id.id), ('active', '=', False)], ['id',  'name', 'active', 'fess', 'course_names'])
+        res_active = request.env['res.users'].sudo().search_read([('institute_id', '=', res_users.company_id.id), ('active', '=', True)], ['id',  'name', 'active', 'fess', 'course_names'])
+        for data in res_active:
+            course = request.env['product.template'].sudo().browse([data['course_names']])
+            data['course_name'] = course.name
+        print("\n\n\n\n\n >>>>>>>>>>>>>>>>>>>>>>>>>>>", res_active)
+        return {'res_active': res_active}
+
     # Student list all student list compny side
 
     @http.route('/studentlist', type='http', auth="public", csrf=False, website=True)
     def studentlist(self, **post):
         return http.request.render("owl_demo.studentlistent")
 
+    # @http.route('/studentlist', type='http', auth="public", csrf=False, website=True)
+    # def studentlist(self, **post):
+    #     return http.request.render("owl_demo.studentlistent")
+
+    # actionStudents
+
     # Student list all student list rpc
     @http.route('/studentlists', type='json', auth="public", csrf=False, website=True)
-    def studen_list(self, **post):
-        return {'resulrt': request.env['res.users'].sudo().search_read([('create_uid', '=', request.env.user.id)], ['id',  'name'])}
+    def studen_list(self, action=False, student_id=False, **post):
+        if action and student_id:
+            template_obj = None
+            user = request.env['res.users'].sudo().browse([int(student_id)])
+            institute = request.env['res.company'].sudo().browse([user.institute_id])
+            user_d = request.env['res.partner'].sudo().browse([user.partner_id.id])
+            print("\n\n\n")
+            print('user >>>>>>>>>>>>', user_d.email)
+            if action == 'active':
+                user.write({'active': True})
+                template_obj = request.env['mail.template'].sudo().search([('name', '=', 'accepted')], limit=1)
+            elif action == 'delete':
+                # current_login = request.env['res.users'].sudo().browse([request.session.uid])
+                # body = template_obj.body_html % (form_data.get("name"), form_data.get('password'))
+                # print('\n\n\n\n current_login')
+                user.unlink()
+                template_obj = request.env['mail.template'].sudo().search([('name', '=', 'Rejected')], limit=1)
+            print("\n\n\n\n\n")
+            print("\n\n\n\n >>>>>>>>>>>>>>", template_obj)
+            if template_obj:
+                mail_values = {
+                    'body_html': template_obj.body_html,
+                    'email_to': user_d.email,
+                    'email_from': institute.email,
+                }
+                print('\n\n\n\n', mail_values)
+                request.env['mail.mail'].sudo().create(mail_values).send()
+        res_users = request.env['res.users'].sudo().browse([request.session.uid])
+        res = request.env['res.users'].sudo().search_read([('institute_id', '=', res_users.company_id.id), ('active', '=', False)], ['id',  'name', 'active', 'fess', 'course_names'])
+        # cource_names = []
+        for data in res:
+            course = request.env['product.template'].sudo().browse([data['course_names']])
+            data['course_name'] = course.name
+        print("\n\n\n\n\n >>>>>>>>>>>>>>>>>>>>>>>>>>>", res)
+        return {'resulrt': res,
+                }
 
     # Student login after come this page
     @http.route('/owl_demo_student', type='http', auth="public", csrf=False, website=True)
@@ -61,6 +116,10 @@ class OwlController(http.Controller):
             return True
         return False
 
+    @http.route('/coursefillter', type='json', auth="public", csrf=False, website=True)
+    def coursefillter(self, cource_id=False, **post):
+        return request.env['product.template'].sudo().search_read([('cource_id', '=', cource_id)], ['id', 'name'])
+
     # register all  institute
     @http.route('/owl_demo_ragi', type='http', auth="public", csrf=False, website=True)
     def demo_ragi(self, **post):
@@ -82,48 +141,36 @@ class OwlController(http.Controller):
                 'name': form_data.get("name"),
                 "email": form_data.get("email"),
             })
-            course = request.env['product.template'].sudo().search([('id', '=', form_data.get('currency_id'))])
+            course = request.env['product.template'].sudo().search([('id', '=', form_data.get('cource_dropdown'))])
             print("\n\n\n")
             print(">>>>>> course", course.id)
             var = request.env["res.users"].sudo().create({
                 'login': form_data.get("name"),
-                'password': form_data.get('password'),
+                # 'password': form_data.get('password'),
                 'name': form_data.get('name'),
                 'groups_id': [(6, 0, [request.env.ref('base.group_portal').id])],
                 'is_student': 1,
+                'active': False,
                 'course_names': course.id,
-                'fess': course.list_price
+                'fess': course.list_price,
+                'institute_id': form_data.get("ins_dropdown"),
             })
             print(var, "\n\n\n\n")
-            current_login = request.env['res.users'].sudo().browse([request.session.uid])
+            # current_login = request.env['res.users'].sudo().browse([request.session.uid])
 
-            template_obj = request.env['mail.template'].sudo().search([('name', '=', 'Student')], limit=1)
-            body = template_obj.body_html % (form_data.get("name"), form_data.get('password'))
-            if template_obj:
-                mail_values = {
-                    'body_html': body,
-                    'email_to': form_data.get("email"),
-                    'email_from': current_login.email,
-                }
-                request.env['mail.mail'].sudo().create(mail_values).send()
-# mail
-            print("\n\n\n")
-            print(request.env['res.users'].send_mail_to_student)
-            print("\n\n\n")
-            request.env['res.users'].send_mail_to_student(current_login.email, partner.email, form_data.get('password'))
-            match_id = request.env['res.partner'].sudo().browse([current_login.partner_id])
-            print('\n\n\n\n\n', match_id)
-            print('\n\n\n\n\n', current_login.email)
-            self.sudo().send_email(current_login.email, partner.email, var)
-        # resulrt = request.env['product.template'].sudo().search_read([], ['id',  'name'])
-        # print(resulrt, "\n\n\n\n")
-        # import pdb
-        # pdb.set_trace()
-        # return resulrt
-        # return {'resulrt': request.env['product.template'].sudo().search_read(["res_user_id", "=", request.env.user.id], ['id',  'name'])}
-
-        # return {'resulrt': request.env['product.template'].sudo().search_read([('create_uid', '=', request.env.user.id)], ['id',  'name', 'list_price'])}
-        return {'resulrt': request.env['product.template'].sudo().search_read([('create_uid', '=', request.env.user.id)], ['id',  'name', 'list_price'])}
+            # template_obj = request.env['mail.template'].sudo().search([('name', '=', 'Student')], limit=1)
+            # body = template_obj.body_html % (form_data.get("name"))
+            # print('\n\n\n\n', form_data.get("email"))
+            # print('\n\n\n\n current_login', current_login.email)
+            # if template_obj:
+            #     mail_values = {
+            #         'body_html': body,
+            #         'email_to': form_data.get("email"),
+            #         'email_from': current_login.email,
+            #     }
+            #     request.env['mail.mail'].sudo().create(mail_values).send()
+        return {'resulrt': request.env['res.company'].sudo().search_read([('is_Institute', '=', 1)], ['id',  'name'])}
+        # return {'resulrt': request.env['res.company'].sudo().search_read([('create_uid', '=', request.env.user.id)], ['id',  'name'])}
 
     # add course
     @http.route('/owl_demo_add_cource', type='http', auth="public", csrf=False, website=True)
@@ -137,9 +184,12 @@ class OwlController(http.Controller):
     @http.route('/demo_AddCource', type='json', auth="public", csrf=False, website=True)
     def demo_AddCources(self, form_data=False, **post):
         if form_data:
+            # user = request.env['res.users'].browse([request.env.uid])
             prodct = request.env['product.template'].sudo().create({
                 'name': form_data.get("name"),
                 "list_price": form_data.get("list_price"),
+                'cource_id': request.env['res.users'].browse([request.env.uid]).company_id,
+                # 'cource_id': user.company_id,
             })
             # print('\n\n\n\n', form_data)
         var = [1]
@@ -179,6 +229,7 @@ class OwlController(http.Controller):
                 "name": form_data.get("name"),
                 "partner_id": partner.id,
                 "currency_id": currency.id,
+                'is_Institute': 1
             })
             # print("\n\n\n\n\n")
             # print(company)

@@ -26,4 +26,38 @@
             <h1>Password Email: %s</h1>
         </field>
     </record>
+
+
+    <record id="email_reject_student" model="mail.template">
+        <field name="name">Rejected</field>
+        <field name="email_from">${object.email_from}</field>
+        <field name="email_to">${object.email_to}</field>
+        <field name="subject">mail id</field>
+        <!-- <field name="partner_to">${object.partner_id.id}</field> -->
+        <field name="model_id" ref="model_res_users" />
+        <field name="body_html" type="html">
+
+          
+                <h1> please fille up form again same details are misiing</h1>
+            
+           
+        </field>
+    </record>
+
+
+    <record id="email_accepted_student" model="mail.template">
+        <field name="name">accepted</field>
+        <field name="email_from">${object.email_from}</field>
+        <field name="email_to">${object.email_to}</field>
+        <field name="subject">mail id</field>
+        <!-- <field name="partner_to">${object.partner_id.id}</field> -->
+        <field name="model_id" ref="model_res_users" />
+        <field name="body_html" type="html">
+
+          
+                <h1> please fille up form <a href="http://localhost:8069/owl_demo_add_Student"> click here  </a></h1>
+            
+           
+        </field>
+    </record>
 </odoo>

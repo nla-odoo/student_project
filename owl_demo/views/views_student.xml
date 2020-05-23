@@ -13,34 +13,27 @@
                 <script type="text/javascript" src="/owl_demo/static/src/js/studentlist.js"></script>
                 <script type="text/javascript" src="/owl_demo/static/src/js/menu.js"></script>
                 <script type="text/javascript" src="/owl_demo/static/src/js/payment.js"></script>
-                
+                <script type="text/javascript" src="/owl_demo/static/src/js/accepted.js"></script>
             </xpath>
         </template>
-       
-         <template id="owl_demo.student">
+        <template id="owl_demo.student">
             <t t-call="portal.portal_layout">
-
-                <div class="payment_com" >student</div>
-                
+                <div class="payment_com">student</div>
             </t>
         </template>
-
-
-         <template id="student_item" name="second" inherit_id="portal.portal_breadcrumbs" priority="2">
-        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
-            <ul>
-                <li>
-                    <a href="/owl_demo_student">Pyment</a>
-                </li>
-            </ul>
-            <ul>
-                <li>
-                    <a href="/owl_demo_add_cource">Payment details</a>
-                </li>
-            </ul>
-        </xpath>
-    </template>
-
-
+        <template id="student_item" name="second" inherit_id="portal.portal_breadcrumbs" priority="2">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <ul>
+                    <li>
+                        <a href="/owl_demo_student">Pyment</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        <a href="#">Payment details</a>
+                    </li>
+                </ul>
+            </xpath>
+        </template>
     </data>
 </odoo>

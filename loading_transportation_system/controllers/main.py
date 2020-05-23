@@ -8,24 +8,23 @@ from odoo.exceptions import UserError
 
 
 class Home(Home):
-    # pass
     def _login_redirect(self, uid, redirect=None):
         if request.session.uid and request.env['res.users'].sudo().browse(request.session.uid).has_group('base.group_user'):
             return '/web/'
         if request.session.uid:
-            user = request.env['res.users'].sudo().browse(request.session.uid)
-            if user.has_group('base.group_portal'):
-                # if user.is_student:
-                #     return '/owl_demo_student'
-                return'/transporter_register'
+            # user = request.env['res.users'].sudo().browse(request.session.uid)
+            # if user.has_group('base.group_portal'):
+            #     if user.is_customer:
+            #         return '/transporter_register'
+            return'/transporter_register'
         return super(OwlController, self)._login_redirect(uid, redirect=redirect)
 
 
 class OwlController(http.Controller):
 
-    @http.route('/owl_demo', type='http', auth="public", csrf=False)
-    def owl_demo(self, **post):
-        return http.request.render("loading_transportation_system.demo_template2")
+    # @http.route('/owl_demo', type='http', auth="public", csrf=False)
+    # def owl_demo(self, **post):
+    #     return http.request.render("loading_transportation_system.demo_template2")
 
     @http.route('/get_partner_data', type='json', auth="public", csrf=False)
     def get_partner(self, **post):
@@ -60,6 +59,13 @@ class OwlController(http.Controller):
             if request.env['res.company'].browse(request.session.uid):
                 return http.request.render("loading_transportation_system.demo_template")
         return http.request.render("loading_transportation_system.demo_ragi")
+
+    @http.route('/is_customer', type='json', auth="public", csrf=False, website=True)
+    def is_customer(self, **post):
+        user = request.env['res.users'].sudo().browse(request.session.uid)
+        if user.has_group('base.group_portal') and user.is_customer:
+            return True
+        return False
 
     @http.route('/transporter_register', type='http', auth="public", csrf=False, website=True)
     def transporter_register(self, **post):
@@ -152,3 +158,30 @@ class OwlController(http.Controller):
                     'partner_id': request.env.user.partner_id.id
                     }])
         return self.get_vehicle()
+
+    @http.route('/my_orders', type='http', auth="public", csrf=False)
+    def owl_demo(self, **post):
+        return http.request.render("loading_transportation_system.orders_template")
+
+    @http.route('/get_order_details', type='json', auth="public", csrf=False)
+    def get_partner(self, **post):
+        domain = [
+            ('partner_id', '=', request.env.user.partner_id.id),
+            ('state', 'in', ['sale', 'done'])
+        ]
+        return request.env['sale.order'].sudo().search_read(domain, ['id', 'name', 'date_order', 'amount_total'])
+
+    @http.route('/get_data/', type='http', auth="public", csrf=False)
+    def owl_details(self, **post):
+        return http.request.render("loading_transportation_system.detail_template")
+
+    @http.route('/order_detail', type='json', auth="public", csrf=False)
+    def order_data(self, **kw):
+        order = request.env['sale.order'].sudo().search([('id', '=', kw.get('order_id'))])
+        order_detail = order.order_line.read(['id', 'name', 'price_unit', 'price_tax', 'price_total', 'product_uom_qty', 'product_id'])
+        products = {}
+        for line in order.order_line:
+            products[line.id] = line.product_id.image_1920
+        sale_detail = order.read(['name', 'date_order'])
+        partner_detail = order.partner_id.read(['id', 'name', 'street', 'city', 'zip'])
+        return {'details': order_detail, 'order': sale_detail, 'partner': partner_detail, 'products': products}

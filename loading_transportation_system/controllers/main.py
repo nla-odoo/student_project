@@ -16,7 +16,7 @@ class Home(Home):
             # if user.has_group('base.group_portal'):
             #     if user.is_customer:
             #         return '/transporter_register'
-            return'/transporter_register'
+            return'/owl_demo_ragi'
         return super(OwlController, self)._login_redirect(uid, redirect=redirect)
 
 
@@ -142,13 +142,12 @@ class OwlController(http.Controller):
             })
         return {'resulrt': request.env['res.currency'].sudo().search_read([], ['id',  'name'])}
 
+    @http.route('/my_vehicles', type='http', auth="public", csrf=False)
+    def vehicles(self, **post):
+        return http.request.render("loading_transportation_system.display_template")
+
     @http.route('/vehicle', type='json', auth="public", csrf=False)
     def get_vehicle(self, **post):
-        # partner = request.env.user.partner_id
-        # return http.request.env['crm.lead'].sudo().search_read([('partner_id', '=', partner.id)], ['name', 'description', 'partner_id', 'type'])
-        v = request.env['product.template'].sudo().search_read([], ['name', 'description', ])
-        console.log(v)
-        print("\n\n\n\n\n\n\n\n\n\n\n\n\n vehicle", v)
         return request.env['product.template'].sudo().search_read([], ['name', 'description', ])
 
     @http.route('/vehicle/form/', auth="public", type="json", csrf=False)
@@ -157,7 +156,8 @@ class OwlController(http.Controller):
         request.env['product.template'].sudo().create([{
                     'description': kw.get('description'),
                     'name': kw.get('name'),
-                    'user_id': False,
-                    'partner_id': request.env.user.partner_id.id
+                    # s'user_id': False,
+                    # 'partner_id': request.env.user.partner_id.id
                     }])
         return self.get_vehicle()
+

@@ -6,6 +6,7 @@
     'depends': ['base', 'portal', 'crm', 'sale_management', ],
     'data': [
         'views/templates.xml',
+        # 'views/vehicle_temp.xml',
     ],
     'installable': True,
     'application': True,

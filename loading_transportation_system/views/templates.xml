@@ -60,14 +60,13 @@
             <t t-call="portal.portal_layout">
 
                 <!-- <div class="transporter_temp"></div> -->
-                <!-- <div class="vehicle_temp"></div>
-                <div class="create_vehicle"></div> -->
+                <div class="vehicle_temp"></div>
+                <div class="create_vehicle"></div>
 
                 
             </t>
 
         </template>
-
 
 
 

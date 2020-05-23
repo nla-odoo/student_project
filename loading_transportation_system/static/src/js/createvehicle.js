@@ -37,7 +37,7 @@ odoo.define('loading_transportation_system.createvehicle', function (require) {
         <div>
             <div>
                 <form method="post">
-                    <center><h1>Create Inquirey</h1></center>
+                    <center><h1>Create Vehicle</h1></center>
                     <div class="form-group">
                         <label>Name</label>
                         <input type="text" name='name' t-model="state.name" class="form-control"/>

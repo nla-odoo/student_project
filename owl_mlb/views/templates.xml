@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<template id="assets_frontend" name="assets" inherit_id="web.assets_frontend">
+			<xpath expr="." position="inside">
+				<script type="text/javascript" src="/owl_mlb/static/src/js/owl_component.js"></script>
+				<script type="text/javascript" src="/owl_mlb/static/src/js/owl_dynamic_component.js"></script>
+				<script type="text/javascript" src="/owl_mlb/static/src/js/meal_prov_regi.js"></script>
+				<script type="text/javascript" src="/owl_mlb/static/src/js/customer_registration.js"></script>
+				<script type="text/javascript" src="/owl_mlb/static/src/js/addproduct.js"></script>
+				<link href="/owl_mlb/static/src/scss/app.scss" rel="stylesheet" type="text/scss" />
+				<link href="/owl_mlb/static/src/scss/reg.scss" rel="stylesheet" type="text/scss" />
+			</xpath>
+		</template>
+		<template id="owl_mlb.demo_template">
+            <t t-call="portal.portal_layout">
+                <div class="my_dynamic_component"></div>
+            </t>
+        </template>
+        <!-- <template id="owl_mlb.demo_template">
+            <t t-call="portal.portal_layout">
+                <div class="menu_component"></div>
+            </t>
+        </template> -->
+        <template id="owl_mlb.meal_prov_regi">
+            <t t-call="portal.portal_layout">
+                <div class="meal_register_component"></div>
+            </t>
+        </template>
+        <template id="owl_mlb.customer_registration">
+            <t t-call="portal.portal_layout">
+                <div class="customerRegi"></div>
+            </t>
+        </template>
+        <template id="owl_mlb.addproduct">
+            <t t-call="portal.portal_layout">
+                <div class="addproductdata"></div>
+            </t>
+        </template>
+	</data>
+</odoo>

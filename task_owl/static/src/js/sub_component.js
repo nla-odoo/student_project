@@ -12,8 +12,8 @@ odoo.define('task_owl.menu_component', function (require) {
 
         static template = xml`
             <div class="topnav" id="myTopnav">
-                <a href="#" class="fa fa-shopping-cart" data-mode='showCart'> <t t-esc="count"/></a>
-                <a href="#">Home</a>
+                <a href="#" class="fa fa-shopping-cart nav-right" data-mode='showCart'> <t t-esc="count"/></a>
+                <a href="#" class="nav-left">Home</a>
             </div>`;
     }
     return Menu;

@@ -9,6 +9,7 @@ odoo.define('loading_transportation_system.vehicle', function (require) {
     const rpc = require('web.rpc');
 
     const { Component, hooks } = owl;
+    const { useState } = owl.hooks;
     const { xml } = owl.tags;
     const { whenReady } = owl.utils;
 
@@ -28,7 +29,7 @@ odoo.define('loading_transportation_system.vehicle', function (require) {
 
         async modelFunction(ev) {
             const instance = new CreateVehicle(null);
-            instance.mount($('.vehicle_create')[0]);
+            instance.mount($('.create_vehicle')[0]);
             this.destroy();
         }
 
@@ -64,8 +65,9 @@ odoo.define('loading_transportation_system.vehicle', function (require) {
                 params:{name: this.state.name,
                 description: this.state.description
             }}).then(function (result) {
-                self.render(true);
-                self.env.qweb.forceUpdate();
+                const instance = new VehiclesDisplay(null);
+                instance.mount($('.create_vehicle')[0]);
+                self.destroy();
             });
         }
 
@@ -97,17 +99,17 @@ odoo.define('loading_transportation_system.vehicle', function (require) {
         </div>
         `;
 
-        static components = {vehicle};
+        // static components = {VehiclesDisplay};
     }
 
     function setup() {
-        const CreateVehicleInstance = new CreateVehicle();
-        CreateVehicleInstance.mount($('.create_vehicle')[0]);
+        const VehiclesDisplayInstance = new VehiclesDisplay();
+        VehiclesDisplayInstance.mount($('.create_vehicle')[0]);
     }
 
     whenReady(setup);
 
-    return CreateVehicle;
+    return VehiclesDisplay;
 
     // function setup() {
     //     const VehiclesInstance = new VehiclesDisplay();

@@ -24,9 +24,9 @@ class Home(Home):
 
 class OwlController(http.Controller):
 
-    @http.route('/owl_demo', type='http', auth="public", csrf=False, website=True)
-    def owl_demo(self, **post):
-        return http.request.render("owl_demo.demo_template")
+    @http.route('/college', type="http", auth="user", csrf=False, website=True)
+    def collge(self, **post):
+        return http.request.render("owl_demo.college")
 
     @http.route('/acceptedstudent', type='http', auth="public", csrf=False, website=True)
     def acceptedstudent(self, **post):

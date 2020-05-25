@@ -14,9 +14,7 @@ odoo.define('owl.list', function(require) {
     class owlAddStudentList extends Component {
         
         async willStart() {
-            console.log('me student list')
             this.student = await rpc.query({ route: '/studentlists' });
-            debugger;
         }
 
         //  async _onClickLink(ev) {
@@ -86,9 +84,7 @@ odoo.define('owl.list', function(require) {
                     </t>
                 </tbody>
             </table>
-
-        </div>
-`;
+        </div>`;
     }
 
     function setup() {

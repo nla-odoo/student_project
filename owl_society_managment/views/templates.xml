@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="assets_frontend" name="assets" inherit_id="web.assets_frontend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/owl_society_managment/static/src/js/owl_dynamic_component.js"></script>
+                <script type="text/javascript" src="/owl_society_managment/static/src/js/society_create.js"></script>
+                <script type="text/javascript" src="/owl_society_managment/static/src/js/member_create.js"></script>
+                <script type="text/javascript" src="/owl_society_managment/static/src/js/complaint_create.js"></script>
+                <script type="text/javascript" src="/owl_society_managment/static/src/js/event_create.js"></script>
+                <script type="text/javascript" src="/owl_society_managment/static/src/js/balance_create.js"></script>
+                <script type="text/javascript" src="/owl_society_managment/static/src/js/jounral_create.js"></script>
+                <script type="text/javascript" src="/owl_society_managment/static/src/js/account_create.js"></script>
+            </xpath>
+        </template>
+
+        <template id="owl_society_managment.demo_template">
+            <t t-call="portal.portal_layout">
+                <div class="my_dynamic_component"/>
+            </t>
+        </template>
+        <template id="owl_society_managment.society_form">
+            <t t-call="portal.portal_layout">
+                <div class="my_society_create_component"/>
+            </t>
+        </template>
+        <template id="owl_society_managment.member_register">
+            <t t-call="portal.portal_layout">
+                <div class="my_member_create_component"/>
+            </t>
+        </template>
+        <template id="owl_society_managment.complaint_register">
+            <t t-call="portal.portal_layout">
+                <div class="my_complaint_create_component"/>
+            </t>
+        </template>
+        <template id="owl_society_managment.event_register">
+            <t t-call="portal.portal_layout">
+                <div class="my_event_create_component"/>
+            </t>
+        </template>
+        <template id="owl_society_managment.balance_register">
+            <t t-call="portal.portal_layout">
+                <div class="my_balance_create_component"/>
+            </t>
+        </template>
+        <template id="owl_society_managment.jounral_register">
+            <t t-call="portal.portal_layout">
+                <div class="my_jounral_create_component"/>
+            </t>
+        </template>
+        <template id="owl_society_managment.account_register">
+            <t t-call="portal.portal_layout">
+                <div class="my_account_create_component"/>
+            </t>
+        </template>
+    </data>
+</odoo>

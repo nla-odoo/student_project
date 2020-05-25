@@ -3,32 +3,21 @@
     <data>
         <template id="assets_frontend" name="assets" inherit_id="web.assets_frontend">
             <xpath expr="." position="inside">
-                <script type="text/javascript" src="/owl_demo/static/src/js/owl_component.js"></script>
-                <script type="text/javascript" src="/owl_demo/static/src/js/owl_dynamic_component.js"></script>
-                <script type="text/javascript" src="/owl_demo/static/src/js/ragistartion.js"></script>
-                <script type="text/javascript" src="/owl_demo/static/src/js/studentlist.js"></script>
-                <script type="text/javascript" src="/owl_demo/static/src/js/AddStudent.js"></script>
-                <script type="text/javascript" src="/owl_demo/static/src/js/add_cource.js"></script>
+                <!-- <script type="text/javascript" src="/owl_demo/static/src/js/ragistartion.js"></script> -->
+                <!-- <script type="text/javascript" src="/owl_demo/static/src/js/AddStudent.js"></script> -->
                 <script type="text/javascript" src="/owl_demo/static/src/js/menu.js"></script>
-                <script type="text/javascript" src="/owl_demo/static/src/js/payment.js"></script>
-                <script type="text/javascript" src="/owl_demo/static/src/js/accepted.js"></script>
                 
                 <link href="/owl_demo/static/src/scss/app.scss" rel="stylesheet" type="text/scss" />
                 <link href="/owl_demo/static/src/scss/rag.scss" rel="stylesheet" type="text/scss" />
             </xpath>
         </template>
-        <template id="owl_demo.demo_template">
-            <t t-call="portal.portal_layout">
-                <div class="my_dynamic_component"></div>
-            </t>
-        </template>
+
         <template id="owl_demo.demo_ragi">
             <t t-call="portal.portal_layout">
-
                 <div class="my_ragistration_com"></div>
-                
             </t>
         </template>
+
         <template id="owl_demo.demo_AddStudent">
             <t t-call="portal.portal_layout">
 
@@ -36,55 +25,13 @@
                 
             </t>
         </template>
-         <template id="owl_demo.demo_AddCource">
-            <t t-call="portal.portal_layout">
 
-                <div class="my_addCource_com"></div>
-                
+        <template id="owl_demo.college">
+            <t t-call="portal.portal_layout">
+                <div class="menu_item"/>
+                <div class="component_view"/>
             </t>
         </template>
-
-        <template id="owl_demo.studentlistent">
-            <t t-call="portal.portal_layout">
-
-                <div class="liststudent"></div>
-                
-            </t>
-        </template>
-        <template id="owl_demo.acceptedstudentlist">
-            <t t-call="portal.portal_layout">
-
-                <div class="acceptedlist"><h1>accepted</h1></div>
-                
-            </t>
-        </template>
-        
-
-
-         <template id="Institute_menu" name="first" inherit_id="portal.portal_breadcrumbs" priority="1">
-        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
-            <ul>
-                <li>
-                    <a href="/owl_demo_add_Student">Add student </a>
-                </li>
-            </ul>
-            <ul>
-                <li>
-                    <a href="/owl_demo_add_cource">Add course</a>
-                </li>
-            </ul>
-            <ul>
-                <li>
-                    <a href="/studentlist">Student list</a>
-                </li>
-            </ul>
-            <ul>
-                <li>
-                    <a href="/acceptedstudent">Student accepted list</a>
-                </li>
-            </ul>
-        </xpath>
-    </template>
 
 
     </data>

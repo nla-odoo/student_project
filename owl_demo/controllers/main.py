@@ -27,24 +27,13 @@ class OwlController(http.Controller):
     def collge(self, **post):
         return http.request.render("owl_demo.college")
 
-    @http.route('/acceptedstudent', type='http', auth="public", csrf=False, website=True)
-    def acceptedstudent(self, **post):
-        return http.request.render("owl_demo.acceptedstudentlist")
-
     @http.route('/acceptedstudent_rpc', type='json', auth="public", csrf=False, website=True)
     def acceptedstudentrpc(self, **post):
-        res_users = request.env['res.users'].sudo().browse([request.session.uid])
-        res_active = request.env['res.users'].sudo().search_read([('institute_id', '=', res_users.company_id.id), ('active', '=', True)], ['id',  'name', 'active', 'fess', 'course_names'])
+        res_active = request.env['res.users'].sudo().search_read([('company_id', '=', request.env.user.company_id.id), ('active', '=', True)], ['id',  'name', 'active', 'fess', 'course_names'])
         for data in res_active:
             course = request.env['product.template'].sudo().browse([data['course_names']])
             data['course_name'] = course.name
         return {'res_active': res_active}
-
-    # Student list all student list compny side
-
-    @http.route('/studentlist', type='http', auth="public", csrf=False, website=True)
-    def studentlist(self, **post):
-        return http.request.render("owl_demo.studentlistent")
 
     # Student list all student list rpc
     @http.route('/studentlists', type='json', auth="public", csrf=False, website=True)
@@ -52,32 +41,27 @@ class OwlController(http.Controller):
         if action and student_id:
             template_obj = None
             user = request.env['res.users'].sudo().browse([int(student_id)])
-            institute = request.env['res.company'].sudo().browse([user.institute_id])
-            user_d = request.env['res.partner'].sudo().browse([user.partner_id.id])
             if action == 'active':
                 user.write({'active': True})
-                template_obj = request.env['mail.template'].sudo().search([('name', '=', 'accepted')], limit=1)
+                try:
+                    user.with_context(create_user=True).action_reset_password()
+                except:
+                    pass
             elif action == 'delete':
                 user.unlink()
                 template_obj = request.env['mail.template'].sudo().search([('name', '=', 'Rejected')], limit=1)
-            if template_obj:
-                mail_values = {
-                    'body_html': template_obj.body_html,
-                    'email_to': user_d.email,
-                    'email_from': institute.email,
-                }
+                if template_obj:
+                    mail_values = {
+                        'body_html': template_obj.body_html,
+                        'email_to': user.email,
+                        'email_from': user.company_id.email,
+                    }
                 request.env['mail.mail'].sudo().create(mail_values).send()
-        res_users = request.env['res.users'].sudo().browse([request.session.uid])
-        res = request.env['res.users'].sudo().search_read([('institute_id', '=', res_users.company_id.id), ('active', '=', False)], ['id',  'name', 'active', 'fess', 'course_names'])
+        res = request.env['res.users'].sudo().search_read([('company_id', '=', request.env.user.company_id.id), ('active', '=', False)], ['id',  'name', 'active', 'fess', 'course_names'])
         for data in res:
             course = request.env['product.template'].sudo().browse([data['course_names']])
             data['course_name'] = course.name
         return {'resulrt': res, }
-
-    # Student login after come this page
-    @http.route('/owl_demo_student', type='http', auth="public", csrf=False, website=True)
-    def student(self, **post):
-        return http.request.render("owl_demo.student")
 
     @http.route('/studentpayment', type='json', auth="public", csrf=False, website=True)
     def payment(self, **post):
@@ -101,7 +85,7 @@ class OwlController(http.Controller):
         return request.env['product.template'].sudo().search_read([('cource_id', '=', cource_id)], ['id', 'name'])
 
     # register all  institute
-    @http.route('/owl_demo_ragi', type='http', auth="public", csrf=False, website=True)
+    @http.route('/institute_register', type='http', auth="public", csrf=False, website=True)
     def demo_ragi(self, **post):
         if request.session.uid:
             if request.env['res.company'].browse(request.session.uid):
@@ -109,29 +93,40 @@ class OwlController(http.Controller):
         return http.request.render("owl_demo.demo_ragi")
 
     # institute login after come this page add student
-    @http.route('/owl_demo_add_Student', type='http', auth="public", csrf=False, website=True)
+    @http.route('/register', type='http', auth="public", csrf=False, website=True)
     def demo_AddStudent(self, **post):
         return http.request.render("owl_demo.demo_AddStudent")
 
+    @http.route('/get_institutes', type='json', auth="public", csrf=False)
+    def get_institutes(self, **post):
+        return request.env['res.company'].sudo().search([]).read(['name'])
+
+    @http.route('/get_course', type='json', auth="public")
+    def get_course(self, institute_id, **post):
+        return request.env['product.template'].sudo().search([('company_id', '=', institute_id)]).read(['name'])
+
     # rpc page for studnet add
-    @http.route('/demo_AddStudent', type='json', auth="public", csrf=False, website=True)
-    def demo_AddStudents(self, form_data=False, **post):
-        if form_data:
-            partner = request.env['res.partner'].sudo().create({
-                'name': form_data.get("name"),
-                "email": form_data.get("email"),
-            })
-            course = request.env['product.template'].sudo().search([('id', '=', form_data.get('cource_dropdown'))])
-            var = request.env["res.users"].sudo().create({
-                'login': form_data.get("name"),
-                'name': form_data.get('name'),
-                'groups_id': [(6, 0, [request.env.ref('base.group_portal').id])],
-                'is_student': 1,
-                'active': False,
-                'course_names': course.id,
-                'fess': course.list_price,
-                'institute_id': form_data.get("ins_dropdown"), })
-        return {'resulrt': request.env['res.company'].sudo().search_read([('is_Institute', '=', 1)], ['id',  'name'])}
+    @http.route('/add_student', type='json', auth="public", csrf=False, website=True)
+    def demo_AddStudents(self, **post):
+        partner = request.env['res.partner'].sudo().create({
+            'name': post.get("name"),
+            "email": post.get("email"),
+        })
+        course = request.env['product.template'].sudo().search([('id', '=', int(post.get('cource_dropdown')))])
+        vals = {
+            'login': post.get("email"),
+            'name': post.get('name'),
+            'email': post.get('email'),
+            'groups_id': [(6, 0, [request.env.ref('base.group_portal').id])],
+            'is_student': 1,
+            'active': False,
+            'course_names': course.id,
+            'fess': course.list_price,
+            'partner_id': partner.id,
+            'company_id': int(post.get("ins_dropdown"))
+        }
+        request.env["res.users"].sudo().with_context(no_reset_password=True).create(vals)
+        return True
 
     # add course
     @http.route('/owl_demo_add_cource', type='http', auth="public", csrf=False, website=True)
@@ -145,15 +140,14 @@ class OwlController(http.Controller):
     @http.route('/demo_AddCource', type='json', auth="public", csrf=False, website=True)
     def demo_AddCources(self, form_data=False, **post):
         if form_data:
-            prodct = request.env['product.template'].sudo().create({
+            request.env['product.template'].sudo().create({
                 'name': form_data.get("name"),
                 "list_price": form_data.get("list_price"),
-                'cource_id': request.env['res.users'].browse([request.env.uid]).company_id, })
+                'company_id': request.env.user.company_id.id})
         return True
 
     @http.route('/get_partner_data', type='json', auth="public", csrf=False, website=True)
     def get_partner(self, offset=0, limit=0):
-
         request.env.cr.execute("""SELECT count(*) FROM product_template;""")
         count = request.env.cr.fetchone()[0] / 6
         if isinstance(count, (float)):

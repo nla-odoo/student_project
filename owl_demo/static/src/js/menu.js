@@ -18,23 +18,30 @@ odoo.define('owldemo.my_addCource_com', function(require) {
 
          async willStart() {
             this.isStudent= await rpc.query({ route: '/is_student' });
+            this._renderMenuItem();
+        }
+
+        _renderMenuItem(mode) {
+            mode = mode || 'addCource';
+            if (mode === 'addCource') {
+                const owlAddCourceInstance = new owlAddCource();
+                owlAddCourceInstance.mount($('.component_view')[0]);
+            } else if (mode === 'studentToAccept') {
+                const owlAddStudentListInstance = new owlAddStudentList();
+                owlAddStudentListInstance.mount($('.component_view')[0]);
+            } else if (mode === 'studentList') {
+                const owlAddStudentacceptedListInstance = new owlAddStudentacceptedList();
+                owlAddStudentacceptedListInstance.mount($('.component_view')[0]);
+            }
         }
 
        _onClickMenuItem(ev) {
             ev.preventDefault();
             const mode = ev.target.dataset.mode;
             $('.component_view').html('');
-            if (mode === 'addCource') {
-                const owlAddCourceInstance = new owlAddCource();
-                owlAddCourceInstance.mount($('.component_view')[0]);
-            } else if (mode === 'studentToAccept') {
-                const owlAddStudentacceptedListInstance = new owlAddStudentacceptedList();
-                owlAddStudentacceptedListInstance.mount($('.component_view')[0]);
-            } else if (mode === 'studentList') {
-                const owlAddStudentListInstance = new owlAddStudentList();
-                owlAddStudentListInstance.mount($('.component_view')[0]);
-            }
-            
+            this._renderMenuItem(mode);
+            this.el.querySelector('.active').classList.remove('active');
+            this.el.querySelector('a[data-mode="' + mode + '"]').classList.add('active')
         }
 
         static template = xml`
@@ -42,7 +49,7 @@ odoo.define('owldemo.my_addCource_com', function(require) {
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav" t-on-click="_onClickMenuItem">
                         <li class="nav-item">
-                            <a class="nav-link" href="#" data-mode="addCource">Add Cource</a>
+                            <a class="nav-link active" href="#" data-mode="addCource">Add Cource</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#" data-mode="studentToAccept">Student To Accept</a>
@@ -157,7 +164,7 @@ odoo.define('owldemo.my_addCource_com', function(require) {
         }
 
         async _activeStudent(ev) {
-            this.product = await rpc.query({
+            this.student = await rpc.query({
                 route: "/studentlists", 
                 params: {
                     'action': 'active', 
@@ -168,7 +175,7 @@ odoo.define('owldemo.my_addCource_com', function(require) {
         }
 
         async _rejectStudent(ev) {
-            this.product = await rpc.query({
+            this.student = await rpc.query({
                 route: "/studentlists", 
                 params: {
                     'action': 'delete', 

@@ -3,8 +3,8 @@
     <data>
         <template id="assets_frontend" name="assets" inherit_id="web.assets_frontend">
             <xpath expr="." position="inside">
-                <!-- <script type="text/javascript" src="/owl_demo/static/src/js/ragistartion.js"></script> -->
-                <!-- <script type="text/javascript" src="/owl_demo/static/src/js/AddStudent.js"></script> -->
+                <script type="text/javascript" src="/owl_demo/static/src/js/ragistartion.js"></script>
+                <script type="text/javascript" src="/owl_demo/static/src/js/AddStudent.js"></script>
                 <script type="text/javascript" src="/owl_demo/static/src/js/menu.js"></script>
                 
                 <link href="/owl_demo/static/src/scss/app.scss" rel="stylesheet" type="text/scss" />
@@ -20,7 +20,6 @@
 
         <template id="owl_demo.demo_AddStudent">
             <t t-call="portal.portal_layout">
-
                 <div class="my_AddStudent_com"></div>
                 
             </t>

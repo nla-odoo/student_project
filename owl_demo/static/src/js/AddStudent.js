@@ -15,40 +15,50 @@ odoo.define('owldemo.AddStudent', function (require) {
     class owlAddStudent extends Component {
 
         async willStart(){
-            console.log('me login')
-            this.student = await rpc.query({route: '/demo_AddStudent'});
-            // debugger;
+            this.institutes_data = await rpc.query({route: '/get_institutes'});
+            this.course_data = [];
+        }
+
+        get institutes () {
+            return this.institutes_data;
+        }
+
+        get courses () {
+            return this.course_data;
         }
 
          async _onClickLink(ev) {
             const form = document.querySelector('#addstudent');
-            let formData = new FormData(form);
-            formData = Object.fromEntries(formData);
-           this.student = await rpc.query({
-                route: "/demo_AddStudent", 
-                params: {'form_data': formData}
+            let params = new FormData(form);
+            params = Object.fromEntries(params);
+            await rpc.query({
+                route: "/add_student",
+                params: params
+            }).then(function (result) {
+                alert('Thanks for registering with us.')
             });
         }
         async _onChange(ev){
-            // if (ev.target.value === 'select_ins') {
-            //     for(const op of ev.target.options) {
-            //         if (op !== 'select_ins') {
-            //             op.remove();
-            //         }
-            //     }
-            // }
-            if (ev.target.value !== 'select_ins') {
-                const cources = await rpc.query({
-                    route: "/coursefillter", 
-                    params: {'cource_id': ev.target.value }
+            const institute_id = parseInt(ev.target.value);
+            const self = this;
+            const cource_dropdown = document.querySelector("select[name='cource_dropdown']");
+            if (institute_id) {
+                await rpc.query({
+                    route: "/get_course",
+                    params: {institute_id: institute_id }
+                }).then(function (result) {
+                    self.course_data = result;
+                    cource_dropdown.disabled = false;
+                    $(cource_dropdown).find('option').not(':first').remove();
+                    result.forEach(function (cource) {
+                        const option = document.createElement('option');
+                        option.setAttribute('value', cource.id)
+                        option.textContent = cource.name;
+                        cource_dropdown.appendChild(option);
+                    })
                 });
-                const cd = document.querySelector("select[name='cource_dropdown']");
-                for (const cource of cources) {
-                    const option = document.createElement('option');
-                    option.setAttribute('value', cource.id)
-                    option.textContent = cource.name;
-                    cd.appendChild(option);
-                }
+            } else {
+                cource_dropdown.disabled = true;
             }
         }
 
@@ -73,20 +83,18 @@ odoo.define('owldemo.AddStudent', function (require) {
                                 <div class="line"></div>
                             </div>
                     </label>
-
-                   
                     <div id="ins_dropdown">
                         <select name="ins_dropdown" class="form-control" t-on-change="_onChange">
-                            <option value="select_ins">select institute</option>
-                            <t t-foreach="student.resulrt" t-as="course"  t-key="'row_' + row_index">
-                                <option t-att-value="course.id">
-                                    <t t-esc="course.name"/>
+                            <option value="0">select institute</option>
+                            <t t-foreach="institutes" t-as="institute">
+                                <option t-att-value="institute.id">
+                                    <t t-esc="institute.name"/>
                                 </option>
                             </t>
                         </select>
                     </div><p></p>
                     <div id="cource_dropdown">
-                        <select name="cource_dropdown" class="form-control" >
+                        <select name="cource_dropdown" class="form-control" disabled="disabled">
                             <option>select course</option>
                         </select>
                     </div><p></p>

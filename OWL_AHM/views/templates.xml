@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="assets_frontend" name="assets" inherit_id="web.assets_frontend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/OWL_AHM/static/src/js/owl_component.js"></script>
+				<script type="text/javascript" src="/OWL_AHM/static/src/js/registration.js"></script>
+               
+
+                <!-- <link rel="stylesheet" type="text/css" href="/OWL_DEMO/static/src/css/app.css"/> -->
+            </xpath>
+        </template>
+
+        <template id="OWL_AHM.owl_component">
+            <t t-call="portal.portal_layout">
+                <div class="my_feedback_component"/>
+            </t>
+        </template>
+
+        <template id="OWL_AHM.regsitration">
+            <t t-call="portal.portal_layout">
+                <div class="my_registration_component"/>
+            </t>
+        </template>
+
+    </data>
+</odoo>

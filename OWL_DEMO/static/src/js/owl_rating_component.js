@@ -64,23 +64,16 @@ odoo.define('OWL_DEMO.owl_rating_component', function (require) {
             <div>
             <div>
                 <form method="post">
-                    <center><h1>Complain</h1></center>
-                    <div class="form-group">
+                    <center><h1></h1></center>
+                    <div class="form-group col-6">
                         <label>Rate</label>
                         <input type="number" name='rate' t-model="state.rating" class="form-control"/>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-6">
                         <label>feedback</label>
                         <input type="text" name='feedback' t-model="state.feedback" class="form-control"/>
                     </div>
-                    <div class="form-group">
-                        <label>Res-id</label>
-                        <input type="number" name='res_id' t-model="state.res_id" class="form-control"/>
-                    </div>
-                     <div class="form-group">
-                        <label>res_model</label>
-                        <input type="text" name='res_model' t-model="state.res_model" class="form-control"/>
-                    </div>
+                    
                 <a t-on-click="_onClickLink" class="btn btn-primary">Submit</a>
                 </form>
             </div>

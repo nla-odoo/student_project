@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="assets_frontend" inherit_id="web.assets_frontend" name="Demo Assets">
+        <xpath expr="//link[last()]" position="inside">
+             <link href="/AHM/static/src/scss/cart_css.scss" rel="stylesheet" type="text/scss"/>
+            <link href="/AHM/static/src/scss/portal.scss" rel="stylesheet" type="text/scss"/>
+            <link href="/AHM/static/src/css/app.css" rel="stylesheet" type="text/css"/>
+            <link href="/AHM/static/src/css/app.css" type="text/javascript"/>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+        </xpath>
+    </template>
+    <template id="whatever_name_you_like" inherit_id="portal.portal_breadcrumbs" name="Your Menu" priority="1">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li>
+                <a href="/appointment/" style="margin-left:10px;">Appointment</a>
+            </li>
+            <li>
+                <a href="/appointment/detail/" style="margin-left:10px;">Appointment Detail</a>
+            </li>
+            <li>
+                <a href="/patientbill/" style="margin-left:10px;">Bill Details</a>
+            </li>
+            <li>
+                <a href="/user/complaint/" style="margin-left:10px;">Complaint</a>
+            </li>
+            <li>
+                <a href="/user/feedback/" style="margin-left:10px;">Feedback</a>
+            </li>
+        </xpath>
+    </template>
+    <template id="customer_index2">
+        <t t-call="portal.portal_layout">
+            <xpath expr="." position="inside"/>
+            <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" rel="stylesheet" type="text/css"/>
+            <table align="center" border="2px solid #abc" class="table-sm" style="margin-top:20px;">
+                <thead>
+                    <t t-as="comp" t-foreach="dept_ids">
+                        <th>Hospital Name</th>
+                    </t>
+                </thead>
+                <tbody>
+                    <tr>
+                        <t t-as="comp" t-foreach="dept_ids">
+                            <td>
+                                <t t-esc="comp.name"/>
+                            </td>
+                        </t>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+    </template>
+    <template id="appointment_index">
+        <t t-call="portal.portal_layout">
+            <div align="center" class="form-group">
+                <form action="/appointment/confirm/" method="post">
+                    <input name="patient_id" t-att-value="patient_id.id" type="hidden"/>
+                    <h1 style="margin-top:20px;color:#00A09D;">Appointment</h1>
+                    <table style="margin-top:20px;">
+                        <tr>
+                            <td>Breed Type</td>
+                            <td>
+                                <select class="form-control" name="breed_type_id.org_name">
+                                    <t t-as="animal_type" t-foreach="animal_type">
+                                        <option t-att-value="animal_type.id">
+                                            <t t-esc="animal_type.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hospital Name</td>
+                            <td>
+                                <select class="form-control" name="org_name">
+                                    <t t-as="org_name" t-foreach="org_id">
+                                        <option t-att-value="org_name.id">
+                                            <t t-esc="org_name.org_name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Name</td>
+                            <td>
+                                <input class="form-control" name="name" type="text"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Contact</td>
+                            <td>
+                                <input class="form-control" name="contact" type="text"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Visiting Date</td>
+                            <td>
+                                <input class="form-control" name="visiting_date" type="date"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Visiting Time</td>
+                            <td>
+                                <select class="form-control" name="visiting_time">
+                                    <option t-att-value="1">10 : AM</option>
+                                    <option t-att-value="2">11 : AM</option>
+                                    <option t-att-value="3">12 : AM</option>
+                                    <option t-att-value="4">1 : PM</option>
+                                    <option t-att-value="5">2 : PM</option>
+                                    <option t-att-value="6">3 : PM</option>
+                                    <option t-att-value="7">4 : PM</option>
+                                    <option t-att-value="8">5 : PM</option>
+                                    <option t-att-value="9">6 : PM</option>
+                                    <option t-att-value="10">7 : PM</option>
+                                    <option t-att-value="11">8 : PM</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Visiting Charges</td>
+                            <td>
+                                <input class="form-control" name="visit_charges" type="text" value="450"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Address</td>
+                            <td>
+                                <input class="form-control" name="address" type="text"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td/>
+                            <td>
+                                <button class="btn btn-primary" id="onclick_submit" style="margin-top:15px;" type="submit">Confirm </button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </t>
+    </template>
+    <template id="patient_appointment_portal">
+        <title>Patient Appointment Details</title>
+        <t t-call="portal.portal_layout">
+            <div class="oe_structure">
+                <div class="container">
+                    <br/>
+                    <table class="table table-striped">
+                        <input name="csrf_token" t-att-value="request.csrf_token()" type="hidden"/>
+                        <tbody>
+                            <h1 align="center" style="color:#00A09D;">Appointment Details </h1>
+                            <tr>
+                                <th>Hospital Name</th>
+                                <th>Pet's Name</th>
+                                <th>Contact</th>
+                                <th>Visiting Date</th>
+                                <th>Visiting Time</th>
+                                <th>Visiting Charges</th>
+                                <th>Address</th>
+                            </tr>
+                            <t t-as="appointment" t-foreach="appointments">
+                                <tr>
+                                    <td>
+                                        <span t-esc="appointment.org_id.org_name"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="appointment.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="appointment.contact"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="appointment.visiting_date"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="appointment.visiting_time.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="appointment.visit_charges"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="appointment.address"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="patient_bill_index">
+        <title>Patient Bill Details</title>
+        <t t-call="portal.portal_layout">
+            <div class="oe_structure">
+                <div class="container">
+                    <br/>
+                    <table class="table table-striped">
+                        <input name="csrf_token" t-att-value="request.csrf_token()" type="hidden"/>
+                        <tbody>
+                            <h1 align="center" style="color:#00A09D;">Bill Details</h1>
+                            <tr>
+                                <th>Date</th>
+                                <th>Pet Name</th>
+                                <th>Hospital</th>
+                                <th>Medicine Charges</th>
+                                <th>Visiting Charges</th>
+                                <th>Total Bill</th>
+                            </tr>
+                            <t t-as="patientbill" t-foreach="patientbills">
+                                <tr>
+                                    <td>
+                                        <span t-esc="patientbill.date"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="patientbill.app_id.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="patientbill.app_id.org_id.org_name"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="patientbill.medicine_charges"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="patientbill.visiting_charges"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="patientbill.total_bill"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </template>

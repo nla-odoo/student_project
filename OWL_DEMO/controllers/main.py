@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
-from odoo import http
+import json
+# from . import checksum
+import werkzeug
+# from datetime import datetime
+from odoo import http, tools
 from odoo.http import request
+from odoo.addons.web.controllers.main import Home
+from odoo.exceptions import ValidationError
+from werkzeug import urls
 
 
 class OwlController(http.Controller):
@@ -8,26 +15,221 @@ class OwlController(http.Controller):
     def owl_demo(self, **post):
         return http.request.render("OWL_DEMO.demo_template")
 
-    @http.route('/owl_demo_rating', type='http', auth="user", csrf=False)
-    def owl_rating(self, **kw):
-            pm = request.env['rating.rating'].sudo().create([{
-                'rating': int(kw.get('rating')),
-                'feedback': kw.get('feedback'),
-                'res_id': http.request.env['product.product'].sudo().browse(int(kw['res_id'])),
-                'res_model': http.request.env['product.product'].sudo().browse(kw['res_model'])
-            }])
-            print("\n\n\n\n\n\n\n\n\n", pm.res_id)
-            print("\n\n\n\n\n\n\n\n\n", pm.res_model)
-            print("\n\n\n\n\n\n\n\n\n", pm.rating)
-            print("\n\n\n\n\n\n\n\n\n", pm.feedback)
-            return {"pm": pm}
-# browse(rating.res_id)
+    @http.route('/get_livechat_mail_channel_vals', type='json', auth='public', csrf=False, website=True)
+    def get_livechat_mail_channel_vals(self):
+        operator_partner_id = http.request.env.ref("base.user_admin").sudo().partner_id
+        channel_partner_to_add = [(4, operator_partner_id.id)]
 
-    @http.route('/get_partner_data', type='http', auth="public", csrf=False)
-    def get_partner(self, **post):
-        return request.env['res.partner'].search([]).mapped('name')
+        mail_channel_vals = {
+            'channel_partner_ids': channel_partner_to_add,
+            # 'livechat_active': True,
+            'livechat_operator_id': operator_partner_id.id,
+            # 'livechat_channel_id':  1,
+            # 'anonymous_name': 3,
+            # 'country_id': 2,
+            'channel_type': 'livechat',
+            'name': '%s - %s' % (operator_partner_id.name, 'Visitor'),
+            'public': 'private',
+            'email_send': False,
+        }
 
-    @http.route('/feedback', type='http', auth="user", csrf=False)
-    def get_feedback(self, **post):
-        partner = request.env.user.partner_id
-        return http.request.env['rating.rating'].sudo().search_read([('partner_id', '=', partner.id)], ['feedback',  'res_id', ])
+        mail_channel = http.request.env["mail.channel"].with_context(mail_create_nosubscribe=False).sudo().create(mail_channel_vals)
+        print('mail_channel', mail_channel)
+        print("", mail_channel.channel_info()[0])
+        return mail_channel.channel_info()[0]
+
+    @http.route('/mail/send_message', type="json", auth="public", cors="*")
+    def send_message(self, uuid, message_content, **kwargs):
+        mail_channel = request.env["mail.channel"].sudo().search([('uuid', '=', uuid)], limit=1)
+        if not mail_channel:
+            return False
+
+        # find the author from the user session
+        author_id = False
+        email_from = 'Visitor'
+        # post a message without adding followers to the channel. email_from=False avoid to get author from email data
+        body = tools.plaintext2html(message_content)
+        message = mail_channel.with_context(mail_create_nosubscribe=True).message_post(author_id=author_id, email_from=email_from, body=body, message_type='comment', subtype_xmlid='mail.mt_comment')
+        return message and message.id
+
+    @http.route('/mail/recive_message', type="json", auth="public", cors="*")
+    def recive_message(self, uuid, message_content, **kwargs):
+        mail_channel = request.env["mail.channel"].sudo().search([('uuid', '=', uuid)], limit=1)
+        if not mail_channel:
+            return False
+
+        # find the author from the user session
+        author_id = 1
+        email_from = 'Admin'
+        # post a message without adding followers to the channel. email_from=False avoid to get author from email data
+        body = tools.plaintext2html(message_content)
+        message = mail_channel.with_context(mail_create_nosubscribe=True).message_post(author_id=author_id, email_from=email_from, body=body, message_type='comment', subtype_xmlid='mail.mt_comment')
+        return message and message.id
+
+    @http.route(['/shop/cart/update'], type='json', auth="public", website=True, csrf=False)
+    def cart_update(self, **kw):
+        product_id = request.env['product.product'].sudo().search([('product_tmpl_id', '=', int(kw['product_template_id']))])
+        if not request.session.order_id:
+            sale_order = request.env['sale.order'].sudo().create({
+                'partner_id': request.env['res.users'].browse([request.session.uid]).partner_id.id,
+                })
+            request.session['order_id'] = sale_order.id
+        else:
+            sale_order = request.env['sale.order'].sudo().browse(int(request.session.order_id))
+        request.env['sale.order.line'].sudo().create({
+            'order_id': sale_order.id,
+            'sale_order_id': sale_order.order_id,
+            'product_id': product_id.id,
+        })
+        return len(sale_order.order_line)
+
+    @http.route('/get_cart_detail', type='json', auth="public", csrf=False)
+    def cart(self, **post):
+        if request.session.order_id:
+            sale_order = request.env['sale.order'].sudo().browse(int(request.session.order_id))
+            product_details = ['name', 'product_id', 'price_unit', 'sale_order_id']
+            return sale_order.order_line.read(product_details)
+        return [{}]
+
+    @http.route('/order', type='json', auth="public", csrf=False)
+    def order(self, **post):
+        if request.session.order_id:
+            order = request.env['sale.order'].sudo().browse(int(request.session.order_id))
+            order_details = ['amount_total']
+            return order.read(order_details)
+        return [{}]
+
+
+class Home(Home):
+    def _login_redirect(self, uid, redirect=None):
+        if request.session.uid and request.env['res.users'].sudo().browse(request.session.uid).has_group('AHM.group_manager'):
+            return '/web/'
+        if request.session.uid and request.env['res.users'].sudo().browse(request.session.uid).has_group('base.group_user'):
+            return '/web/'
+        if request.session.uid and request.env['res.users'].sudo().browse(request.session.uid).has_group('base.group_portal'):
+            return '/my/home'
+        return super(UserRegister, self)._login_redirect(uid, redirect=redirect)
+
+
+class UserRegister(http.Controller):
+    @http.route('/userregister/', auth="public", type="http", csrf=False)
+    def customer_index1(self, **kw):
+        currency = http.request.env['res.currency'].sudo().search([])
+        return http.request.render('AHM.customer_index1', {'currency': currency})
+
+    @http.route('/my/home', method="post", auth="user", type="http", csrf=False)
+    def homepage(self, **post):
+        dept_ids = request.env['res.company'].sudo().search([])
+        return request.render('AHM.customer_index2', {'dept_ids': dept_ids})
+
+    @http.route('/registration/<string:user>', method="post", auth="public", type="http", csrf=False)
+    def service_provider_index1(self, user=None, **post):
+        if user == 'hospital':
+            groups_id_name = [(6, 0, [request.env.ref('AHM.group_manager').id])]
+            currency_name = post.get('currency')
+            currency = request.env['res.currency'].sudo().search([('name', '=', currency_name)], limit=1)
+
+            partner = request.env['res.partner'].sudo().create({'name': post.get('username'),
+                                                                'email': post.get('email')})
+
+            company = request.env['res.company'].sudo().create({'name': post.get('username'),
+                                                                'partner_id': partner.id,
+                                                                'currency_id': currency.id})
+
+            request.env['res.users'].sudo().create({'partner_id': partner.id,
+                                                    'login': post.get('username'),
+                                                    'password': post.get('password'),
+                                                    'company_id': company.id,
+                                                    'company_ids': [(4, company.id)],
+                                                    'groups_id': groups_id_name})
+
+            request.env['ahm.organization.registration'].sudo().create({'org_id': post.get('username'),
+                                                                        'email': post.get('email')})
+        else:
+
+            groups_id_name = [(6, 0, [request.env.ref('base.group_portal').id])]
+            partner = request.env['res.partner'].sudo().create({'name': post.get('username'),
+                                                                'email': post.get('email')})
+            request.env['res.users'].sudo().create({'partner_id': partner.id,
+                                                    'login': post.get('username'),
+                                                    'password': post.get('password'),
+                                                    'groups_id': groups_id_name})
+
+            request.env['ahm.patient.detail'].sudo().create({'name': post.get('username'),
+                                                            'email': post.get('email')})
+        return http.local_redirect('/web/login?redirect=/homepage')
+
+    @http.route('/appointment', method="post", auth="public", type="http", csrf=False)
+    def appointment(self, **post):
+        animal_type = request.env['ahm.animal.type'].sudo().search([])
+        org_id = request.env['ahm.organization.registration'].sudo().search([])
+        p_ids = request.env['ahm.patient.detail'].sudo().search([('name', '=', request.session.login)])
+        return request.render('AHM.appointment_index', {'animal_type': animal_type,
+                                                        'org_id': org_id,
+                                                        'patient_id': p_ids})
+
+    @http.route('/appointment/confirm/', method="post", auth="public", website=True, type="http", csrf=False)
+    def appointment_confirm(self, **post):
+        appointments_id = request.env['ahm.appointment'].sudo().create({
+                                    'breed_type_id': post.get('breed_type_id'),
+                                    'org_id': int(post.get('org_name')),
+                                    'name': post.get('name'),
+                                    'contact': post.get('contact'),
+                                    'patient_id': int(post.get('patient_id')),
+                                    'visiting_date': post.get('visiting_date'),
+                                    'visiting_time': post.get('visiting_time'),
+                                    'visit_charges': int(post.get('visit_charges')),
+                                    'address': post.get('address')})
+        return request.render('AHM.portal_patient_payment', {'appointments_id': appointments_id})
+
+    @http.route('/appointment/detail/', method="post", auth="public", website=True, type="http", csrf=False)
+    def appointment_detail(self, **post):
+        return request.render('AHM.patient_appointment_portal', {'appointments': request.env['ahm.appointment'].sudo().search([('create_uid', '=', request.session.uid)])})
+
+    @http.route('/patientbill', method="post", auth="public", type="http", csrf=False)
+    def patientbill(self, **post):
+        p_id = request.env['ahm.patient.detail'].sudo().search([('name', '=', request.session.login)])
+        app = request.env['ahm.appointment'].sudo().search([('patient_id', '=', p_id.id)])
+        patientbills1 = request.env['ahm.total.charges'].sudo().search([('app_id', 'in', app.ids)])
+        return request.render('AHM.patient_bill_index', {'patientbills': patientbills1})
+
+    @http.route('/payment_confirm/', method="post", auth="public", website=True, type="http", csrf=False)
+    def payment_confirm(self, **post):
+        config_sudo = request.env['ir.config_parameter'].sudo()
+        base_url = config_sudo.get_param('web.base.url')
+        merchant_id = config_sudo.get_param('sandbox_merchant_id')
+        # merchant_key = config_sudo.get_param('sandbox_merchant_key')
+        appointment = request.env['ahm.appointment'].sudo().browse(int(post.get('appointments_id')))
+        if not merchant_id:
+            raise ValidationError(_('please fill value of [base url, merchant id, order id, merchant key]'))
+        else:
+            data_dict = {
+               'MID': 'amitgo59443067266036',
+               'WEBSITE': 'WEBSTAGING',
+               'ORDER_ID': appointment.order_id,
+               'CUST_ID': str(request.uid),
+               'INDUSTRY_TYPE_ID': 'Retail',
+               'CHANNEL_ID': 'WEB',
+               'TXN_AMOUNT': str(float(post.get('visit_charges'))),
+               'CALLBACK_URL': urls.url_join(base_url, '/paytm_response')}
+            data_dict['CHECKSUMHASH'] = checksum.generate_checksum(data_dict, 'bQfzzkKzeCbR7jOl')
+            data_dict['redirection_url'] = "https://securegw-stage.paytm.in/order/process"
+            return request.make_response(json.dumps(data_dict))
+
+    @http.route('/paytm_response/', method="post", auth="public", website=True, type="http", csrf=False)
+    def paytm_response(self, **post):
+        checksum_status = checksum.verify_checksum(post, 'bQfzzkKzeCbR7jOl', post.get('CHECKSUMHASH'))
+        order_id = post.get('ORDERID')
+        contract = request.env['ahm.appointment'].sudo().search([('order_id', '=', order_id)])
+        if checksum_status:
+            today = datetime.today()
+            payment_status = post.get('STATUS')
+            if payment_status == 'TXN_SUCCESS':
+                contract.write({'acquirer_ref': post.get('TXNID'), 'status': 'confirm', 'payment_status': 'success', 'payment_date': today})
+            elif payment_status == 'TXN_FAILURE':
+                contract.write({'acquirer_ref': post.get('TXNID'), 'status': 'pending', 'payment_status': 'fail', 'payment_date': today})
+            elif payment_status == 'TXN_PENDING':
+                contract.write({'acquirer_ref': post.get('TXNID'), 'status': 'pending', 'payment_status': 'pending', 'payment_date': today})
+            else:
+                raise ValidationError(_('please fill value of [base url, merchant id, order id, merchant key]'))
+            return werkzeug.utils.redirect('/paytm/process/?order_id=%s' % (order_id))

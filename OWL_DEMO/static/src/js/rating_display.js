@@ -30,14 +30,7 @@ odoo.define('OWL_DEMO.rating_display', function (require) {
         static template = xml`<div>
         <center><h1>Leads</h1></center>
         <table class="table table-stripded">
-        <tr>
-            <th>Rating_Text</th>
-            <th>Feedback</th>
-        </tr>
-        <tr t-foreach="leads" t-as="lead">
-        <td><t t-esc="lead.rating_text"/></td>
-        <td><t t-esc="lead.feedback"/></td>
-        </tr>
+        
         </table>
         </div>`
     }

@@ -5,6 +5,9 @@
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/owl_demo/static/src/js/ragistartion.js"></script>
                 <script type="text/javascript" src="/owl_demo/static/src/js/AddStudent.js"></script>
+                <script type="text/javascript" src="/owl_demo/static/src/js/student_to_accepted.js"/>
+                <script type="text/javascript" src="/owl_demo/static/src/js/accepted_student.js"/>
+                <script type="text/javascript" src="/owl_demo/static/src/js/course.js"/>
                 <script type="text/javascript" src="/owl_demo/static/src/js/menu.js"></script>
                 
                 <link href="/owl_demo/static/src/scss/app.scss" rel="stylesheet" type="text/scss" />
@@ -12,20 +15,7 @@
             </xpath>
         </template>
 
-        <template id="owl_demo.demo_ragi">
-            <t t-call="portal.portal_layout">
-                <div class="my_ragistration_com"></div>
-            </t>
-        </template>
-
-        <template id="owl_demo.demo_AddStudent">
-            <t t-call="portal.portal_layout">
-                <div class="my_AddStudent_com"></div>
-                
-            </t>
-        </template>
-
-        <template id="owl_demo.college">
+        <template id="owl_demo.menu_item">
             <t t-call="portal.portal_layout">
                 <div class="menu_item"/>
                 <div class="component_view"/>

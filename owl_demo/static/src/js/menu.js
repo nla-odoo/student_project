@@ -7,6 +7,12 @@ odoo.define('owldemo.my_addCource_com', function(require) {
     }
 
     const rpc = require('web.rpc');
+    const session = require('web.session');
+    const student_register = require('owldemo.AddStudent');
+    const institute_register = require('owldemo.ragi');
+    const course = require('owldemo.course');
+    const owlAddStudentList = require('owldemo.student_to_accepted');
+    const owlAddStudentacceptedList = require('owldemo.acceptedstuden');
     const { Component, hooks } = owl;
     const { xml } = owl.tags;
     const { whenReady } = owl.utils;
@@ -17,23 +23,41 @@ odoo.define('owldemo.my_addCource_com', function(require) {
         isStudent = false;
 
          async willStart() {
+            this.toRegsiter = !session.user_id;
             this.isStudent= await rpc.query({ route: '/is_student' });
             this._renderMenuItem();
         }
 
         _renderMenuItem(mode) {
-            mode = mode || 'addCource';
-            if (mode === 'addCource') {
-                const owlAddCourceInstance = new owlAddCource();
-                owlAddCourceInstance.mount($('.component_view')[0]);
-            } else if (mode === 'studentToAccept') {
-                const owlAddStudentListInstance = new owlAddStudentList();
-                owlAddStudentListInstance.mount($('.component_view')[0]);
-            } else if (mode === 'studentList') {
-                const owlAddStudentacceptedListInstance = new owlAddStudentacceptedList();
-                owlAddStudentacceptedListInstance.mount($('.component_view')[0]);
+            if (this.toRegsiter) {
+                mode = mode || 'registerAsStudent';
+                if (mode === 'registerAsStudent') {
+                    const studentRegisterInstance = new student_register();
+                    studentRegisterInstance.mount($('.component_view')[0]);
+                } else if (mode === 'registerAsInstitute') {
+                    const instituteRegisterInstance = new institute_register();
+                    instituteRegisterInstance.mount($('.component_view')[0]);
+                }
+            } else {
+                mode = mode || 'addCource';
+                if (mode === 'addCource') {
+                    const courceInstance = new course();
+                    courceInstance.mount($('.component_view')[0]);
+                } else if (mode === 'studentToAccept') {
+                    const owlAddStudentListInstance = new owlAddStudentList();
+                    owlAddStudentListInstance.mount($('.component_view')[0]);
+                } else if (mode === 'studentList') {
+                    const owlAddStudentacceptedListInstance = new owlAddStudentacceptedList();
+                    owlAddStudentacceptedListInstance.mount($('.component_view')[0]);
+                }
             }
         }
+
+        get register () {
+            return this.toRegsiter;
+        }
+
+
 
        _onClickMenuItem(ev) {
             ev.preventDefault();
@@ -48,178 +72,29 @@ odoo.define('owldemo.my_addCource_com', function(require) {
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav" t-on-click="_onClickMenuItem">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#" data-mode="addCource">Add Cource</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" data-mode="studentToAccept">Student To Accept</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" data-mode="studentList">Student List</a>
-                        </li>
+                        <t t-if="register">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#" data-mode="registerAsStudent">Register as Student</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-mode="registerAsInstitute">Register as Institute</a>
+                            </li>
+                        </t>
+                        <t t-else="">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#" data-mode="addCource">Cource</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-mode="studentToAccept">Student To Accept</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-mode="studentList">Student List</a>
+                            </li>
+                        </t>
                     </ul>
                 </div>
             </nav>`;
     }
-
-    class owlAddStudentacceptedList extends Component {
-
-        async willStart() {
-            this.student = await rpc.query({ route: '/acceptedstudent_rpc' });
-        }
-
-        async _activeStudent(ev) {
-            debugger;
-            this.product = await rpc.query({
-                route: "/studentlists",
-                params: {
-                    'action': 'active',
-                    'student_id': ev.target.parentElement.parentElement.id
-                }
-            });
-            this.render(true);
-        }
-
-        async _rejectStudent(ev) {
-            this.product = await rpc.query({
-                route: "/studentlists",
-                params: {
-                    'action': 'delete',
-                    'student_id': ev.target.parentElement.parentElement.id
-                }
-
-            });
-            this.render(true);
-        }
-
-        static template = xml` 
-            <div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">student list</th>
-                            <th scope="col">course fess</th>
-                            <th scope="col">course name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <t t-foreach="student.res_active" t-as="student"  t-key="'row_' + row_index">
-                            <tr t-att-id="student.id">
-                                <td><span t-esc="student.name"/></td>
-                                <td><span t-esc="student.fess"/></td>        
-                                <td><span t-esc="student.course_name"/></td>        
-                            </tr>
-                        </t>
-
-                    </tbody>
-                </table>
-            </div>`;
-    }
-
-    class owlAddCource extends Component {
-
-        async willStart() {
-            this.Regist = await rpc.query({ route: '/demo_AddCource' });
-
-        }
-
-        async _onClickLink(ev) {
-            const form = document.querySelector('#addcource');
-            let formData = new FormData(form);
-            formData = Object.fromEntries(formData);
-
-           this.product = await rpc.query({
-                route: "/demo_AddCource", 
-                params: {'form_data': formData}
-            });
-        }
-       
-        static template = xml `
-            <div>
-                <h1 class='h1'><span class='styling'>ADD</span>COURSE</h1>
-                <form class="form" id="addcource">
-                    <label class='label'>
-                    <p class="label-txt">ENTER YOUR COURSE NAME</p>
-                        <input type="text" name="name" class="input"/>
-                    <div class="line-box">
-                        <div class="line"></div>
-                    </div>
-                    </label>
-                    <label class='label'>
-                        <p class="label-txt">ENTER YOUR FEES</p>
-                        <input type="text" name="list_price" class="input"/>
-                    <div class="line-box">
-                        <div class="line"></div>
-                    </div>
-                    </label>
-                    <button t-on-click="_onClickLink" class="button" type="button">submit</button>
-                </form>
-            </div>`;
-    }
-
-    class owlAddStudentList extends Component {
-        
-        async willStart() {
-            this.student = await rpc.query({ route: '/studentlists' });
-        }
-
-        async _activeStudent(ev) {
-            this.student = await rpc.query({
-                route: "/studentlists", 
-                params: {
-                    'action': 'active', 
-                    'student_id': ev.target.parentElement.parentElement.id
-                }
-            });
-            this.render(true);
-        }
-
-        async _rejectStudent(ev) {
-            this.student = await rpc.query({
-                route: "/studentlists", 
-                params: {
-                    'action': 'delete', 
-                    'student_id': ev.target.parentElement.parentElement.id
-                }
-
-            });
-            this.render(true);
-        }        
-
-        static template = xml ` 
-            <div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">student list</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <t t-foreach="student.resulrt" t-as="student"  t-key="'row_' + row_index">
-                            <tr t-att-id="student.id">
-                                <td><span t-esc="student.name"/></td>
-                                <td><span t-esc="student.list_price"/></td>
-                                <td><span t-esc="student.course_name"/></td>
-                                <td><span t-esc="student.fess"/></td>
-                                <t t-if="!student.active">
-                                    <td>
-                                        <button class="btn btn-primary" t-on-click="_activeStudent" name="btn_accept">Accept</button>
-                                        <button class="btn btn-danger" t-on-click="_rejectStudent" name="btn_delete">Reject</button>
-                                    </td>
-                                </t>
-                                <t t-if="student.active">
-                                    <td>hello
-                                        <button class="btn btn-primary" t-on-click="_activeStudent" name="btn_accept">Accept</button>
-                                        <button class="btn btn-danger" t-on-click="_rejectStudent" name="btn_delete">Reject</button>
-                                    </td>
-                                </t>
-                            </tr>
-                        </t>
-                    </tbody>
-                </table>
-            </div>`;
-    }
-
 
     function setup() {
         const MenuInstance = new Menu();

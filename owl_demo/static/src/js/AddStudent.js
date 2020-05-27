@@ -1,11 +1,6 @@
 odoo.define('owldemo.AddStudent', function (require) {
     "use strict";
 
-    require('web.dom_ready');
-    if (!$('.my_AddStudent_com').length) {
-        return Promise.reject("DOM doesn't contain '.my_dynamic_component'");
-    }
-
     const rpc = require('web.rpc');
 
     const { Component, hooks } = owl;
@@ -44,7 +39,7 @@ odoo.define('owldemo.AddStudent', function (require) {
             const cource_dropdown = document.querySelector("select[name='cource_dropdown']");
             if (institute_id) {
                 await rpc.query({
-                    route: "/get_course",
+                    route: "/get_courses",
                     params: {institute_id: institute_id }
                 }).then(function (result) {
                     self.course_data = result;
@@ -61,8 +56,6 @@ odoo.define('owldemo.AddStudent', function (require) {
                 cource_dropdown.disabled = true;
             }
         }
-
-
 
         static template = xml` 
             <div>
@@ -103,13 +96,6 @@ odoo.define('owldemo.AddStudent', function (require) {
                 </div>
             </div>  
 `;   }
-
-    function setup() {
-        const OwladdstudentInstance = new owlAddStudent();
-        OwladdstudentInstance.mount($('.my_AddStudent_com')[0]);
-    }
-
-    whenReady(setup);
 
     return owlAddStudent;
 });

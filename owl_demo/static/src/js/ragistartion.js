@@ -1,11 +1,6 @@
 odoo.define('owldemo.ragi', function (require) {
     "use strict";
 
-    require('web.dom_ready');
-    if (!$('.my_ragistration_com').length) {
-        return Promise.reject("DOM doesn't contain '.my_dynamic_component'");
-    }
-
     const rpc = require('web.rpc');
 
     const { Component, hooks } = owl;
@@ -22,7 +17,6 @@ odoo.define('owldemo.ragi', function (require) {
         }
         
         async _onClickLink(ev) {
-            debugger
             const form = document.querySelector('#registration_form');
             let formData = new FormData(form);
             formData = Object.fromEntries(formData);
@@ -82,13 +76,6 @@ odoo.define('owldemo.ragi', function (require) {
                 </div>
                 `;
     }
-
-    function setup() {
-        const OwlDynamicDemoInstance = new owlRagistartion();
-        OwlDynamicDemoInstance.mount($('.my_ragistration_com')[0]);
-    }
-
-    whenReady(setup);
 
     return owlRagistartion;
 });

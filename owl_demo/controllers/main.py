@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
-from odoo import http
+from odoo import http, SUPERUSER_ID
 from odoo.http import request
 from odoo.addons.web.controllers.main import Home
 # from odoo.exceptions import UserError
@@ -17,15 +17,32 @@ class Home(Home):
             if user.has_group('base.group_portal'):
                 if user.is_student:
                     return '/owl_demo_student'
-                return'/owl_demo_ragi'
-        return super(OwlController, self)._login_redirect(uid, redirect=redirect)
+                return'/college'
+        return super(Home, self)._login_redirect(uid, redirect=redirect)
+
+    @http.route('/', type='http', auth="none")
+    def index(self, s_action=None, db=None, **kw):
+        url = '/register'
+        if request.session.uid:
+            url = '/web'
+            user = request.env['res.users'].sudo().browse(request.session.uid)
+            if user.has_group('base.group_portal'):
+                if user.is_student:
+                    url = '/owl_demo_student'
+                url = '/college'
+        return http.local_redirect(url, query=request.params, keep_hash=True)
 
 
 class OwlController(http.Controller):
 
     @http.route('/college', type="http", auth="user", csrf=False, website=True)
     def collge(self, **post):
-        return http.request.render("owl_demo.college")
+        return http.request.render("owl_demo.menu_item")
+
+    # institute login after come this page add student
+    @http.route('/register', type='http', auth="public", csrf=False, website=True)
+    def register_redirect(self, **post):
+        return http.request.render("owl_demo.menu_item")
 
     @http.route('/acceptedstudent_rpc', type='json', auth="public", csrf=False, website=True)
     def acceptedstudentrpc(self, **post):
@@ -84,26 +101,14 @@ class OwlController(http.Controller):
     def coursefillter(self, cource_id=False, **post):
         return request.env['product.template'].sudo().search_read([('cource_id', '=', cource_id)], ['id', 'name'])
 
-    # register all  institute
-    @http.route('/institute_register', type='http', auth="public", csrf=False, website=True)
-    def demo_ragi(self, **post):
-        if request.session.uid:
-            if request.env['res.company'].browse(request.session.uid):
-                return http.request.render("owl_demo.demo_AddStudent")
-        return http.request.render("owl_demo.demo_ragi")
-
-    # institute login after come this page add student
-    @http.route('/register', type='http', auth="public", csrf=False, website=True)
-    def demo_AddStudent(self, **post):
-        return http.request.render("owl_demo.demo_AddStudent")
-
     @http.route('/get_institutes', type='json', auth="public", csrf=False)
     def get_institutes(self, **post):
         return request.env['res.company'].sudo().search([]).read(['name'])
 
-    @http.route('/get_course', type='json', auth="public")
-    def get_course(self, institute_id, **post):
-        return request.env['product.template'].sudo().search([('company_id', '=', institute_id)]).read(['name'])
+    @http.route('/get_courses', type='json', auth="public")
+    def get_courses(self, **post):
+        institute_id = post.get('institute_id') or request.env.user.company_id.id
+        return request.env['product.template'].sudo().search([('company_id', '=', institute_id)]).read(['name', 'list_price'])
 
     # rpc page for studnet add
     @http.route('/add_student', type='json', auth="public", csrf=False, website=True)
@@ -113,6 +118,7 @@ class OwlController(http.Controller):
             "email": post.get("email"),
         })
         course = request.env['product.template'].sudo().search([('id', '=', int(post.get('cource_dropdown')))])
+        company = request.env['res.company'].sudo().browse(int(post.get("ins_dropdown")))
         vals = {
             'login': post.get("email"),
             'name': post.get('name'),
@@ -123,9 +129,10 @@ class OwlController(http.Controller):
             'course_names': course.id,
             'fess': course.list_price,
             'partner_id': partner.id,
-            'company_id': int(post.get("ins_dropdown"))
+            'company_id': company.id,
+            'company_ids': [(4, company.id)],
         }
-        request.env["res.users"].sudo().with_context(no_reset_password=True).create(vals)
+        request.env["res.users"].with_user(SUPERUSER_ID).with_context(no_reset_password=True).create(vals)
         return True
 
     # add course
@@ -138,13 +145,11 @@ class OwlController(http.Controller):
 
     # add course rpc page
     @http.route('/demo_AddCource', type='json', auth="public", csrf=False, website=True)
-    def demo_AddCources(self, form_data=False, **post):
-        if form_data:
-            request.env['product.template'].sudo().create({
-                'name': form_data.get("name"),
-                "list_price": form_data.get("list_price"),
-                'company_id': request.env.user.company_id.id})
-        return True
+    def demo_AddCources(self, **post):
+        request.env['product.template'].sudo().create({
+            'name': post.get("name"),
+            "list_price": post.get("list_price"),
+            'company_id': request.env.user.company_id.id})
 
     @http.route('/get_partner_data', type='json', auth="public", csrf=False, website=True)
     def get_partner(self, offset=0, limit=0):
@@ -172,8 +177,8 @@ class OwlController(http.Controller):
                 "currency_id": currency.id,
                 'is_Institute': 1})
 
-            request.env["res.users"].sudo().create({
-                'login': form_data.get("name"),
+            user = request.env["res.users"].sudo().create({
+                'login': form_data.get("email"),
                 'password': form_data.get('password'),
                 'name': form_data.get('name'),
                 'email': form_data.get('email'),
@@ -181,4 +186,5 @@ class OwlController(http.Controller):
                 'company_ids': [(4, company.id)],
                 'groups_id': [(6, 0, [request.env.ref('base.group_portal').id])],
             })
+            print(">>>>>>>>>>>>>>>>>>>>.", user)
         return {'resulrt': request.env['res.currency'].sudo().search_read([], ['id',  'name'])}

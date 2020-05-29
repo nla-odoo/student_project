@@ -11,6 +11,7 @@ odoo.define('owldemo.my_addCource_com', function(require) {
     const student_register = require('owldemo.AddStudent');
     const institute_register = require('owldemo.ragi');
     const course = require('owldemo.course');
+    const payment = require('owldemo.payment_com');
     const owlAddStudentList = require('owldemo.student_to_accepted');
     const owlAddStudentacceptedList = require('owldemo.acceptedstuden');
     const { Component, hooks } = owl;
@@ -25,6 +26,7 @@ odoo.define('owldemo.my_addCource_com', function(require) {
          async willStart() {
             this.toRegsiter = !session.user_id;
             this.isStudent= await rpc.query({ route: '/is_student' });
+            debugger
             this._renderMenuItem();
         }
 
@@ -40,6 +42,7 @@ odoo.define('owldemo.my_addCource_com', function(require) {
                 }
             } else {
                 mode = mode || 'addCource';
+                if(this.isStudent){mode='Payment'}
                 if (mode === 'addCource') {
                     const courceInstance = new course();
                     courceInstance.mount($('.component_view')[0]);
@@ -48,6 +51,10 @@ odoo.define('owldemo.my_addCource_com', function(require) {
                     owlAddStudentListInstance.mount($('.component_view')[0]);
                 } else if (mode === 'studentList') {
                     const owlAddStudentacceptedListInstance = new owlAddStudentacceptedList();
+                    owlAddStudentacceptedListInstance.mount($('.component_view')[0]);
+                }
+                else if (mode === 'Payment') {
+                    const owlAddStudentacceptedListInstance = new payment();
                     owlAddStudentacceptedListInstance.mount($('.component_view')[0]);
                 }
             }
@@ -81,15 +88,25 @@ odoo.define('owldemo.my_addCource_com', function(require) {
                             </li>
                         </t>
                         <t t-else="">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#" data-mode="addCource">Cource</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" data-mode="studentToAccept">Student To Accept</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" data-mode="studentList">Student List</a>
-                            </li>
+                            <t t-if="!isStudent">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#" data-mode="addCource">Cource</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" data-mode="studentToAccept">Student To Accept</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" data-mode="studentList">Student List</a>
+                                </li>
+                            </t>
+                            <t t-else="">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#" data-mode="Payment">payment</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" data-mode="studentList">Payment Details</a>
+                                </li>
+                            </t>
                         </t>
                     </ul>
                 </div>

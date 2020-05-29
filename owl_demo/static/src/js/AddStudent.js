@@ -76,6 +76,13 @@ odoo.define('owldemo.AddStudent', function (require) {
                                 <div class="line"></div>
                             </div>
                     </label>
+                    <label class='label'>
+                        <p class="label-txt">ENTER STUDENT PASSWORD1</p>
+                        <input type="text" name="password" class="input"/>
+                            <div class="line-box">
+                                <div class="line"></div>
+                            </div>
+                    </label>
                     <div id="ins_dropdown">
                         <select name="ins_dropdown" class="form-control" t-on-change="_onChange">
                             <option value="0">select institute</option>

@@ -70,6 +70,7 @@ odoo.define('owldemo.payment_com', function(require) {
                 <thead>              
                     <tr>
                         <th scope="col">student name</th>
+                        <th scope="col">student course id</th>
                         <th scope="col">student course name</th>
                         <th scope="col">student fees</th>
                         <th scope="col">student action</th>

@@ -1,4 +1,6 @@
 from odoo import fields, models
+import random
+import uuid
 
 
 class ResUser(models.Model):
@@ -19,7 +21,12 @@ class ResCompany(models.Model):
 class productTemplate(models.Model):
     _inherit = "product.template"
 
+    def _default_order_ref(self):
+        return str(uuid.uuid4()) + str(random.randint(1, 2000000))
+
     cource_id = fields.Integer(string='Institute')
+    order_ref = fields.Char(default=lambda self: self._default_order_ref(), store=True)
+    # order_ref = fields.Char(default=lambda self: self._default_order_ref(), store=True)
 
     # def send_mail_to_student(self, sm, rm, pas):
     #     template_obj = self.env['mail.template'].sudo().search([('name', '=', 'Student')], limit=1)

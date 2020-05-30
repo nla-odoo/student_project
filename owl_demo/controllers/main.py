@@ -90,10 +90,11 @@ class OwlController(http.Controller):
     @http.route('/studentpayment', type='json', auth="public", csrf=False, website=True)
     def payment(self, **post):
         res_users = request.env['res.users'].sudo().browse([request.session.uid])
+        print('\n\n\n\n\n\n res_users', res_users)
         course = request.env['product.template'].sudo().browse([res_users.course_names])
         journal = request.env['account.journal'].sudo().search_read([('company_id', '=', res_users.company_id.id)], ['id', 'name'])
         print('\n\n\n\n>>>>>>>>>>>>>>>>>>', res_users.company_id)
-        print('\n\n\n>>>>>>', journal)
+        print('\n\n\n>>>>>> journal', journal)
         invoice = request.env['account.move'].sudo().create({
             'partner_id': res_users.id,
             'type': 'in_invoice',
@@ -109,11 +110,11 @@ class OwlController(http.Controller):
         data_dict = {
             'MID': 'amitgo59443067266036',
             'WEBSITE': 'WEBSTAGING',
-            'ORDER_ID': payment,
+            'ORDER_ID': payment.order_ref,
             'CUST_ID': str(request.uid),
             'INDUSTRY_TYPE_ID': 'Retail',
             'CHANNEL_ID': 'WEB',
-            # 'TXN_AMOUNT': payment.list_price,
+            'TXN_AMOUNT': str(payment.list_price),
             # 'CALLBACK_URL': urls.url_join(base_url, '/paytm_response')
         }
         data_dict['CHECKSUMHASH'] = checksum.generate_checksum(

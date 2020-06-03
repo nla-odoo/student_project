@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from . import checksum
 import logging
-
+import uuid
 from odoo import http, SUPERUSER_ID
 from odoo.http import request
 from werkzeug import urls
@@ -92,33 +92,40 @@ class OwlController(http.Controller):
         res_users = request.env['res.users'].sudo().browse([request.session.uid])
         print('\n\n\n\n\n\n res_users', res_users)
         course = request.env['product.template'].sudo().browse([res_users.course_names])
-        journal = request.env['account.journal'].sudo().search_read([('company_id', '=', res_users.company_id.id)], ['id', 'name'])
+        # journal = request.env['account.journal'].sudo().search_read([('company_id', '=', res_users.company_id.id)], ['id', 'name'], limit=1)
         print('\n\n\n\n>>>>>>>>>>>>>>>>>>', res_users.company_id)
-        print('\n\n\n>>>>>> journal', journal)
-        invoice = request.env['account.move'].sudo().create({
-            'partner_id': res_users.id,
-            'type': 'in_invoice',
-            'journal_id': journal[0]['id'],
-            'company_id': res_users.company_id.id,
+        # print('\n\n\n>>>>>> journal', journal)
+        # invoice = request.env['account.move'].sudo().create({
+        #     'partner_id': res_users.id,
+        #     'type': 'in_invoice',
+        #     'journal_id': journal[0]['id'],
+        #     'company_id': res_users.company_id.id,
 
-            })
-        print("\n\n\n\n\n'>>>>>>>>>>>>>>>", invoice)
-        payment = request.env['product.template'].sudo().browse(res_users.id)
-        print("\n\n\n\n\n??????????????payment", payment)
-        print("\n\n\n\n\n??????????????payment")
-        print("\n\n\n\n\n??????????????payment", payment.list_price)
+        #     })
+        # print("\n\n\n\n\n'>>>>>>>>>>>>>>>", invoice)
+        # payment = request.env['product.template'].sudo().browse(res_users.id)
+        # print("\n\n\n\n\n??????????????payment", payment)
+        # print("\n\n\n\n\n??????????????payment")
+        # print("\n\n\n\n\n??????????????payment", payment.list_price)
+            # 'id': form_data.get('')
+        # payment = request.env['paymenttransaction'].sudo().create({
+        #     'acquirer_reference': str(uuid.uuid4()),
+        #     'partner_id': res_users.partner_id.id,
+        #     'amount': res_users.fess,
+        #     })
         data_dict = {
             'MID': 'amitgo59443067266036',
             'WEBSITE': 'WEBSTAGING',
-            'ORDER_ID': payment.order_ref,
+            # 'ORDER_ID': payment.acquirer_reference,
             'CUST_ID': str(request.uid),
             'INDUSTRY_TYPE_ID': 'Retail',
             'CHANNEL_ID': 'WEB',
-            'TXN_AMOUNT': str(payment.list_price),
+            'TXN_AMOUNT': str(1000),
             # 'CALLBACK_URL': urls.url_join(base_url, '/paytm_response')
         }
         data_dict['CHECKSUMHASH'] = checksum.generate_checksum(
             data_dict, 'bQfzzkKzeCbR7jOl')
+        print('>>>>>>>\n\n\n\n res_users id', res_users.id)
         data_dict['redirection_url'] = "https://securegw-stage.paytm.in/order/process"
         return {
             'data_dict': data_dict,
@@ -229,11 +236,11 @@ class OwlController(http.Controller):
                 'company_ids': [(4, company.id)],
                 'groups_id': [(6, 0, [request.env.ref('base.group_portal').id])],
             })
-            request.env['account.journal'].sudo().create({
-                'name': form_data.get('name'),
-                'type': 'general',
-                'code': 'INV',
-                'company_id': company.id})
+            # invoce_jurnal = request.env['account.journal'].sudo().create({
+            #     'name': form_data.get('name'),
+            #     'type': 'general',
+            #     'code': 'INV',
+            #     'company_id': company.id})
 
-            # print("\n\n\n\n>>>>>>>>>>>>>>>>>>>>.", invoce_jurnal)
+            print("\n\n\n\n>>>>>>>>>>>>>>>>>>>>.", invoce_jurnal)
         return {'resulrt': request.env['res.currency'].sudo().search_read([], ['id',  'name'])}

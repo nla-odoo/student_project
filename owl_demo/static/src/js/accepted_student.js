@@ -21,6 +21,7 @@ odoo.define('owldemo.acceptedstuden', function (require) {
                             <th scope="col">student list</th>
                             <th scope="col">course fess</th>
                             <th scope="col">course name</th>
+                            <th scope="col">payment status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -29,6 +30,7 @@ odoo.define('owldemo.acceptedstuden', function (require) {
                                 <td><span t-esc="student.name"/></td>
                                 <td><span t-esc="student.fess"/></td>        
                                 <td><span t-esc="student.course_name"/></td>        
+                                <td>done</td>        
                             </tr>
                         </t>
 

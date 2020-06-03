@@ -18,14 +18,15 @@ class ResCompany(models.Model):
     is_Institute = fields.Integer(string='Institute')
 
 
-class productTemplate(models.Model):
-    _inherit = "product.template"
+# class productTemplate(models.Model):
+#     _inherit = "product.template"
 
-    def _default_order_ref(self):
-        return str(uuid.uuid4()) + str(random.randint(1, 2000000))
+#     def _default_order_ref(self):
+#         return str(uuid.uuid4()) + str(random.randint(1, 2000000))
 
-    cource_id = fields.Integer(string='Institute')
-    order_ref = fields.Char(default=lambda self: self._default_order_ref(), store=True)
+#     cource_id = fields.Integer(string='Institute')
+#     order_ref = fields.Char(default=lambda self: self._default_order_ref(), store=True)
+
     # order_ref = fields.Char(default=lambda self: self._default_order_ref(), store=True)
 
     # def send_mail_to_student(self, sm, rm, pas):

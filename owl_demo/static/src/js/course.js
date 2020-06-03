@@ -26,9 +26,9 @@ odoo.define('owldemo.course', function (require) {
         static template = xml `
             <div>
                 <a href="#" t-on-click="_addCourse" class="btn btn-primary">Add Cource</a>
-                <table>
+                <table class="table table-hover">
                     <tr>
-                        <th>Cource Name</th>
+                        <th scope="col">Course Name</th>
                         <th>Fees</th>
                     </tr>
                     <tr t-foreach="courses" t-as="course">
@@ -39,6 +39,7 @@ odoo.define('owldemo.course', function (require) {
             </div>`;
 
     }
+    
 
     class owlCouceForm extends Component {
 

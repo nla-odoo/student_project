@@ -73,7 +73,8 @@ odoo.define('owldemo.payment_com', function(require) {
                         <th scope="col">student course id</th>
                         <th scope="col">student course name</th>
                         <th scope="col">student fees</th>
-                        <th scope="col">student action</th>
+                        <th scope="col">student status</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -81,15 +82,16 @@ odoo.define('owldemo.payment_com', function(require) {
                     <td><span t-esc="Regist.id"/></td>
                     <td><span t-esc="Regist.course_name"/></td>
                     <td><span t-esc="Regist.fees"/></td>
-                        <td>
-                            <button type="button" class="btn btn-primary" t-on-click="_onClickLink" name="btn_accept">Payment now</button>                        
-                        </td>
+                    <td></td>
                 </tbody>
             </table>
             </form>
         </div>
                 `;
     }
+                        // <td>
+                        //     <button type="button" class="btn btn-primary" t-on-click="_onClickLink" name="btn_accept">Payment now</button>                        
+                        // </td>
 
     // function setup() {
     //     debugger

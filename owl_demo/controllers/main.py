@@ -89,50 +89,40 @@ class OwlController(http.Controller):
 
     @http.route('/studentpayment', type='json', auth="public", csrf=False, website=True)
     def payment(self, **post):
-        res_users = request.env['res.users'].sudo().browse([request.session.uid])
-        print('\n\n\n\n\n\n res_users', res_users)
-        course = request.env['product.template'].sudo().browse([res_users.course_names])
-        # journal = request.env['account.journal'].sudo().search_read([('company_id', '=', res_users.company_id.id)], ['id', 'name'], limit=1)
-        print('\n\n\n\n>>>>>>>>>>>>>>>>>>', res_users.company_id)
+        res_user = request.env.user
+        course = request.env['product.template'].sudo().browse([res_user.course_names])
+        journal = request.env['account.journal'].sudo().search([('company_id', '=', res_user.company_id.id)], limit=1)
+        base_url = request.env['ir.config_parameter'].sudo().get_param('web.base.url')
         # print('\n\n\n>>>>>> journal', journal)
-        # invoice = request.env['account.move'].sudo().create({
-        #     'partner_id': res_users.id,
-        #     'type': 'in_invoice',
-        #     'journal_id': journal[0]['id'],
-        #     'company_id': res_users.company_id.id,
+        invoice = request.env['account.move'].sudo().create({
+            'partner_id': res_user.partner_id.id,
+            'journal_id': journal.id,
+            'company_id': res_user.company_id.id,
 
-        #     })
-        # print("\n\n\n\n\n'>>>>>>>>>>>>>>>", invoice)
-        # payment = request.env['product.template'].sudo().browse(res_users.id)
-        # print("\n\n\n\n\n??????????????payment", payment)
-        # print("\n\n\n\n\n??????????????payment")
-        # print("\n\n\n\n\n??????????????payment", payment.list_price)
-            # 'id': form_data.get('')
-        # payment = request.env['paymenttransaction'].sudo().create({
-        #     'acquirer_reference': str(uuid.uuid4()),
-        #     'partner_id': res_users.partner_id.id,
-        #     'amount': res_users.fess,
-        #     })
+            })
+        vals = {
+            'acquirer_id': request.env['payment.acquirer'].search([('company_id', '=', request.env.user.company_id.id)], limit=1).id,
+            'reference': str(uuid.uuid4())
+        }
+        transaction = invoice._create_payment_transaction(vals)
         data_dict = {
             'MID': 'amitgo59443067266036',
             'WEBSITE': 'WEBSTAGING',
-            # 'ORDER_ID': payment.acquirer_reference,
+            'ORDER_ID': transaction.reference,
             'CUST_ID': str(request.uid),
             'INDUSTRY_TYPE_ID': 'Retail',
             'CHANNEL_ID': 'WEB',
             'TXN_AMOUNT': str(1000),
-            # 'CALLBACK_URL': urls.url_join(base_url, '/paytm_response')
+            'CALLBACK_URL': urls.url_join(base_url, '/paytm_response')
         }
-        data_dict['CHECKSUMHASH'] = checksum.generate_checksum(
-            data_dict, 'bQfzzkKzeCbR7jOl')
-        print('>>>>>>>\n\n\n\n res_users id', res_users.id)
+        data_dict['CHECKSUMHASH'] = checksum.generate_checksum(data_dict, 'bQfzzkKzeCbR7jOl')
         data_dict['redirection_url'] = "https://securegw-stage.paytm.in/order/process"
         return {
             'data_dict': data_dict,
-            "name": res_users.name,
+            "name": res_user.name,
             "course_name": course.name,
-            "fees": res_users.fess,
-            'id': res_users.id,
+            "fees": res_user.fess,
+            'id': res_user.id,
         }
 
     @http.route('/is_student', type='json', auth="public", csrf=False, website=True)
@@ -161,12 +151,10 @@ class OwlController(http.Controller):
         partner = request.env['res.partner'].sudo().create({
             'name': post.get("name"),
             "email": post.get("email"),
-            # 'password': post.get('password'),
-
+            'country_id': request.env['res.country'].search([])[0].id
         })
         course = request.env['product.template'].sudo().search([('id', '=', int(post.get('cource_dropdown')))])
         company = request.env['res.company'].sudo().browse(int(post.get("ins_dropdown")))
-        print("\n\n\n\n>>>>>>>", post)
         vals = {
             'login': post.get("email"),
             'name': post.get('name'),
@@ -227,7 +215,7 @@ class OwlController(http.Controller):
                 "currency_id": currency.id,
                 'is_Institute': 1})
 
-            user = request.env["res.users"].sudo().create({
+            request.env["res.users"].sudo().create({
                 'login': form_data.get("email"),
                 'password': form_data.get('password'),
                 'name': form_data.get('name'),
@@ -236,11 +224,16 @@ class OwlController(http.Controller):
                 'company_ids': [(4, company.id)],
                 'groups_id': [(6, 0, [request.env.ref('base.group_portal').id])],
             })
-            # invoce_jurnal = request.env['account.journal'].sudo().create({
-            #     'name': form_data.get('name'),
-            #     'type': 'general',
-            #     'code': 'INV',
-            #     'company_id': company.id})
+            journal = request.env['account.journal'].sudo().create({
+                'name': form_data.get('name'),
+                'type': 'general',
+                'code': 'INV',
+                'company_id': company.id})
 
-            print("\n\n\n\n>>>>>>>>>>>>>>>>>>>>.", invoce_jurnal)
+            request.env['payment.acquirer'].create({
+                'name': company.name,
+                'company_id': company.id,
+                'state': 'test',
+                'journal_id': journal.id
+            })
         return {'resulrt': request.env['res.currency'].sudo().search_read([], ['id',  'name'])}

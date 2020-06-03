@@ -26,7 +26,6 @@ odoo.define('owldemo.my_addCource_com', function(require) {
          async willStart() {
             this.toRegsiter = !session.user_id;
             this.isStudent= await rpc.query({ route: '/is_student' });
-            debugger
             this._renderMenuItem();
         }
 

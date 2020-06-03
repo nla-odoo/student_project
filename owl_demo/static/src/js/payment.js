@@ -15,48 +15,23 @@ odoo.define('owldemo.payment_com', function(require) {
     class Payment extends Component {
         // email = "";
         async willStart() {
-            debugger
-            console.log('payment_com')
-            this.Regist = await rpc.query({
-
-                route: '/studentpayment'
-            });
+            this.Regist = await rpc.query({route: '/studentpayment'});
         }
         async _onClickLink(ev) {
-            debugger;
-            // const form = document.querySelector('#addstudent');
-            // let params = new FormData(form);
-            // params = Object.fromEntries(params);
-            // await rpc.query({
-            //     route: "/add_student",
-            //     params: params
-            // }).then(function (result) {
-            //     alert('Thanks for registering with us.')
-            // });
-            // function(result){
             var data = this.Regist.data_dict
             var form = document.createElement('form');
             form.setAttribute("method", "post");
             form.setAttribute("action", data.redirection_url);
             delete data['redirection_url'];
             for (const prop in data) {
-            var inp = document.createElement('input');
-            inp.setAttribute("type", 'hidden');
-            inp.setAttribute("name", prop)
-            inp.setAttribute("value", data[prop])
-            form.append(inp);
+                var inp = document.createElement('input');
+                inp.setAttribute("type", 'hidden');
+                inp.setAttribute("name", prop)
+                inp.setAttribute("value", data[prop])
+                form.append(inp);
             }
-             debugger
-             document.body.append(form)
-             form.submit()
-         // }
-            // const form = document.querySelector('#payment');
-            // let formData = new FormData(form);
-            // formData = Object.fromEntries(formData);
-            // this.student = await rpc.query({
-            //     route: "/studentpayment",
-            //     params: { 'form_data': formData }
-            // });
+            document.body.append(form)
+            form.submit()
         }
 
 
@@ -82,16 +57,15 @@ odoo.define('owldemo.payment_com', function(require) {
                     <td><span t-esc="Regist.id"/></td>
                     <td><span t-esc="Regist.course_name"/></td>
                     <td><span t-esc="Regist.fees"/></td>
-                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-primary" t-on-click="_onClickLink" name="btn_accept">Payment now</button>                        
+                    </td>
                 </tbody>
             </table>
             </form>
         </div>
                 `;
     }
-                        // <td>
-                        //     <button type="button" class="btn btn-primary" t-on-click="_onClickLink" name="btn_accept">Payment now</button>                        
-                        // </td>
 
     // function setup() {
     //     debugger

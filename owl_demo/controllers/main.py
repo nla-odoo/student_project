@@ -104,6 +104,11 @@ class OwlController(http.Controller):
             'acquirer_id': request.env['payment.acquirer'].search([('company_id', '=', request.env.user.company_id.id)], limit=1).id,
             'reference': str(uuid.uuid4())
         }
+        # import pdb
+        # pdb.set_trace()
+        print("\n\n\n\n\npost", res_user.fess)
+        print("\n\n\n\n\npost", course.id)
+        # import pdb;pdb.set_trace()
         transaction = invoice._create_payment_transaction(vals)
         data_dict = {
             'MID': 'amitgo59443067266036',
@@ -112,7 +117,8 @@ class OwlController(http.Controller):
             'CUST_ID': str(request.uid),
             'INDUSTRY_TYPE_ID': 'Retail',
             'CHANNEL_ID': 'WEB',
-            'TXN_AMOUNT': str(1000),
+            'TXN_AMOUNT': str(res_user.fess),
+            # 'TXN_AMOUNT': str(1000),
             'CALLBACK_URL': urls.url_join(base_url, '/paytm_response')
         }
         data_dict['CHECKSUMHASH'] = checksum.generate_checksum(data_dict, 'bQfzzkKzeCbR7jOl')
@@ -124,6 +130,31 @@ class OwlController(http.Controller):
             "fees": res_user.fess,
             'id': res_user.id,
         }
+
+    @http.route('/paytm_response', type='json', auth="public", website=True, methods=['GET', 'POST'], csrf=False)
+    def paytm_response_in(self, form_data=False, **kw):
+        pyment_order = form_data.get('ORDER_ID')
+        print("\n\n\n\n\n>>>>>>>>>>>>>>>>payment_order", pyment_order)
+        print("\n\n\n\n\n>>>>>>>>>>>>>>>>form_data", form_data)
+
+        # institute = request.env['student.student'].sudo().search([('order_ref', '=', pyment_order)])
+        checksum_status = checksum.verify_checksum(
+            kw, 'bQfzzkKzeCbR7jOl', form_data.get('CHECKSUMHASH'))
+        # if checksum_status:
+        #     payment_status = request.params.get('STATUS')
+        #     if payment_status == 'TXN_SUCCESS':
+        #         # import pdb
+        #         # pdb.set_trace()
+        #         # institute.write({'acquirer_ref': request.params.get('TXNID'), 'state': 'done'})
+        #         print(kw)
+        #         # return request.render('feescollection.success')
+        #         # return http.local_redirect('/success/')
+        #     if payment_status == 'TXN_FAILURE':
+        #         print(kw)
+        #         print("good bye"*10)
+        #         # return request.render('feescollection.cancel')
+        #         # return http.local_redirect('/cancel/')
+        return http.local_redirect('/')
 
     @http.route('/is_student', type='json', auth="public", csrf=False, website=True)
     def is_student(self, **post):
@@ -184,6 +215,7 @@ class OwlController(http.Controller):
     # add course rpc page
     @http.route('/demo_AddCource', type='json', auth="public", csrf=False, website=True)
     def demo_AddCources(self, **post):
+        print("\n\n\n request.env.user.company_id.id\n\n\n\n >>>>>>>>>>>" , request.env.user.company_id.id)
         request.env['product.template'].sudo().create({
             'name': post.get("name"),
             "list_price": post.get("list_price"),
@@ -230,10 +262,13 @@ class OwlController(http.Controller):
                 'code': 'INV',
                 'company_id': company.id})
 
-            request.env['payment.acquirer'].create({
+            request.env['payment.acquirer'].sudo().create({
                 'name': company.name,
                 'company_id': company.id,
                 'state': 'test',
                 'journal_id': journal.id
             })
         return {'resulrt': request.env['res.currency'].sudo().search_read([], ['id',  'name'])}
+
+
+        # return '/studentpaymentdetails'

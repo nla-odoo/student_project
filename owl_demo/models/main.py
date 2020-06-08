@@ -1,6 +1,4 @@
 from odoo import fields, models
-import random
-import uuid
 
 
 class ResUser(models.Model):

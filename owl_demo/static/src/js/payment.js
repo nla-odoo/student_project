@@ -17,10 +17,17 @@ odoo.define('owldemo.payment_com', function(require) {
         async willStart() {
             this.Regist = await rpc.query({route: '/studentpayment'});
         }
+
         async _onClickLink(ev) {
+
+            debugger;
+
+
+
             var data = this.Regist.data_dict
             var form = document.createElement('form');
             form.setAttribute("method", "post");
+            form.setAttribute("id", "addpayment");
             form.setAttribute("action", data.redirection_url);
             delete data['redirection_url'];
             for (const prop in data) {
@@ -31,6 +38,15 @@ odoo.define('owldemo.payment_com', function(require) {
                 form.append(inp);
             }
             document.body.append(form)
+            debugger
+            const fom = document.querySelector('#addpayment');
+            let formData = new FormData(fom);
+            formData = Object.fromEntries(formData);
+           this.student = await rpc.query({
+                route: "/paytm_response", 
+                params: {'form_data': formData}
+            });
+        
             form.submit()
         }
 
@@ -42,6 +58,7 @@ odoo.define('owldemo.payment_com', function(require) {
             <h1 class='h1'><span class='styling'>Student </span>invoice</h1>
            <form id="payment">
             <table class="table">
+                 <input type="text" t-att-value='Regist.id' name="res_user_id"/>
                 <thead>              
                     <tr>
                         <th scope="col">student name</th>

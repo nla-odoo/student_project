@@ -1,11 +1,7 @@
-odoo.define('owl_demo.owl_dynamic_component', function(require) {
+odoo.define('owl_mlb.my_dynamic_component', function(require) {
     "use strict";
 
     require('web.dom_ready');
-
-    if (!$('.my_dynamic_component').length) {
-        return Promise.reject("DOM doesn't contain '.my_dynamic_component'");
-    }
 
     const rpc = require('web.rpc');
 
@@ -47,7 +43,7 @@ odoo.define('owl_demo.owl_dynamic_component', function(require) {
                                                     </strong>
                                                 </div>
                                                 <div class="actions">
-                                                    <a href="#">Add to Cart</a>
+                                                    <a href="#!" t-on-click="addToCart()">Add to Cart</a>
                                                     <a href="#">Inquiry</a>
                                                 </div>
                                             </div>
@@ -99,14 +95,18 @@ odoo.define('owl_demo.owl_dynamic_component', function(require) {
             });
             return this.Products;
         }
-    }
 
-    function setup() {
-        const OwlDynamicDemoInstance = new OwlDynamicDemo();
-        OwlDynamicDemoInstance.mount($('.my_dynamic_component')[0]);
+        addToCart(ev) {
+            return rpc.query({
+                route: ev.target.action,
+                params: {product_template_id: ev.target.querySelector('input[name="product_template_id"]').value}
+            })
+            // .then((count) => {
+            //     this.cartCount = count;
+            //     this.render(true);
+            // });
+        }
     }
-
-    whenReady(setup);
 
     return OwlDynamicDemo;
 });

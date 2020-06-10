@@ -3,11 +3,6 @@ odoo.define('owl_mlb.customerRegi', function(require) {
 
     require('web.dom_ready');
 
-    if (!$('.customerRegi').length) {
-        debugger;
-        return Promise.reject("DOM doesn't contain '.customerRegi'");
-    }
-
     const rpc = require('web.rpc');
 
     const { Component, hooks } = owl;
@@ -36,8 +31,8 @@ odoo.define('owl_mlb.customerRegi', function(require) {
                 <div class="form-conteniar">
                     <form id="cust_form_data">
                         <div class="input-name">
-                            <i class="fa fa-user lock email"></i>
-                            <input type="text" name="name" placeholder="Customer Name" class="name" />
+                            <i class="fa fa-user email"></i>
+                            <input type="text" name="name" placeholder="Customer Name" class="text-name" />
                         </div>
                         <div class="input-name">
                             <i class="fa fa-phone email"></i>
@@ -63,13 +58,6 @@ odoo.define('owl_mlb.customerRegi', function(require) {
             </div>
         `;
     }
-
-    function setup() {
-        const customerregiinst = new owlCustomer();
-        customerregiinst.mount($('.customerRegi')[0]);
-    }
-
-    whenReady(setup);
 
     return owlCustomer;
 });

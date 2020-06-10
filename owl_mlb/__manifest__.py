@@ -3,7 +3,7 @@
 {
     'name': 'Owl MyLB',
     'summary': 'Owl MyLB',
-    'depends': ['base', 'portal'],
+    'depends': ['base', 'portal', 'sale_management'],
     'data': [
         'views/templates.xml',
     ],

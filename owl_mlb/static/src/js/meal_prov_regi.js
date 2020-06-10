@@ -1,12 +1,7 @@
-odoo.define('owl_mlb.meal_prov_regi', function(require) {
+odoo.define('owl_mlb.meal_register_component', function(require) {
     "use strict";
 
     require('web.dom_ready');
-
-    if (!$('.meal_register_component').length) {
-        debugger;
-        return Promise.reject("DOM doesn't contain '.meal_register_component'");
-    }
 
     const rpc = require('web.rpc');
 
@@ -79,13 +74,6 @@ odoo.define('owl_mlb.meal_prov_regi', function(require) {
             </div>
         `;
     }
-
-    function setup() {
-        const RegiInstance = new owlRegistration();
-        RegiInstance.mount($('.meal_register_component')[0]);
-    }
-
-    whenReady(setup);
 
     return owlRegistration;
 });

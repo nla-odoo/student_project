@@ -1,12 +1,8 @@
 odoo.define('owl_society_managment.complaint_create', function (require) {
     "use strict";
 
-    require('web.dom_ready');
-    if (!$('.my_complaint_create_component').length) {
-        return Promise.reject("DOM doesn't contain '.my_complaint_create_component'");
-    }
+    debugger
     const rpc = require('web.rpc');
-
     const { Component, hooks, useState } = owl;
     const { xml } = owl.tags;
     const { whenReady } = owl.utils;
@@ -23,9 +19,10 @@ odoo.define('owl_society_managment.complaint_create', function (require) {
         }
 
         async getComplaint () {
-            return this.complaint;
+            const complaints = await rpc.query({ route: "/get_complaint_data"})
+            return complaints;
         }
-        get complaint ()  {
+        get complaints ()  {
             debugger
             return this.complaint;
         }
@@ -38,30 +35,66 @@ odoo.define('owl_society_managment.complaint_create', function (require) {
             this.render(true);
           
         }
+        async _onClickDelete(ev) {
+            debugger
+            let complaint_id = ev.currentTarget.getAttribute('complaint_id');
+            return rpc.query({route: "/member/unlink", params: {'complaint_id' : complaint_id}})
+        }
 
 
         static template = xml`<div>
         <div>
+            <div class="container py-5">
+            <div class="card-body">
+            <t t-if="complaints[1] == 'member'">
             <div>
                 <form method="post">
-                    <div>
+                    <div  class="form-group">
                         <label>Complaint name</label>
-                        <input type="text" name='name' t-model="state.name"/>
+                        <input type="text" name='name' t-model="state.name" class="form-control"/>
                     </div>
-                <a t-on-click="_onClickLink">Submit</a>
+                <a class="btn btn-primary" t-on-click="_onClickLink">Submit</a>
                 </form>
+            </div>
+            </t>
+            <div class="container py-5">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                  <th scope="col">Complaint</th>
+                                  <th scope="col">Member Name</th>
+                                  <th scope="col">Stage</th>
+                                  <t t-if="complaints[1] == 'secretary'">
+                                  <th scope="col">Action</th>
+                                  </t>
+                                </tr>
+                            </thead>  
+                            <t t-foreach="complaints[0]" t-as="complaint">
+                                <tr>
+                                    <td><t t-esc="complaint.name"/></td>
+                                    <td><t t-esc="complaint.partner_name"/></td>
+                                    <td><t t-esc="complaint.stage_id[1]"/></td>
+                                    
+                                    <td>
+                                        <t t-if="complaint.stage_id[1] == 'New'">
+                                            <a class="btn btn-primary" t-att-complaint_id='complaint.id' t-on-click="_onClickDelete">In Progress</a>
+                                        </t>
+                                        <t t-if="complaint.stage_id[1] == 'In Progress'">
+                                            <a class="btn btn-primary" t-att-complaint_id='complaint.id' t-on-click="_onClickDelete">solved</a>
+                                        </t>
+                                    </td>
+                                    
+                                </tr>
+                            </t>
+                        </table>
+                   </div>
+                </div>
             </div>
         </div>
         </div>
         `;
     }
+    
 
-    function setup() {
-        const OwlComplaintCreateInstance = new OwlComplaintCreate();
-        OwlComplaintCreateInstance.mount($('.my_complaint_create_component')[0]);
-    }
-
-    whenReady(setup);
-
-    return OwlComplaintCreate;
+    return OwlComplaintCreate
 });

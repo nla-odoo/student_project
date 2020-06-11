@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo> 
+    <record id="society_tree_view" model="ir.ui.view">
+        <field name="name">society.tree</field>
+        <field name="model">res.company</field>
+        <field name="arch" type="xml">
+            <tree string="society tree"> 
+                <field name="name"/>
+                <field name="email"/>
+            </tree>
+        </field>
+    </record>
+    <record id="society_graph_view" model="ir.ui.view">
+        <field name="name">society.graph</field>
+        <field name="model">res.company</field>
+        <field name="arch" type="xml">
+            <graph string="society graph">
+                <field name="id" type='measure'/>
+            </graph>
+        </field>
+    </record>
+
+   <record id='society_action' model='ir.actions.act_window'>
+        <field name='name'>Society Action</field>
+        <field name='res_model'>res.company</field>
+        <field name='view_mode'>tree,graph</field>
+    </record>
+
+    <record id="member_tree_view" model="ir.ui.view">
+        <field name="name">member.tree</field>
+        <field name="model">res.users</field>
+        <field name="arch" type="xml">
+            <tree string="Member tree" create="false" delete="false"> 
+                <field name="name"/>
+                <field name="company_id"/>
+                <field name="email"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="member_graph_view" model="ir.ui.view">
+        <field name="name">member.graph</field>
+        <field name="model">res.users</field>
+        <field name="arch" type="xml">
+            <graph string="member graph">
+                <field name="company_id" type='measure'/>
+                <field name="id"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- <record model="ir.ui.view" id="member_pivot">
+        <field name="name">member.pivot</field>
+        <field name="model">res.users</field>
+        <field name="arch" type="xml">
+            <pivot string='Member'>
+                <field name="name" type="row"/>
+            </pivot>
+        </field>
+    </record> -->
+
+    <record id='member_action' model='ir.actions.act_window'>
+        <field name='name'>Member Action</field>
+        <field name='res_model'>res.users</field>
+        <field name='view_mode'>tree,pivot,graph</field>
+    </record>
+
+    <record id="event_tree_view" model="ir.ui.view">
+        <field name="name">event.tree</field>
+        <field name="model">event.event</field>
+        <field name="arch" type="xml">
+            <tree string="Event tree" create="false" delete="false"> 
+                <field name="name"/>
+                <field name="company_id"/>
+                <field name="date_begin"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id='event_action' model='ir.actions.act_window'>
+        <field name='name'>Event Action</field>
+        <field name='res_model'>event.event</field>
+        <field name='view_mode'>tree</field>
+    </record>
+
+
+    <record id="helpdesk_tree_view" model="ir.ui.view">
+        <field name="name">helpdesk.tree</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="arch" type="xml">
+            <tree string="Complaint tree" create="false" delete="false"> 
+                <field name="name"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id='complaint_action' model='ir.actions.act_window'>
+        <field name='name'>Complaint Action</field>
+        <field name='res_model'>helpdesk.ticket</field>
+        <field name='view_mode'>tree</field>
+    </record>
+
+    <record id="account_tree_view" model="ir.ui.view">
+        <field name="name">account.tree</field>
+        <field name="model">account.payment</field>
+        <field name="arch" type="xml">
+            <tree string="account tree" create="false" delete="false"> 
+                <field name="name"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id='account_action' model='ir.actions.act_window'>
+        <field name='name'>Account Action</field>
+        <field name='res_model'>account.payment</field>
+        <field name='view_mode'>tree</field>
+    </record>
+
+    <menuitem id='main_menu' name='Society Managment'/>
+    <menuitem id='member_view' name='Member' action='member_action' parent='main_menu'/>
+    <menuitem id='society_view' name='Society' action='society_action' parent='main_menu'/>
+    <!-- <menuitem id='event_view' name='Event' action='event_action' parent='main_menu'/>
+    <menuitem id='complaint_view' name='Complaint' action='complaint_action' parent='main_menu'/>
+    <menuitem id='account_view' name='Account' action='account_action' parent='main_menu'/> -->
+
+</odoo>

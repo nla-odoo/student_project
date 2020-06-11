@@ -18,6 +18,10 @@ odoo.define('owl_society_managment.society_create', function (require) {
             name: "",
             email:"",
             currency:"",
+            street:"",
+            zip:"",
+            city:"",
+            code:"",
         });
     }
         async willStart() {
@@ -39,34 +43,58 @@ odoo.define('owl_society_managment.society_create', function (require) {
                 params:{name: this.state.name,
                     email: this.state.email,
                     currency: this.state.currency,
+                    street: this.state.street,
+                    zip: this.state.zip,
+                    city: this.state.city,
+                    code: this.state.code,
                 }});
-            this.render(true);
+            window.location.href = "/web/login"
+            // this.render(true);
           
         }
 
 
         static template = xml`<div>
-        <div>
-            <div>
-                <form method="post">
-                    <div>
-                        <label>Name</label>
-                        <input type="text" name='name' t-model="state.name"/>
+            <div class="container py-5">
+                <div class="card border-0 mx-auto bg-100 rounded-0 shadow-sm bg-white o_database_list w-50 p-3">
+                    <h1 class="card-body text-warning" align='center'>Society Registration Form</h1>
+                    <div class="card-body">
+                    <form method="post">
+                    <div class="form-group">
+                        <label>Society Name</label>
+                        <input type="text" name='name' t-model="state.name" class="form-control"/>
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label>Email</label>
-                        <input type="email" name='name' t-model="state.email"/>
+                        <input type="email" name='name' t-model="state.email" class="form-control"/>
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label for="Currency">Currency</label>
-                        <select name="currency" t-model="state.currency" id="currency">
+                        <select name="currency" t-model="state.currency" id="currency" class="form-control">
                             <t t-foreach="currencys" t-as="cur">
                                 <option t-key="cur" t-attf-value="{{cur.id}}"><t t-esc="cur.name"/></option>
                             </t>
                         </select>
                     </div>
-                <a t-on-click="_onClickLink">Submit</a>
+                    <div class="form-group">
+                        <label>Short Code</label>
+                        <input type="text" name='code' t-model="state.code" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label>street</label>
+                        <input type="text" name='street' t-model="state.street" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label>zip</label>
+                        <input type="text" name='zip' t-model="state.zip" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label>city</label>
+                        <input type="text" name='city' t-model="state.city" class="form-control"/>
+                    </div>
+                <a class="btn btn-primary" t-on-click="_onClickLink">Submit</a>
                 </form>
+            </div>
             </div>
         </div>
         </div>

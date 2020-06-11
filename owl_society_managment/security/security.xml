@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record model="ir.module.category" id="module_security">
+  	  <field name="name">Society Module Access Security</field>
+  		<field name="description">User access level for this module</field>
+  		<field name="sequence">3</field>
+	</record>
+
+    <record id="society_group_admin" model="res.groups">
+        <field name="name">Society Admin</field>
+        <field name="implied_ids" eval="[(4, ref('base.user_admin'))]"/>
+        <field name="category_id" ref="owl_society_managment.module_security"/>
+    </record>
+
+    <record id="society_secratery_group_admin" model="res.groups">
+        <field name="name">Society Secratery</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="category_id" ref="owl_society_managment.module_security"/>
+    </record>
+
+    <record id="society_treasurer_group_admin" model="res.groups">
+        <field name="name">Society treasurer</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="category_id" ref="owl_society_managment.module_security"/>
+    </record>
+</odoo>

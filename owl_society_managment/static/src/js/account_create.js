@@ -1,10 +1,10 @@
 odoo.define('owl_society_managment.account_create', function (require) {
     "use strict";
 
-    require('web.dom_ready');
-    if (!$('.my_account_create_component').length) {
-        return Promise.reject("DOM doesn't contain '.my_account_create_component'");
-    }
+    // require('web.dom_ready');
+    // if (!$('.my_account_create_component').length) {
+    //     return Promise.reject("DOM doesn't contain '.my_account_create_component'");
+    // }
     const rpc = require('web.rpc');
 
     const { Component, hooks, useState } = owl;
@@ -46,26 +46,26 @@ odoo.define('owl_society_managment.account_create', function (require) {
 
 
         static template = xml`<div>
-        <div>
-            <div>
+        <div class="container py-5">
+            <div class="card-body">
                 <form method="post">
-                    <div>
+                    <div class="form-group">
                         <label>Name</label>
-                        <input type="text" name='name' t-model="state.name"/>
+                        <input type="text" name='name' t-model="state.name" class="form-control"/>
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label>Type</label>
-                        <select id="user_type_id" name="user_type_id" t-model="state.user_type_id">
+                        <select id="user_type_id" name="user_type_id" t-model="state.user_type_id" class="form-control">
                             <t t-foreach="accounts" t-as="acc">
-                                <option t-key="acc"><t t-esc="acc"/></option>
+                                <option t-key="acc" t-attf-value="{{acc.id}}"><t t-esc="acc.name"/></option>
                             </t>
                         </select>
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label>Code</label>
-                        <input type="text" name='code' t-model="state.code"/>
+                        <input type="text" name='code' t-model="state.code" class="form-control"/>
                     </div>
-                <a t-on-click="_onClickLink">Submit</a>
+                <a class="btn btn-primary" t-on-click="_onClickLink">Submit</a>
                 </form>
             </div>
         </div>
@@ -73,12 +73,12 @@ odoo.define('owl_society_managment.account_create', function (require) {
         `;
     }
 
-    function setup() {
-        const OwlAccountCreateInstance = new OwlAccountCreate();
-        OwlAccountCreateInstance.mount($('.my_account_create_component')[0]);
-    }
+    // function setup() {
+    //     const OwlAccountCreateInstance = new OwlAccountCreate();
+    //     OwlAccountCreateInstance.mount($('.my_account_create_component')[0]);
+    // }
 
-    whenReady(setup);
+    // whenReady(setup);
 
     return OwlAccountCreate;
 });

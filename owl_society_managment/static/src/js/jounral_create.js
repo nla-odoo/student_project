@@ -1,10 +1,10 @@
 odoo.define('owl_society_managment.jounral_create', function (require) {
     "use strict";
 
-    require('web.dom_ready');
-    if (!$('.my_jounral_create_component').length) {
-        return Promise.reject("DOM doesn't contain '.my_jounral_create_component'");
-    }
+    // require('web.dom_ready');
+    // if (!$('.my_jounral_create_component').length) {
+    //     return Promise.reject("DOM doesn't contain '.my_jounral_create_component'");
+    // }
     const rpc = require('web.rpc');
 
     const { Component, hooks, useState } = owl;
@@ -45,16 +45,16 @@ odoo.define('owl_society_managment.jounral_create', function (require) {
 
 
         static template = xml`<div>
-        <div>
-            <div>
+        <div class="container py-5">
+            <div class="card-body">
                 <form method="post">
-                    <div>
+                    <div class="form-group">
                         <label>Name</label>
-                        <input type="text" name='name' t-model="state.name"/>
+                        <input type="text" name='name' t-model="state.name" class="form-control"/>
                     </div>
                     <div>
                         <label>Type</label>
-                        <select id="type" name="type" t-model="state.type">
+                        <select id="type" name="type" t-model="state.type" class="form-control">
                             <option value="sale">Sale</option>
                             <option value="purchase">Purchase</option>
                             <option value="cash">cash</option>
@@ -62,11 +62,11 @@ odoo.define('owl_society_managment.jounral_create', function (require) {
                             <option value="genral">Miscellaneous</option>
                         </select>
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label>Short Code</label>
-                        <input type="text" name='code' t-model="state.code"/>
+                        <input type="text" name='code' t-model="state.code" class="form-control"/>
                     </div>
-                <a t-on-click="_onClickLink">Submit</a>
+                <button class="btn btn-primary" t-on-click="_onClickLink">Submit</button>
                 </form>
             </div>
         </div>
@@ -74,12 +74,12 @@ odoo.define('owl_society_managment.jounral_create', function (require) {
         `;
     }
 
-    function setup() {
-        const OwlJounralCreateInstance = new OwlJounralCreate();
-        OwlJounralCreateInstance.mount($('.my_jounral_create_component')[0]);
-    }
+    // function setup() {
+    //     const OwlJounralCreateInstance = new OwlJounralCreate();
+    //     OwlJounralCreateInstance.mount($('.my_jounral_create_component')[0]);
+    // }
 
-    whenReady(setup);
+    // whenReady(setup);
 
     return OwlJounralCreate;
 });

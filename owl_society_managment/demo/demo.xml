@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id='partner_nrushipark' model='res.partner'>
+		<field name='name'>Bhaumik</field>
+		<field name='email'>bhaumikpittalia@gmail.com</field>
+	</record>
+	
+	<record id='company_nrushipark' model='res.company'>
+		<field name='name'>bhaumik</field>
+		<field name='partner_id' ref='owl_society_managment.partner_nrushipark'></field>
+	</record>
+
+	<record id='user_nrushipark' model='res.users'>
+		<field name='partner_id' ref='owl_society_managment.partner_nrushipark'></field>
+		<field name='login'>bhaumikpittalia@gmail.com</field>
+		<field name='password'>bhaumik</field>
+		<field name='company_id' ref='owl_society_managment.company_nrushipark'></field>
+		<field name='company_ids' eval="[(4, ref('owl_society_managment.company_nrushipark'))]"></field>
+		<field name='groups_id' eval="[(4, ref('base.user_admin'))]"></field>
+	</record>
+</odoo>

@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
+    <template id="portal_my_home_menu" name="Portal Menu" inherit_id="portal.portal_breadcrumbs" priority="1">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li style="margin-left: 15px; font-weight: bold;"><a href="/member_create">
+                <t t-if="userType == 'member'">Member Details</t><t t-if="userType == 'secretary'">Create Member</t>
+            </a></li>
+            <li style="margin-left: 15px; font-weight: bold;"><a href="/event_create">
+                <t t-if="userType == 'member'">View Event</t><t t-if="userType == 'secretary'">Create Event</t>
+            </a></li>
+            <li style="margin-left: 15px; font-weight: bold;"><a href="/complaint_create">
+                <t t-if="userType == 'member'">Complaint Create</t><t t-if="userType == 'secretary'">View Complaint</t>
+            </a></li>
+        </xpath>
+    </template>
         <template id="assets_frontend" name="assets" inherit_id="web.assets_frontend">
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/owl_society_managment/static/src/js/owl_dynamic_component.js"></script>
@@ -11,6 +23,12 @@
                 <script type="text/javascript" src="/owl_society_managment/static/src/js/balance_create.js"></script>
                 <script type="text/javascript" src="/owl_society_managment/static/src/js/jounral_create.js"></script>
                 <script type="text/javascript" src="/owl_society_managment/static/src/js/account_create.js"></script>
+                <script type="text/javascript" src="/owl_society_managment/static/src/js/orders_details.js"></script>
+                <script type="text/javascript" src="/owl_society_managment/static/src/js/account_payment.js"></script>
+                <script type="text/javascript" src="/owl_society_managment/static/src/js/payment_create.js"></script>
+                <script type="text/javascript" src="/owl_society_managment/static/src/js/account.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+                <script type="text/javascript" src="/owl_society_managment/static/src/js/menu.js"></script>
             </xpath>
         </template>
 
@@ -39,9 +57,9 @@
                 <div class="my_event_create_component"/>
             </t>
         </template>
-        <template id="owl_society_managment.balance_register">
+        <template id="owl_society_managment.payment_form">
             <t t-call="portal.portal_layout">
-                <div class="my_balance_create_component"/>
+                <div class="my_society_payment_component"/>
             </t>
         </template>
         <template id="owl_society_managment.jounral_register">
@@ -54,5 +72,33 @@
                 <div class="my_account_create_component"/>
             </t>
         </template>
-    </data>
+        <template id="owl_society_managment.account">
+            <t t-call="portal.portal_layout">
+                <div class="account"/>
+            </t>
+        </template>
+        <template id="owl_society_managment.orders_template">
+            <t t-call="portal.portal_layout">
+                <div class="order_List">
+                </div>
+                <div class="orders_details">
+                </div>
+            </t>
+        </template>
+        <template id="owl_society_managment.orders_templates">
+            <t t-call="portal.portal_layout">
+                <div class="order_List">
+                </div>
+                <div class="account_payment">
+                </div>
+            </t>
+        </template>
+        <template id="owl_society_managment.menu_item">
+            <t t-call="portal.portal_layout">
+                <div class="menu_item"/>
+                <div class="component_view"/>
+            </t>
+        </template>
+
+
 </odoo>

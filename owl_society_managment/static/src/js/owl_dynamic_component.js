@@ -1,10 +1,10 @@
 odoo.define('owl_society_managment.owl_dynamic_component', function (require) {
     "use strict";
 
-    require('web.dom_ready');
-    if (!$('.my_dynamic_component').length) {
-        return Promise.reject("DOM doesn't contain '.my_dynamic_component'");
-    }
+    // require('web.dom_ready');
+    // if (!$('.my_dynamic_component').length) {
+    //     return Promise.reject("DOM doesn't contain '.my_dynamic_component'");
+    // }
 
     const rpc = require('web.rpc');
 
@@ -66,62 +66,49 @@ odoo.define('owl_society_managment.owl_dynamic_component', function (require) {
                     price:this.state.price,
 
                 }});
-            this.render(true);
-          
+            this.render(true);   
         }
 
 
         static template = xml`<div>
-        <div>
-            <div>
-                <form method="post">
-                    
-                    <div>
-                        <label>Product name&#127980;</label>
+        <div class="container py-5">
+            <div class="card-body">
+                <div>
+                    <form method="post">
+                        <div class="form-group">
+                            <label>Product name</label>
+                            <input type="text" name='name' t-model="state.name" class="form-control"/>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label" for="sale">Sale</label>
+                                <input type="checkbox" name='sale_ok' t-model="state.sale_ok" class="form-check-input"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Type</label>                
+                                <select id="Type" name="type" t-model="state.type" class="form-control">
+                                    <option value="consu">Consumable</option>
+                                    <option value="service">Service</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <input type="text" name='name' t-model="state.name"/>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Cost</label>
+                            <input type="text" name='standard_price' t-model="state.standard_price" class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Sale price</label>
+                            <input type="text" name='list_price' t-model="state.list_price" class="form-control"/>
+                        </div>
                     </div>
-                    <div>
-                        <label>Purchase</label>
+                     <div class="form-check">
+                            <input type="checkbox" id='recurring_invoice' name='recurring_invoice' t-model="state.recurring_invoice" class="form-check-input"/>     
+                            <label  class="form-check-label">Subscription Product</label>
                     </div>
-                    <div>
-                        <input type="checkbox" name='purchase_ok' t-model="state.purchase_ok"/>
-                    </div>
-                    <div>
-                        <label>Sale</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" name='sale_ok' t-model="state.sale_ok"/>
-                    </div>
-                    <div>
-                        <label>Rent</label>
-                    </div>
-                    <div>    
-                        <input type="checkbox" name='rent_ok' t-model="state.rent_ok"/>
-                    </div>
-                
-                    <div>
-                        <label>Type</label>
-                    </div>
-                    <div>                 
-                        <select id="Type" name="type" t-model="state.type">
-                            <option value="consu">Consumable</option>
-                            <option value="service">Service</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Cost</label>
-                        <input type="text" name='standard_price' t-model="state.standard_price"/>
-                    </div>
-                    <div>
-                        <label>Sale price</label>
-                        <input type="text" name='list_price' t-model="state.list_price"/>
-                    </div>
-                    <div>
-                        <label>Subscription Product</label>
-                        <input type="checkbox" id='recurring_invoice' name='recurring_invoice' t-model="state.recurring_invoice"/>    
-                        <script>
+                    <script>
                         document.getElementById('recurring_invoice').onchange = function () {
                         if(("recurring_invoice")==(":checked")) {
                             document.getElementById("subscription_template_id").disabled = true;
@@ -130,53 +117,31 @@ odoo.define('owl_society_managment.owl_dynamic_component', function (require) {
                         else {
                             document.getElementById("subscription_template_id").disabled = false;
                         }
-                    }   
+                        }   
                     </script>
-                    </div>
-                    <div>
-                        <label for="Subscription Template">Subscription Template</label>
-                        <select name="subscription_template_id" t-model="state.subscription_template_id" id="subscription_template_id" disabled="disabled">
-                            <t t-foreach="subscriptions" t-as="subscription">
-                                <option t-key="subscription" t-attf-value="{{subscription.id}}""><t t-esc="subscription.name"/></option>
-                            </t>
-                        </select>
-                    
-                    </div>
-                    <div>
-                        <label>Duration</label>
-                        <input type="number" name='duration' t-model="state.duration"/>
-                    </div>
-                     <div>
-                        <label>Unit</label>
-                        <select id="unit" name="unit" t-model="state.unit">
-                            <option value="hour">Hours</option>
-                            <option value="day">Days</option>
-                            <option value="week">Weeks</option>
-                            <option value="month">Months</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Price</label>
-                        <input type="number" name='price' t-model="state.price"/>
-                    </div>
-                    <div>
-                    <input id="file-upload" type="file" accept=".gif,.jpg,.jpeg,.png" name='image_1920' t-model="state.image_1920"/>
-                    <script type="text/javascript" src="/owl_society_managment/static/src/js/img.js"/>
-                    </div>
-                <a t-on-click="_onClickLink">Submit</a>
+                        <div class="form-group">
+                            <label for="Subscription Template">Subscription Template</label>
+                            <select name="subscription_template_id" t-model="state.subscription_template_id" id="subscription_template_id" disabled="disabled" class="form-control">
+                                <t t-foreach="subscriptions" t-as="subscription">
+                                    <option t-key="subscription" t-attf-value="{{subscription.id}}"><t t-esc="subscription.name"/></option>
+                                </t>
+                            </select>
+                        </div>
+                    <a class="btn btn-primary" t-on-click="_onClickLink">Submit</a>
                 </form>
             </div>
         </div>
-        </div>
+    </div>
+</div>
         `;
     }
 
-    function setup() {
-        const OwlDynamicDemoInstance = new OwlDynamicDemo();
-        OwlDynamicDemoInstance.mount($('.my_dynamic_component')[0]);
-    }
+    // function setup() {
+    //     const OwlDynamicDemoInstance = new OwlDynamicDemo();
+    //     OwlDynamicDemoInstance.mount($('.my_dynamic_component')[0]);
+    // }
 
-    whenReady(setup);
+    // whenReady(setup);
 
     return OwlDynamicDemo;
 });

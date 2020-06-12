@@ -12,7 +12,7 @@ odoo.define('owldemo.my_addCource_com', function(require) {
     const institute_register = require('owldemo.ragi');
     const course = require('owldemo.course');
     const payment = require('owldemo.payment_com');
-    const payment_respo = require('owldemo.payment_respo');
+    // const payment_respo = require('owldemo.payment_respo');
     const owlAddStudentList = require('owldemo.student_to_accepted');
     const owlAddStudentacceptedList = require('owldemo.acceptedstuden');
     const { Component, hooks } = owl;
@@ -57,10 +57,7 @@ odoo.define('owldemo.my_addCource_com', function(require) {
                     const owlAddStudentacceptedListInstance = new payment();
                     owlAddStudentacceptedListInstance.mount($('.component_view')[0]);
                 }
-                else if (mode === 'payment_respo') {
-                    const owlAddStudentacceptedListInstance = new payment_respo();
-                    owlAddStudentacceptedListInstance.mount($('.component_view')[0]);
-                }
+               
             }
         }
 
@@ -108,7 +105,7 @@ odoo.define('owldemo.my_addCource_com', function(require) {
                                     <a class="nav-link active" href="#" data-mode="Payment">payment</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link " href="#" data-mode="payment_respo">Payment Details</a>
+                                    <a class="nav-link " href="#" data-mode="">Payment Details</a>
                                 </li>
                             </t>
                         </t>

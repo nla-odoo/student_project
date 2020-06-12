@@ -6,6 +6,7 @@
     'depends': ['base', 'portal', 'sale_management', 'mail'],
     'data': [
         'views/templates.xml',
+        # 'views/response.xml',
         'views/views_email_send.xml',
 
     ],

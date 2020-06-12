@@ -39,13 +39,13 @@ odoo.define('owldemo.payment_com', function(require) {
             }
             document.body.append(form)
             debugger
-            const fom = document.querySelector('#addpayment');
-            let formData = new FormData(fom);
-            formData = Object.fromEntries(formData);
-           this.student = await rpc.query({
-                route: "/paytm_response", 
-                params: {'form_data': formData}
-            });
+           //  const fom = document.querySelector('#addpayment');
+           //  let formData = new FormData(fom);
+           //  formData = Object.fromEntries(formData);
+           // this.student = await rpc.query({
+           //      route: "/paytm_response", 
+           //      params: {'form_data': formData}
+           //  });
         
             form.submit()
         }

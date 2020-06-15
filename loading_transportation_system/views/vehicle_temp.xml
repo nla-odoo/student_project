@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>s
+        <template id="assets_frontend" name="assets" inherit_id="web.assets_frontend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/owl_component.js"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/vehicle.js"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/createvehicle.js"></script>
+            </xpath>
+        </template>
+       
+
+
+        <template id="loading_transportation_system.display_template">
+            <t t-call="portal.portal_layout">
+
+                <!-- <div class="transporter_temp"></div> -->
+                <div class="vehicle_temp"></div>
+                <div class="create_vehicle"></div>
+
+                
+            </t>
+
+        </template>
+
+
+    </data>
+</odoo>

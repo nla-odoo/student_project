@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="assets_frontend" name="assets" inherit_id="web.assets_frontend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/owl_component.js"></script>
+                
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/user.js"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/lead.js"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/createlead.js"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/transporter.js"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/customer_regi.js"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/transporter_regi.js"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/vehicle.js"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/driver.js"></script>
+                <!-- <script type="text/javascript" src="/loading_transportation_system/static/src/js/addproduct.js"></script> -->
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/orders_detail.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/cust_vehicle.js"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/order.js"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/menu.js"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/menu2.js"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/createvehicle.js"></script>
+                <script type="text/javascript" src="/loading_transportation_system/static/src/js/createdriver.js"></script>
+            </xpath>
+        </template>
+       
+       <template id="loading_transportation_system.menu_item2">
+            <t t-call="portal.portal_layout">
+                <div class="menu2_temp"/>
+                <div class="component_view"/>
+            </t>
+        </template>
+
+        <template id="loading_transportation_system.transporter_item">
+            <t t-call="portal.portal_layout">
+                <div class="trans_item"/>
+                <div class="component_view"/>
+            </t>
+        </template>
+
+        <template id="loading_transportation_system.orders_template">
+            <t t-call="portal.portal_layout">
+                <div class="order_List">
+                </div>
+                <div class="orders_details">
+                </div>
+            </t>
+        </template>
+
+        <template id="loading_transportation_system.display_orders">
+            <t t-call="portal.portal_layout">
+                <div class="create_order">
+                </div>
+                <div class="orderdisplay"></div>
+            </t>
+        </template>
+
+        <template id="loading_transportation_system.display_orders2">
+            <t t-call="portal.portal_layout">
+                <!-- <div class="create_order">
+                </div> -->
+                <div class="orderdisplay"></div>
+            </t>
+        </template>
+
+
+
+
+<!--         <template id="loading_transportation_system.addmyproduct">
+            <t t-call="portal.portal_layout">
+                <div class="addproductdata">
+                </div>
+            </t>
+        </template> -->
+
+        <template id="loading_transportation_system.demo_template">
+            <t t-call="portal.portal_layout">
+                <!-- <div class="my_user_component"/> -->
+
+                <div class="transporter_temp"></div>
+            </t>
+
+        </template>
+
+        <template id="loading_transportation_system.demo_template2">
+            <t t-call="portal.portal_layout">
+                <div class="my_user_component"/>
+            </t>
+
+        </template>
+
+        <template id="loading_transportation_system.lead_temp">
+            <t t-call="portal.portal_layout">
+                <div class="my_leads"/>
+                <div class="create_lead"/>
+            </t>
+
+        </template>
+
+
+
+
+        <template id="loading_transportation_system.transporter_registration">
+            <t t-call="portal.portal_layout">
+
+                <div class="transporter_registrationform"></div>
+            </t>
+
+        </template>
+
+        <template id="loading_transportation_system.display_driver">
+            <t t-call="portal.portal_layout">
+
+                <!-- <div class="transporter_temp"></div> -->
+                <!-- <div class="vehicle_temp"></div> -->
+                <!-- <div class="create_vehicle"></div> -->
+                <div class="driver_temp"></div>
+                <div class="create_driver"></div>
+            </t>
+
+        </template>
+
+        <template id="loading_transportation_system.display_vehicle">
+            <t t-call="portal.portal_layout">
+
+                <!-- <div class="transporter_temp"></div> -->
+                <div class="vehicle_temp"></div>
+                <div class="create_vehicle"></div>
+                <!-- <div class="my_attribute"></div> -->
+                <!-- <div class="create_driver"></div> -->
+            </t>
+
+        </template>
+
+
+
+
+        <template id="loading_transportation_system.customer_registration">
+            <t t-call="portal.portal_layout">
+
+                <div class="customer_registrationform"></div>
+                
+            </t>
+        </template>
+
+    </data>
+</odoo>
